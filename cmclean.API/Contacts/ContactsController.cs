@@ -1,4 +1,5 @@
 using cmclean.API.Contacts;
+using cmclean.Application.Contacts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,7 +34,8 @@ public class ContactsController : ControllerBase
     [HttpGet("GetUser/{guid}")]
     public async Task<IActionResult> GetUser(Guid guid)
     {
-        return Ok();
+        var GetDetails = await _mediator.Send(new GetContactDetailsQuery(guid));
+        return Ok(GetDetails);
     }
 
     [HttpPut]

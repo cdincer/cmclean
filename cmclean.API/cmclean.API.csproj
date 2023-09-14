@@ -9,7 +9,17 @@
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.11">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+     <ItemGroup>
+    <ProjectReference Include="..\cmclean.Application\cmclean.Application.csproj" />
+        <ProjectReference Include="..\cmclean.Infrastructure\cmclean.Infrastructure.csproj" />
+
   </ItemGroup>
 
 </Project>

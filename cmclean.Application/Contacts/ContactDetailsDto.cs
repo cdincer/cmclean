@@ -1,10 +1,10 @@
-namespace cmclean.Domain.Contacts
+using cmclean.Domain.Contacts;
+
+namespace cmclean.Application.Contacts
 {
-    public class Contact
+
+    public class ContactDetailsDto
     {
-
-
-        #region Field Area
         public Guid id { get; set; }
         public string salutation { get; set; }
         public string firstname { get; set; }
@@ -16,6 +16,5 @@ namespace cmclean.Domain.Contacts
         public bool notifyhasbirthdaysoon { get; set; }//14 days limit.
         public string email { get; set; }//Must be unique
         public string? phonenumber { get; set; }
-        #endregion
     }
 }
