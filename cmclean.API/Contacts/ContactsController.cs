@@ -1,4 +1,5 @@
 using cmclean.API.Contacts;
+using cmclean.Application.Contacts.GetAllContactDetails;
 using cmclean.Application.Contacts.GetContacDetails;
 using cmclean.Application.Contacts.RegisterContact;
 using MediatR;
@@ -35,7 +36,9 @@ public class ContactsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllUser()
     {
-        return Ok();
+        var contact = await _mediator.Send(
+          new GetAllContactDetailsQuery());
+        return Ok(contact);
     }
 
     [HttpGet("GetUser/{guid}")]

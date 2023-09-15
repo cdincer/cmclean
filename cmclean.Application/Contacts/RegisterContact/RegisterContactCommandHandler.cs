@@ -20,7 +20,7 @@ namespace cmclean.Application.Contacts.RegisterContact
                 request.salutation, request.firstname,
                 request.lastname, request.email,
                 request.displayname, request.phonenumber, request.birthdate
-               
+
             );
 
             await _repo.ContactRepository.Create(customer);

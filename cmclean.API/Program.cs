@@ -1,6 +1,7 @@
 using System.Reflection;
 using cmclean.API.Helpers;
 using cmclean.Application.Contacts;
+using cmclean.Application.Contacts.GetAllContactDetails;
 using cmclean.Application.Contacts.GetContacDetails;
 using cmclean.Application.Contacts.RegisterContact;
 using cmclean.Domain.Repositories;
@@ -21,6 +22,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetContactDetailsQueryHandler).Assembly));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RegisterContactCommandHandler).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAllContactDetailsQueryHandler).Assembly));
 
 builder.Services.AddDbContext<CleanDbContext>();
 builder.Services.SetupTableAndSampleRecords(configuration["DatabaseSettings:ConnectionString"]);
