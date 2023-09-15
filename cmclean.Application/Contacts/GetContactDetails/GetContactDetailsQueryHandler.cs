@@ -18,20 +18,20 @@ namespace cmclean.Application.Contacts.GetContacDetails
         public async Task<ContactDetailsDto> Handle(GetContactDetailsQuery request, CancellationToken cancellationToken)
         {
             ContactDetailsDto SingleContact = new();
-            List<Contact> SingleContactResults = await _repo.ContactRepository.FindByCondition(c => c.Id == request.Id);
+            List<Contact> SingleContactResults = await _repo.ContactRepository.FindByCondition(c => c.id == request.Id);
 
             if (SingleContactResults.Count > 0)
             {
-                SingleContact.birthdate = SingleContactResults[0].Birthdate;
-                SingleContact.creationtimestamp = SingleContactResults[0].CreationTimeStamp;
-                SingleContact.displayname = SingleContactResults[0].Displayname;
-                SingleContact.email = SingleContactResults[0].Email;
-                SingleContact.firstname = SingleContactResults[0].Firstname;
-                SingleContact.lastname = SingleContactResults[0].Lastname;
-                SingleContact.id = SingleContactResults[0].Id;
-                SingleContact.lastchangetimestamp = SingleContactResults[0].LastChangeTimestamp;
-                SingleContact.phonenumber = SingleContactResults[0].Phonenumber;
-                SingleContact.salutation = SingleContactResults[0].Salutation;
+                SingleContact.birthdate = SingleContactResults[0].birthdate;
+                SingleContact.creationtimestamp = SingleContactResults[0].creationtimestamp;
+                SingleContact.displayname = SingleContactResults[0].displayname;
+                SingleContact.email = SingleContactResults[0].email;
+                SingleContact.firstname = SingleContactResults[0].firstname;
+                SingleContact.lastname = SingleContactResults[0].lastname;
+                SingleContact.id = SingleContactResults[0].id;
+                SingleContact.lastchangetimestamp = SingleContactResults[0].lastchangetimestamp;
+                SingleContact.phonenumber = SingleContactResults[0].phonenumber;
+                SingleContact.salutation = SingleContactResults[0].salutation;
             }
 
             return SingleContact;

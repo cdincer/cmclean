@@ -24,7 +24,8 @@ namespace cmclean.Application.Contacts.RegisterContact
             );
 
             await _repo.ContactRepository.Create(customer);
-            return new ContactDto { Id = customer.Id };
+            await _repo.Save();
+            return new ContactDto { Id = customer.id };
         }
     }
 }

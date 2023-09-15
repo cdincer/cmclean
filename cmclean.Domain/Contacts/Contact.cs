@@ -9,7 +9,7 @@ namespace cmclean.Domain.Contacts
         private readonly DateTime NullCheck = DateTime.Parse("0001-01-01T00:00:00");
         private readonly int UserBirthDateCheck = 14;
         #region Field Area
-        public Guid Id { get; set; }
+        public Guid id { get; set; }
         private string _salutation;
         private string _firstname;
         private string _lastname;
@@ -23,40 +23,40 @@ namespace cmclean.Domain.Contacts
         #endregion
 
         #region Property Area
-        public string Salutation
+        public string salutation
         {
             get { return _salutation; }
             set { _salutation = value; }
         }
-        public string Firstname
+        public string firstname
         {
             get { return _firstname; }
             set { _firstname = value; }
         }
-        public string Lastname
+        public string lastname
         {
             get { return _lastname; }
             set { _lastname = value; }
         }
-        public string? Displayname
+        public string? displayname
         {
             get { return _displayname; }
             set { _displayname = value; }
         }
-        public DateTime Birthdate
+        public DateTime birthdate
         {
             get { return _birthdate; }
             set { _birthdate = value; }
         }
-        public DateTime CreationTimeStamp
+        public DateTime creationtimestamp
         {
             get { return _creationTimeStamp; }
         }
-        public DateTime LastChangeTimestamp
+        public DateTime lastchangetimestamp
         {
             get { return _lastChangeTimeStamp; }
         }
-        public bool NotifyHasBirthDaySoon
+        public bool notifyhasbirthdaysoon
         {
             get
             {
@@ -74,12 +74,12 @@ namespace cmclean.Domain.Contacts
                 return birthDayCalc;
             }
         }
-        public string Email
+        public string email
         {
             get { return _email; }
             set { _email = value; }
         }
-        public string Phonenumber
+        public string phonenumber
         {
             get { return _phonenumber; }
             set { _phonenumber = value; }
@@ -111,7 +111,7 @@ namespace cmclean.Domain.Contacts
         string phonenumber, DateTime birthdate
         )
         {
-            Id = Guid.NewGuid();
+            id = Guid.NewGuid();
             _salutation = salutation;
             _firstname = firstname;
             _lastname = lastname;
