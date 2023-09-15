@@ -23,13 +23,13 @@ namespace cmclean.Application.Contacts.GetContacDetails
             if (SingleContactResults.Count > 0)
             {
                 SingleContact.birthdate = SingleContactResults[0].Birthdate;
-                SingleContact.creationtimestamp = SingleContactResults[0].Creationtimestamp;
+                SingleContact.creationtimestamp = SingleContactResults[0].CreationTimeStamp;
                 SingleContact.displayname = SingleContactResults[0].Displayname;
                 SingleContact.email = SingleContactResults[0].Email;
                 SingleContact.firstname = SingleContactResults[0].Firstname;
                 SingleContact.lastname = SingleContactResults[0].Lastname;
                 SingleContact.id = SingleContactResults[0].Id;
-                SingleContact.lastchangetimestamp = SingleContactResults[0].Lastchangetimestamp;
+                SingleContact.lastchangetimestamp = SingleContactResults[0].LastChangeTimestamp;
                 SingleContact.phonenumber = SingleContactResults[0].Phonenumber;
                 SingleContact.salutation = SingleContactResults[0].Salutation;
             }

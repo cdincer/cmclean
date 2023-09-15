@@ -1,9 +1,10 @@
 namespace cmclean.Domain.SeedWork
 {
+
     public abstract class Entity
     {
 
-           protected static void CheckRule(IBusinessRule rule)
+        protected static void CheckRule(IBusinessRule rule)
         {
             if (rule.IsBroken())
             {

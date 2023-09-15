@@ -7,16 +7,16 @@ namespace cmclean.Application.Contacts.RegisterContact
         public string salutation { get; set; }
         public string firstname { get; set; }
         public string lastname { get; set; }
-        public string? displayname { get; set; }
-        public DateTime? birthdate { get; set; }
+        public string displayname { get; set; }
+        public DateTime birthdate { get; set; }
         public string email { get; set; }//Must be unique
-        public string? phonenumber { get; set; }
+        public string phonenumber { get; set; }
         public RegisterContactCommand
         (
         string salutation, string firstname,
         string lastname, string email,
-        string? displayname = null, DateTime? birthdate = null,
-        string? phonenumber = null
+        string displayname, DateTime birthdate,
+        string phonenumber
         )
         {
             this.salutation = salutation;

@@ -19,8 +19,8 @@ namespace cmclean.Application.Contacts.RegisterContact
             (
                 request.salutation, request.firstname,
                 request.lastname, request.email,
-                request.displayname, request.birthdate,
-                request.phonenumber
+                request.displayname, request.phonenumber, request.birthdate
+               
             );
 
             await _repo.ContactRepository.Create(customer);

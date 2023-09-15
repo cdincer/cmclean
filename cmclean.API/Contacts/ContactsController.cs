@@ -29,7 +29,7 @@ public class ContactsController : ControllerBase
                 userDto.Displayname, userDto.Birthdate,
                 userDto.Phonenumber
             ));
-        return Ok();
+        return Ok(contact.Id);
     }
 
     [HttpGet]

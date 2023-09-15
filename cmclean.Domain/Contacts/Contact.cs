@@ -13,53 +13,58 @@ namespace cmclean.Domain.Contacts
         private string _salutation;
         private string _firstname;
         private string _lastname;
-        private string? _displayname;
-        private DateTime? _birthddate;
+        private string _displayname;
+        private DateTime _birthdate;
         private readonly DateTime _creationTimeStamp;
         private readonly DateTime _lastChangeTimeStamp;
         private bool _notifyHasBirthdaySoon;//14 days limit.
         private string _email;//Must be unique
-        private string? _phonenumber;
+        private string _phonenumber;
         #endregion
 
         #region Property Area
         public string Salutation
         {
             get { return _salutation; }
+            set { _salutation = value; }
         }
         public string Firstname
         {
             get { return _firstname; }
+            set { _firstname = value; }
         }
         public string Lastname
         {
             get { return _lastname; }
+            set { _lastname = value; }
         }
         public string? Displayname
         {
             get { return _displayname; }
+            set { _displayname = value; }
         }
-        public DateTime? Birthdate
+        public DateTime Birthdate
         {
-            get { return _birthddate; }
+            get { return _birthdate; }
+            set { _birthdate = value; }
         }
-        public DateTime Creationtimestamp
+        public DateTime CreationTimeStamp
         {
             get { return _creationTimeStamp; }
         }
-        public DateTime Lastchangetimestamp
+        public DateTime LastChangeTimestamp
         {
             get { return _lastChangeTimeStamp; }
         }
-        public bool Notifyhasbirthdaysoon
+        public bool NotifyHasBirthDaySoon
         {
             get
             {
                 bool birthDayCalc = false;
-                if (_birthddate != null)
+                if (_birthdate != null)
                 {
-                    int YearAdjustment = DateTime.Now.Year - _birthddate.Value.Year;
-                    DateTime CurrBirthDate = _birthddate.Value.AddYears(YearAdjustment);
+                    int YearAdjustment = DateTime.Now.Year - _birthdate.Year;
+                    DateTime CurrBirthDate = _birthdate.AddYears(YearAdjustment);
                     DateTime checkBirthDayEndDate = DateTime.Now.AddDays(UserBirthDateCheck);
                     if (CurrBirthDate >= DateTime.Now && CurrBirthDate <= checkBirthDayEndDate)
                     {
@@ -72,17 +77,20 @@ namespace cmclean.Domain.Contacts
         public string Email
         {
             get { return _email; }
+            set { _email = value; }
         }
         public string Phonenumber
         {
             get { return _phonenumber; }
+            set { _phonenumber = value; }
         }
         #endregion
         public static Contact CreatedRegistered
         (string salutation, string firstname,
         string lastname, string email,
-        string? displayname = null, DateTime? birthdate = null,
-        string? phonenumber = null)
+        string displayname, string phonenumber,
+        DateTime birthdate
+      )
         {
             CheckRule(new PropertyMinLength(salutation));
             CheckRule(new PropertyMinLength(firstname));
@@ -91,16 +99,16 @@ namespace cmclean.Domain.Contacts
             (
                 salutation, firstname,
                 lastname, email, displayname,
-                birthdate, phonenumber
+                phonenumber, birthdate
             );
         }
 
-        public Contact
+        private Contact
         (
         string salutation, string firstname,
         string lastname, string email,
-        string? displayname = null, DateTime? birthdate = null,
-        string? phonenumber = null
+        string displayname,
+        string phonenumber, DateTime birthdate
         )
         {
             Id = Guid.NewGuid();
@@ -108,7 +116,7 @@ namespace cmclean.Domain.Contacts
             _firstname = firstname;
             _lastname = lastname;
             _displayname = string.IsNullOrWhiteSpace(displayname) ? salutation + " " + firstname + " " + lastname : displayname;
-            _birthddate = birthdate;
+            _birthdate = birthdate;
             _creationTimeStamp = DateTime.Now;
             _lastChangeTimeStamp = DateTime.Now;
 
@@ -125,5 +133,6 @@ namespace cmclean.Domain.Contacts
             _email = email;
             _phonenumber = phonenumber;
         }
+
     }
 }

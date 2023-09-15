@@ -14,20 +14,20 @@ namespace cmclean.Domain.ContactV2s
         private string _salutation;
         private string _firstname;
         private string _lastname;
-        private string? _displayname;
-        private DateTime? _birthddate;
+        private string _displayname;
+        private DateTime _birthddate;
         private readonly DateTime _creationTimeStamp;
         private readonly DateTime _lastChangeTimeStamp;
         private bool _notifyHasBirthdaySoon;//14 days limit.
         private string _email;//Must be unique
-        private string? _phonenumber;
+        private string _phonenumber;
         #endregion
 
         public static ContactV2 CreatedRegistered
         (string salutation, string firstname,
         string lastname, string email,
-        string? displayname = null, DateTime? birthdate = null,
-        string? phonenumber = null)
+        string displayname, DateTime birthdate,
+        string phonenumber)
         {
             CheckRule(new PropertyMinLength(salutation));
             CheckRule(new PropertyMinLength(firstname));
@@ -45,8 +45,8 @@ namespace cmclean.Domain.ContactV2s
         (
         string salutation, string firstname,
         string lastname, string email,
-        string? displayname = null, DateTime? birthdate = null,
-        string? phonenumber = null
+        string displayname, DateTime birthdate,
+        string phonenumber
         )
         {
             Id = Guid.NewGuid();
