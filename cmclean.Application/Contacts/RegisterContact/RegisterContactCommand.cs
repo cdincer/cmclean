@@ -1,0 +1,32 @@
+using cmclean.Application.Configuration.Commands;
+
+namespace cmclean.Application.Contacts.RegisterContact
+{
+    public class RegisterContactCommand : CommandBase<ContactDto>
+    {
+        public string salutation { get; set; }
+        public string firstname { get; set; }
+        public string lastname { get; set; }
+        public string? displayname { get; set; }
+        public DateTime? birthdate { get; set; }
+        public string email { get; set; }//Must be unique
+        public string? phonenumber { get; set; }
+        public RegisterContactCommand
+        (
+        string salutation, string firstname,
+        string lastname, string email,
+        string? displayname = null, DateTime? birthdate = null,
+        string? phonenumber = null
+        )
+        {
+            this.salutation = salutation;
+            this.firstname = firstname;
+            this.lastname = lastname;
+            this.displayname = displayname;
+            this.birthdate = birthdate;
+            this.email = email;
+            this.phonenumber = phonenumber;
+        }
+
+    }
+}

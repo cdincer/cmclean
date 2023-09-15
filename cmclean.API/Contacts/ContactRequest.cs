@@ -5,11 +5,11 @@ namespace cmclean.API.Contacts
     public class ContactRequest
     {
         public string Salutation { get; set; }
-        string Firstname { get; set; }
-        string Lastname { get; set; }
-        string Email { get; set; }
-        string? Displayname { get; set; }
-        DateTime? Birthdate { get; set; }
-        string? PhoneNumber { get; set; }
+        public string Firstname { get; set; }
+        public string Lastname { get; set; }
+        public string Email { get; set; }
+        public string? Displayname { get; set; }
+        public DateTime? Birthdate { get; set; }
+        public string? Phonenumber { get; set; }
     }
 }

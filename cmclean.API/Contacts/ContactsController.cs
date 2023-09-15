@@ -1,5 +1,6 @@
 using cmclean.API.Contacts;
-using cmclean.Application.Contacts;
+using cmclean.Application.Contacts.GetContacDetails;
+using cmclean.Application.Contacts.RegisterContact;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +22,13 @@ public class ContactsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post(ContactRequest userDto)
     {
-
+        var contact = await _mediator.Send(
+            new RegisterContactCommand(
+                userDto.Salutation, userDto.Firstname,
+                userDto.Lastname, userDto.Email,
+                userDto.Displayname, userDto.Birthdate,
+                userDto.Phonenumber
+            ));
         return Ok();
     }
 

@@ -2,10 +2,13 @@ using Npgsql;
 
 namespace cmclean.API.Helpers
 {
-    //This folder and its name is a bit misleading.
-    //This helper is here for demonstraing our project works.
-    /*Adds some items we can use it the future for testing our code
-    during development.*/
+    /*
+    This helper is here for demonstraing our project works.
+    Normally on this layer we wouldn't do something like this 
+    But for convience its really good to have, 
+    Adds some items we can use it the future for testing our code
+    during development.
+    */
     public static class InitializeDB
     {
         public static IServiceCollection SetupTableAndSampleRecords(this IServiceCollection services, string ConnectionString)

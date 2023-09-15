@@ -1,6 +1,6 @@
 using cmclean.Application.Configuration.Queries;
 
-namespace cmclean.Application.Contacts
+namespace cmclean.Application.Contacts.GetContacDetails
 {
     public class GetContactDetailsQuery : IQuery<ContactDetailsDto>
     {

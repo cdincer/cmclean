@@ -1,6 +1,6 @@
 using cmclean.Domain.Contacts;
 
-namespace cmclean.Application.Contacts
+namespace cmclean.Application.Contacts.GetContacDetails
 {
 
     public class ContactDetailsDto

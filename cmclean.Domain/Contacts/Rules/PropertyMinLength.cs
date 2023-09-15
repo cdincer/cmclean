@@ -10,11 +10,11 @@ namespace cmclean.Contacts.Rules
         {
             _property = Property;
         }
-        public string Message => "This property length must be longer than 2 characters";
+        public string Message => $"This property: {_property} length must be longer than 2 characters";
 
         public bool IsBroken()
         {
-            return _property.Length <= 2;
+            return _property.Length <= 1;
         }
     }
 }
