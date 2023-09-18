@@ -122,7 +122,6 @@ namespace cmclean.Domain.Contacts
             _displayname = string.IsNullOrWhiteSpace(displayname) ? salutation + " " + firstname + " " + lastname : displayname;
             _phonenumber = phonenumber;
             _birthdate = birthdate;
-            //birthdate == null ? DateTime.MinValue.ToUniversalTime() : birthdate
             _creationtimestamp = creationtimestamp;
             _lastchangetimestamp = lastchangetimestamp;
         }

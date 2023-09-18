@@ -2,6 +2,8 @@ using cmclean.API.Contacts;
 using cmclean.Application.Contacts.GetAllContactDetails;
 using cmclean.Application.Contacts.GetContacDetails;
 using cmclean.Application.Contacts.RegisterContact;
+using cmclean.Application.Contacts.UpdateContact;
+using cmclean.Contacts.UpdateContact;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,14 +59,15 @@ public class ContactsController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateUser(ContactRequest ContactDto)
+    public async Task<IActionResult> UpdateUser(UpdateContactRequest updatecontactdto)
     {
         var contact = await _mediator.Send(
-                  new RegisterContactCommand(
-                      ContactDto.salutation, ContactDto.firstname,
-                      ContactDto.lastname, ContactDto.email,
-                      ContactDto.displayname, ContactDto.birthdate,
-                      ContactDto.phonenumber
+                  new UpdateContactCommand(
+                      updatecontactdto.id,
+                      updatecontactdto.salutation, updatecontactdto.firstname,
+                      updatecontactdto.lastname, updatecontactdto.email,
+                      updatecontactdto.displayname, updatecontactdto.birthdate,
+                      updatecontactdto.phonenumber
                   ));
 
 
@@ -76,8 +79,6 @@ public class ContactsController : ControllerBase
         {
             return BadRequest("Please enter a unique customer email");
         }
-
-        return Ok();
     }
 
     [HttpDelete]

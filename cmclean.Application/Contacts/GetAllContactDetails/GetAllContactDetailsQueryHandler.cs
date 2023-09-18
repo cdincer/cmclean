@@ -18,8 +18,10 @@ namespace cmclean.Application.Contacts.GetAllContactDetails
 
         public async Task<AllContactDetailsDto> Handle(GetAllContactDetailsQuery request, CancellationToken cancellationToken)
         {
-            AllContactDetailsDto allcontactlist = new();
-            allcontactlist.ContactList = new List<AllContactDetailsMember>();
+            AllContactDetailsDto allcontactlist = new()
+            {
+                ContactList = new()
+            };
             var list = _repo.ContactRepository.FindAll().ToList();
             foreach (var item in list)
             {
