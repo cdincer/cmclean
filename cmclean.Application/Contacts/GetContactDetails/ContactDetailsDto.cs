@@ -10,11 +10,11 @@ namespace cmclean.Application.Contacts.GetContacDetails
         public string firstname { get; set; }
         public string lastname { get; set; }
         public string displayname { get; set; }
-        public DateTime birthdate { get; set; }
+        public DateTime? birthdate { get; set; }
         public DateTime creationtimestamp { get; set; }
         public DateTime lastchangetimestamp { get; set; }
         public bool notifyhasbirthdaysoon { get; set; }//14 days limit.
         public string email { get; set; }//Must be unique
-        public string phonenumber { get; set; }
+        public string? phonenumber { get; set; }
     }
 }

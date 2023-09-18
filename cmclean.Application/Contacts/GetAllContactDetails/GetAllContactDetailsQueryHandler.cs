@@ -19,10 +19,9 @@ namespace cmclean.Application.Contacts.GetAllContactDetails
         public async Task<AllContactDetailsDto> Handle(GetAllContactDetailsQuery request, CancellationToken cancellationToken)
         {
             AllContactDetailsDto allcontactlist = new();
-            List<Contact> getallcontactresults = _repo.ContactRepository.FindAll().ToList();
-
             allcontactlist.ContactList = new List<AllContactDetailsMember>();
-            foreach (var item in getallcontactresults)
+            var list = _repo.ContactRepository.FindAll().ToList();
+            foreach (var item in list)
             {
                 allcontactlist.ContactList.Add(new AllContactDetailsMember()
                 {
@@ -31,10 +30,12 @@ namespace cmclean.Application.Contacts.GetAllContactDetails
                     lastname = item.lastname,
                     email = item.email,
                     displayname = item.displayname,
+                    birthdate = item.birthdate,
                     phonenumber = item.phonenumber,
                     salutation = item.salutation,
-                    birthdate = item.birthdate
-
+                    notifyhasbirthdaysoon = item.notifyhasbirthdaysoon,
+                    creationtimestamp = item.creationtimestamp,
+                    lastchangetimestamp = item.lastchangetimestamp
                 });
             }
 

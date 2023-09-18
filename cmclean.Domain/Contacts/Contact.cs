@@ -14,12 +14,11 @@ namespace cmclean.Domain.Contacts
         private string _firstname;
         private string _lastname;
         private string _displayname;
-        private DateTime _birthdate;
-        private readonly DateTime _creationTimeStamp;
-        private readonly DateTime _lastChangeTimeStamp;
-        private bool _notifyHasBirthdaySoon;//14 days limit.
+        private DateTime? _birthdate;
+        private DateTime _creationtimestamp;
+        private DateTime _lastchangetimestamp;
         private string _email;//Must be unique
-        private string _phonenumber;
+        private string? _phonenumber;
         #endregion
 
         #region Property Area
@@ -43,18 +42,20 @@ namespace cmclean.Domain.Contacts
             get { return _displayname; }
             set { _displayname = value; }
         }
-        public DateTime birthdate
+        public DateTime? birthdate
         {
             get { return _birthdate; }
             set { _birthdate = value; }
         }
         public DateTime creationtimestamp
         {
-            get { return _creationTimeStamp; }
+            get { return _creationtimestamp; }
+            private set { _creationtimestamp = value; }
         }
         public DateTime lastchangetimestamp
         {
-            get { return _lastChangeTimeStamp; }
+            get { return _lastchangetimestamp; }
+            private set { _lastchangetimestamp = value; }
         }
         public bool notifyhasbirthdaysoon
         {
@@ -63,8 +64,8 @@ namespace cmclean.Domain.Contacts
                 bool birthDayCalc = false;
                 if (_birthdate != null)
                 {
-                    int YearAdjustment = DateTime.Now.Year - _birthdate.Year;
-                    DateTime CurrBirthDate = _birthdate.AddYears(YearAdjustment);
+                    int YearAdjustment = DateTime.Now.Year - _birthdate.Value.Year;
+                    DateTime CurrBirthDate = _birthdate.Value.AddYears(YearAdjustment);
                     DateTime checkBirthDayEndDate = DateTime.Now.AddDays(UserBirthDateCheck);
                     if (CurrBirthDate >= DateTime.Now && CurrBirthDate <= checkBirthDayEndDate)
                     {
@@ -79,7 +80,7 @@ namespace cmclean.Domain.Contacts
             get { return _email; }
             set { _email = value; }
         }
-        public string phonenumber
+        public string? phonenumber
         {
             get { return _phonenumber; }
             set { _phonenumber = value; }
@@ -88,8 +89,8 @@ namespace cmclean.Domain.Contacts
         public static Contact CreatedRegistered
         (string salutation, string firstname,
         string lastname, string email,
-        string displayname, string phonenumber,
-        DateTime birthdate
+        string displayname, string? phonenumber,
+        DateTime? birthdate
       )
         {
             CheckRule(new PropertyMinLength(salutation));
@@ -100,6 +101,7 @@ namespace cmclean.Domain.Contacts
                 salutation, firstname,
                 lastname, email, displayname,
                 phonenumber, birthdate
+                , DateTime.Now.ToUniversalTime(), DateTime.Now.ToUniversalTime()
             );
         }
 
@@ -108,34 +110,21 @@ namespace cmclean.Domain.Contacts
         string salutation, string firstname,
         string lastname, string email,
         string displayname,
-        string phonenumber, DateTime birthdate
+        string? phonenumber, DateTime? birthdate
+        , DateTime creationtimestamp, DateTime lastchangetimestamp
         )
         {
             id = Guid.NewGuid();
             _salutation = salutation;
             _firstname = firstname;
             _lastname = lastname;
-            _displayname = string.IsNullOrWhiteSpace(displayname) ? salutation + " " + firstname + " " + lastname : displayname;
-            _birthdate = birthdate;
-            _creationTimeStamp = DateTime.Now;
-            _lastChangeTimeStamp = DateTime.Now;
-
-            if (birthdate != NullCheck)
-            {
-                int YearAdjustment = DateTime.Now.Year - birthdate.Year;
-                DateTime CurrBirthDate = birthdate.AddYears(YearAdjustment);
-                DateTime checkBirthDayEndDate = DateTime.Now.AddDays(UserBirthDateCheck);
-                if (CurrBirthDate >= DateTime.Now && CurrBirthDate <= checkBirthDayEndDate)
-                {
-                    _notifyHasBirthdaySoon = true;
-                }
-            }
-            else
-            {
-                _notifyHasBirthdaySoon = false;
-            }
             _email = email;
+            _displayname = string.IsNullOrWhiteSpace(displayname) ? salutation + " " + firstname + " " + lastname : displayname;
             _phonenumber = phonenumber;
+            _birthdate = birthdate;
+            //birthdate == null ? DateTime.MinValue.ToUniversalTime() : birthdate
+            _creationtimestamp = creationtimestamp;
+            _lastchangetimestamp = lastchangetimestamp;
         }
 
     }

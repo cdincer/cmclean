@@ -21,14 +21,14 @@ public class ContactsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(ContactRequest userDto)
+    public async Task<IActionResult> Post(ContactRequest ContactDto)
     {
         var contact = await _mediator.Send(
             new RegisterContactCommand(
-                userDto.Salutation, userDto.Firstname,
-                userDto.Lastname, userDto.Email,
-                userDto.Displayname, userDto.Birthdate,
-                userDto.Phonenumber
+                ContactDto.salutation, ContactDto.firstname,
+                ContactDto.lastname, ContactDto.email,
+                ContactDto.displayname, ContactDto.birthdate,
+                ContactDto.phonenumber
             ));
 
         if (contact != null)
@@ -57,8 +57,25 @@ public class ContactsController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateUser(ContactRequest userDto)
+    public async Task<IActionResult> UpdateUser(ContactRequest ContactDto)
     {
+        var contact = await _mediator.Send(
+                  new RegisterContactCommand(
+                      ContactDto.salutation, ContactDto.firstname,
+                      ContactDto.lastname, ContactDto.email,
+                      ContactDto.displayname, ContactDto.birthdate,
+                      ContactDto.phonenumber
+                  ));
+
+
+        if (contact != null)
+        {
+            return Ok(contact.Id);
+        }
+        else
+        {
+            return BadRequest("Please enter a unique customer email");
+        }
 
         return Ok();
     }

@@ -38,11 +38,11 @@ namespace cmclean.API.Helpers
                                                                 Firstname VARCHAR(24) NOT NULL,
                                                                 Lastname VARCHAR(24) NOT NULL,
                                                                 Displayname VARCHAR(50),
-                                                                Birthdate timestamp,                                                    
-                                                                CreationTimestamp timestamp,
-                                                                LastChangeTimestamp timestamp,
+                                                                Birthdate timestamptz,                                                    
+                                                                CreationTimestamp timestamptz,
+                                                                LastChangeTimestamp timestamptz,
                                                                 NotifyHasBirthdaySoon boolean,
-                                                                Email VARCHAR(50) UNIQUE NOT NULL,
+                                                                Email VARCHAR(50) NOT NULL,
                                                                 Phonenumber VARCHAR(24),
                                                                 PRIMARY KEY (Id))";
                 command.ExecuteNonQuery();
