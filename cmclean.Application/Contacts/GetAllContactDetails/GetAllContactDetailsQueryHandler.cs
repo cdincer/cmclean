@@ -18,13 +18,13 @@ namespace cmclean.Application.Contacts.GetAllContactDetails
 
         public async Task<AllContactDetailsDto> Handle(GetAllContactDetailsQuery request, CancellationToken cancellationToken)
         {
-            AllContactDetailsDto SingleContact = new();
-            List<Contact> GetAllContactResults = _repo.ContactRepository.FindAll().ToList();
+            AllContactDetailsDto allcontactlist = new();
+            List<Contact> getallcontactresults = _repo.ContactRepository.FindAll().ToList();
 
-            SingleContact.ContactList = new List<AllContactDetailsMember>();
-            foreach (var item in GetAllContactResults)
+            allcontactlist.ContactList = new List<AllContactDetailsMember>();
+            foreach (var item in getallcontactresults)
             {
-                SingleContact.ContactList.Add(new AllContactDetailsMember()
+                allcontactlist.ContactList.Add(new AllContactDetailsMember()
                 {
                     id = item.id,
                     firstname = item.firstname,
@@ -38,7 +38,7 @@ namespace cmclean.Application.Contacts.GetAllContactDetails
                 });
             }
 
-            return SingleContact;
+            return allcontactlist;
         }
     }
 }

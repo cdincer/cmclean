@@ -38,7 +38,7 @@ namespace cmclean.Domain.Contacts
             get { return _lastname; }
             set { _lastname = value; }
         }
-        public string? displayname
+        public string displayname
         {
             get { return _displayname; }
             set { _displayname = value; }
@@ -122,13 +122,17 @@ namespace cmclean.Domain.Contacts
 
             if (birthdate != NullCheck)
             {
-                bool birthDayCalc = false;
-                DateTime checkBirthDayEndDate = DateTime.Now.AddDays(UserBirthDateCheck); ;
-                if (birthdate >= DateTime.Now && birthdate <= checkBirthDayEndDate)
+                int YearAdjustment = DateTime.Now.Year - birthdate.Year;
+                DateTime CurrBirthDate = birthdate.AddYears(YearAdjustment);
+                DateTime checkBirthDayEndDate = DateTime.Now.AddDays(UserBirthDateCheck);
+                if (CurrBirthDate >= DateTime.Now && CurrBirthDate <= checkBirthDayEndDate)
                 {
-                    birthDayCalc = true;
+                    _notifyHasBirthdaySoon = true;
                 }
-                _notifyHasBirthdaySoon = birthDayCalc;
+            }
+            else
+            {
+                _notifyHasBirthdaySoon = false;
             }
             _email = email;
             _phonenumber = phonenumber;

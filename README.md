@@ -9,4 +9,4 @@ Contact Manager made in Clean Architecture
 { "salutation": "Mrs", "firstname": "TestFirstName1", "lastname": "TestLastName1", "email": "working@email.com", "displayname": "TestingDisplayName1", "birthdate": "1999-09-14T10:47:24.285Z", "phoneNumber": "" }
 
 //Test Scenario for DisplayName
-{ "salutation": "Mr", "firstname": "TestFirstName2", "lastname": "TestLastName2", "email": "working2@email.com", "displayname": "", "birthdate": "1998-09-12T10:47:24.285Z", "phoneNumber": "02124669900" }
+{ "salutation": "Mr", "firstname": "TestFirstName2", "lastname": "TestLastName2", "email": "working2@email.com", "displayname": "111", "birthdate": "1998-09-12T10:47:24.285Z", "phoneNumber": "02124669900" }

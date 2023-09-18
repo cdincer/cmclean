@@ -1,4 +1,5 @@
 using cmclean.Application.Configuration.Commands;
+using cmclean.Application.Contacts.DomainServices;
 using cmclean.Domain.Contacts;
 using cmclean.Domain.Repositories;
 
@@ -22,10 +23,15 @@ namespace cmclean.Application.Contacts.RegisterContact
                 request.displayname, request.phonenumber, request.birthdate
 
             );
+            ContactUniquenessChecker check = new(_repo);
+            if (await check.IsUnique(request.email))
+            {
+                await _repo.ContactRepository.Create(customer);
+                await _repo.Save();
+                return new ContactDto { Id = customer.id };
+            }
 
-            await _repo.ContactRepository.Create(customer);
-            await _repo.Save();
-            return new ContactDto { Id = customer.id };
+            return null;
         }
     }
 }

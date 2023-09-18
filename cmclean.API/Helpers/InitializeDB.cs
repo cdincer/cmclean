@@ -13,7 +13,7 @@ namespace cmclean.API.Helpers
     {
         public static IServiceCollection SetupTableAndSampleRecords(this IServiceCollection services, string ConnectionString)
         {
-            /*
+            /*Folder name is misleading but it's better than everything else.
             Quotes are added around the tables because PostGreSql doesn't play nice with Entity Framework.
             Ef expects a table with uppercase and 's' on default. Postgresql doesn't like uppercases. I can use a package here
             which is shown on Npgsql side but that's not fun for solving the problem right ?

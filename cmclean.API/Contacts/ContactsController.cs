@@ -30,7 +30,15 @@ public class ContactsController : ControllerBase
                 userDto.Displayname, userDto.Birthdate,
                 userDto.Phonenumber
             ));
-        return Ok(contact.Id);
+
+        if (contact != null)
+        {
+            return Ok(contact.Id);
+        }
+        else
+        {
+            return BadRequest("Please enter a unique customer email");
+        }
     }
 
     [HttpGet]
