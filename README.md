@@ -3,7 +3,8 @@ Contact Manager made in Clean Architecture.
 Made with Visual Studio Code.
 Steps for setting it up.</br>
 1-Use cmcleanWorkspace.code-workspace to open up the whole project in a single workspace.</br>
-2-Use docker-compose.yml to start up the required PostgresqlDB.</br>
+2-Use docker-compose.yml to start up the required PostgresqlDB (DB is tested on a yyyy-MM-dd system)</br>
+Use the docker extension in VS Code or whatever way you prefer.</br>
 3-As you start cmclean.API, commands in InitializeDB.cs which is in Helpers folder</br>
 will replace any tables existed insert sample records for you to look around with.</br>
 4-Additional scenarios for testing stuff is below.</br>
