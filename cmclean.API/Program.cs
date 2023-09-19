@@ -1,6 +1,7 @@
 using System.Reflection;
 using cmclean.API.Helpers;
 using cmclean.Application.Contacts;
+using cmclean.Application.Contacts.DeleteContact;
 using cmclean.Application.Contacts.GetAllContactDetails;
 using cmclean.Application.Contacts.GetContacDetails;
 using cmclean.Application.Contacts.RegisterContact;
@@ -22,8 +23,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetContactDetailsQueryHandler).Assembly));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAllContactDetailsQueryHandler).Assembly));
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(UpdateContactCommandHandler).Assembly));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RegisterContactCommandHandler).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(UpdateContactCommandHandler).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DeleteContactCommandHandler).Assembly));
+
 
 
 builder.Services.AddDbContext<CleanDbContext>();

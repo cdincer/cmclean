@@ -1,3 +1,4 @@
+using cmclean.Application.Contacts.DeleteContact;
 using cmclean.Application.Contacts.GetAllContactDetails;
 using cmclean.Application.Contacts.GetContacDetails;
 using cmclean.Application.Contacts.RegisterContact;
@@ -84,6 +85,7 @@ public class ContactsController : ControllerBase
     [HttpDelete]
     public async Task<IActionResult> DeleteUser(Guid guid)
     {
-        return Ok();
+        var GetDetails = await _mediator.Send(new DeleteContactCommand(guid));
+        return Ok(GetDetails);
     }
 }
