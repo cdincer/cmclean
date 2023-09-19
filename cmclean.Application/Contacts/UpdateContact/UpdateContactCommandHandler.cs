@@ -24,36 +24,33 @@ namespace cmclean.Application.Contacts.RegisterContact
 
             if (updatecontactresult != null && request.email == updatecontactresult.FirstOrDefault().email)
             {
-                var contupdate = updatecontactresult.FirstOrDefault();
-                contupdate.firstname = request.firstname;
-                contupdate.lastname = request.lastname;
-                contupdate.email = request.email;
-                contupdate.displayname = request.displayname;
-                contupdate.birthdate = request.birthdate;
-                contupdate.phonenumber = request.phonenumber;
-                contupdate.salutation = request.salutation;
+                UpdateContact(request, updatecontactresult);
                 await _repo.Save();
                 return new ContactDto { id = request.id };
-
             }
             else if (updatecontactresult.Count > 0 && request.email != updatecontactresult.FirstOrDefault().email)
                 if (await check.IsUnique(request.email) == 0)
                 {
-                    var contupdate = updatecontactresult.FirstOrDefault();
-                    contupdate.firstname = request.firstname;
-                    contupdate.lastname = request.lastname;
-                    contupdate.email = request.email;
-                    contupdate.displayname = request.displayname;
-                    contupdate.birthdate = request.birthdate;
-                    contupdate.phonenumber = request.phonenumber;
-                    contupdate.salutation = request.salutation;
+                    UpdateContact(request, updatecontactresult);
                     await _repo.Save();
                     return new ContactDto { id = request.id };
-
                 }
 
             return new ContactDto { message = "Creation failed" }; ;
 
+        }
+
+        private static void UpdateContact(UpdateContactCommand request, List<Contact>? updatecontactresult)
+        {
+            var contupdate = updatecontactresult.FirstOrDefault();
+            contupdate.ChangeContact(request.salutation, request.firstname, request.lastname);
+            contupdate.firstname = request.firstname;
+            contupdate.lastname = request.lastname;
+            contupdate.email = request.email;
+            contupdate.displayname = request.displayname;
+            contupdate.birthdate = request.birthdate;
+            contupdate.phonenumber = request.phonenumber;
+            contupdate.salutation = request.salutation;
         }
     }
 }

@@ -122,5 +122,11 @@ namespace cmclean.Domain.Contacts
             _birthdate = birthdate;
         }
 
+        public void ChangeContact(string salutation, string firstname, string lastname)
+        {
+            CheckRule(new PropertyMinLength(salutation));
+            CheckRule(new PropertyMinLength(firstname));
+            CheckRule(new PropertyMinLength(lastname));
+        }
     }
 }
