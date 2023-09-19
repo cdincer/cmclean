@@ -51,8 +51,8 @@ public class ContactsController : ControllerBase
         return Ok(contact);
     }
 
-    [HttpGet("GetUser/{guid}")]
-    public async Task<IActionResult> GetUser(Guid guid)
+    [HttpGet("GetContact/{guid}")]
+    public async Task<IActionResult> GetContact(Guid guid)
     {
         var GetDetails = await _mediator.Send(new GetContactDetailsQuery(guid));
         return Ok(GetDetails);
@@ -86,6 +86,6 @@ public class ContactsController : ControllerBase
     public async Task<IActionResult> DeleteUser(Guid guid)
     {
         var GetDetails = await _mediator.Send(new DeleteContactCommand(guid));
-        return Ok(GetDetails);
+        return Ok(GetDetails.message);
     }
 }

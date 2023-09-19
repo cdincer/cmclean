@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "cmclean.API"
+		},
+		{
+			"path": "cmclean.Application"
+		},
+		{
+			"path": "cmclean.Domain"
+		},
+		{
+			"path": "cmclean.Infrastructure"
+		}
+	],
+	"settings": {}
+}

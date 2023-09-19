@@ -6,7 +6,6 @@ namespace cmclean.Domain.Contacts
     //Work In Progess will be used in future classes
     public class Contact : Entity
     {
-        private readonly DateTime NullCheck = DateTime.Parse("0001-01-01T00:00:00");
         private readonly int UserBirthDateCheck = 14;
         #region Field Area
         public Guid id { get; set; }
