@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace cmclean.API.Contacts
+namespace cmclean.Application.Contacts.RegisterContact
 {
-    public class ContactRequest
+    public class RegisterContactCommandRequest
     {
         public string salutation { get; set; }
         public string firstname { get; set; }

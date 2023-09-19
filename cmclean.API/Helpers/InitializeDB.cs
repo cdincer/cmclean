@@ -29,7 +29,7 @@ namespace cmclean.API.Helpers
                 {
                     Connection = connection
                 };
-
+                #region Table Creation
                 command.CommandText = @"DROP TABLE IF EXISTS ""Contacts"" ";
                 command.ExecuteNonQuery();
 
@@ -38,16 +38,42 @@ namespace cmclean.API.Helpers
                                                                 Firstname VARCHAR(24) NOT NULL,
                                                                 Lastname VARCHAR(24) NOT NULL,
                                                                 Displayname VARCHAR(50),
-                                                                Birthdate timestamptz,                                                    
-                                                                CreationTimestamp timestamptz,
-                                                                LastChangeTimestamp timestamptz,
+                                                                Birthdate timestamp,                                                    
+                                                                CreationTimestamp timestamp DEFAULT NOW(),
+                                                                LastChangeTimestamp timestamp DEFAULT NOW(),
                                                                 NotifyHasBirthdaySoon boolean,
                                                                 Email VARCHAR(50) NOT NULL,
                                                                 Phonenumber VARCHAR(24),
                                                                 PRIMARY KEY (Id))";
                 command.ExecuteNonQuery();
                 Console.WriteLine("Table creation is succesful");
-
+                #endregion
+                #region Triggers
+                //Time adjusted in 2 triggers for my time zone.
+                command.CommandText = @"CREATE OR REPLACE FUNCTION change_creationtimestamp() RETURNS trigger AS $change_creationtimestamp$
+                BEGIN
+                    NEW.creationtimestamp := NOW() + interval '3 hours';
+                    NEW.lastchangetimestamp := NOW() + interval '3 hours';
+                    RETURN NEW;
+                END;
+                $change_creationtimestamp$ LANGUAGE plpgsql;";
+                command.ExecuteNonQuery();
+                command.CommandText = @"CREATE OR REPLACE TRIGGER change_creationtimestamp BEFORE INSERT ON ""Contacts""
+                FOR EACH ROW EXECUTE FUNCTION change_creationtimestamp();";
+                command.ExecuteNonQuery();
+                command.CommandText = @"CREATE OR REPLACE FUNCTION change_lastchangetimestamp() RETURNS trigger AS $change_lastchangetimestamp$
+                 BEGIN
+                -- Remember who changed the payroll when
+                NEW.lastchangetimestamp := NOW() + interval '3 hours';
+                RETURN NEW;
+                END;
+                $change_lastchangetimestamp$ LANGUAGE plpgsql; ";
+                command.ExecuteNonQuery();
+                command.CommandText = @"CREATE OR REPLACE TRIGGER change_lastchangetimestamp BEFORE UPDATE ON ""Contacts""
+                                        FOR EACH ROW EXECUTE FUNCTION change_lastchangetimestamp();";
+                command.ExecuteNonQuery();
+                Console.WriteLine("Trigger creation succesful");
+                #endregion
                 Guid TrialGuid = Guid.NewGuid();
                 command.CommandText =
                 @"INSERT INTO ""Contacts"""

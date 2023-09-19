@@ -12,11 +12,11 @@ namespace cmclean.Application.Contacts.DomainServices
             _repo = repo;
         }
 
-        public async Task<bool> IsUnique(string contactemail)
+        public async Task<int> IsUnique(string contactemail)
         {
             var uniquechecklist = await _repo.ContactRepository.FindByCondition(c => c.email == contactemail);
-            bool uniquecheck = uniquechecklist.Count == 0;
-            return uniquecheck;
+
+            return uniquechecklist.Count;
         }
     }
 }

@@ -101,7 +101,6 @@ namespace cmclean.Domain.Contacts
                 salutation, firstname,
                 lastname, email, displayname,
                 phonenumber, birthdate
-                , DateTime.Now.ToUniversalTime(), DateTime.Now.ToUniversalTime()
             );
         }
 
@@ -111,7 +110,6 @@ namespace cmclean.Domain.Contacts
         string lastname, string email,
         string displayname,
         string? phonenumber, DateTime? birthdate
-        , DateTime creationtimestamp, DateTime lastchangetimestamp
         )
         {
             id = Guid.NewGuid();
@@ -122,8 +120,6 @@ namespace cmclean.Domain.Contacts
             _displayname = string.IsNullOrWhiteSpace(displayname) ? salutation + " " + firstname + " " + lastname : displayname;
             _phonenumber = phonenumber;
             _birthdate = birthdate;
-            _creationtimestamp = creationtimestamp;
-            _lastchangetimestamp = lastchangetimestamp;
         }
 
     }

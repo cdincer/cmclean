@@ -24,14 +24,14 @@ namespace cmclean.Application.Contacts.RegisterContact
 
             );
             ContactUniquenessChecker check = new(_repo);
-            if (await check.IsUnique(request.email))
+            if (await check.IsUnique(request.email) == 0)
             {
                 await _repo.ContactRepository.Create(customer);
                 await _repo.Save();
-                return new ContactDto { Id = customer.id };
+                return new ContactDto { id = customer.id };
             }
 
-            return null;
+            return new ContactDto { message = "Creation failed" }; ;
         }
     }
 }

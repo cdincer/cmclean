@@ -1,4 +1,3 @@
-using cmclean.API.Contacts;
 using cmclean.Application.Contacts.GetAllContactDetails;
 using cmclean.Application.Contacts.GetContacDetails;
 using cmclean.Application.Contacts.RegisterContact;
@@ -23,7 +22,7 @@ public class ContactsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(ContactRequest ContactDto)
+    public async Task<IActionResult> Post(RegisterContactCommandRequest ContactDto)
     {
         var contact = await _mediator.Send(
             new RegisterContactCommand(
@@ -33,13 +32,13 @@ public class ContactsController : ControllerBase
                 ContactDto.phonenumber
             ));
 
-        if (contact != null)
+        if (contact != null && contact.id != null)
         {
-            return Ok(contact.Id);
+            return Ok(contact.id);
         }
         else
         {
-            return BadRequest("Please enter a unique customer email");
+            return BadRequest(contact.message);
         }
     }
 
@@ -71,13 +70,14 @@ public class ContactsController : ControllerBase
                   ));
 
 
-        if (contact != null)
+        if (contact != null && !string.IsNullOrWhiteSpace(contact.message))
         {
-            return Ok(contact.Id);
+            return BadRequest(contact.message);
+
         }
         else
         {
-            return BadRequest("Please enter a unique customer email");
+            return Ok(contact.id);
         }
     }
 

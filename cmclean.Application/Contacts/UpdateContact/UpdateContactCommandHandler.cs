@@ -19,25 +19,41 @@ namespace cmclean.Application.Contacts.RegisterContact
         public async Task<ContactDto> Handle(UpdateContactCommand request, CancellationToken cancellationToken)
         {
 
-            // ContactUniquenessChecker check = new(_repo);
-            // if (await check.IsUnique(request.email))
-            // {
+            ContactUniquenessChecker check = new(_repo);
+            var updatecontactresult = await _repo.ContactRepository.FindByCondition(c => c.id == request.id);
 
-            // }
-            Guid tolookfor = request.id;
-            var updatecontactresult = await _repo.ContactRepository.FindByCondition(c => c.email == request.email);
-            var contupdate = updatecontactresult.FirstOrDefault();
-            contupdate.firstname = request.firstname;
-            contupdate.lastname = request.lastname;
-            contupdate.email = request.email;
-            contupdate.displayname = request.displayname;
-            contupdate.birthdate = request.birthdate;
-            contupdate.phonenumber = request.phonenumber;
-            contupdate.salutation = request.salutation;
+            if (updatecontactresult != null && request.email == updatecontactresult.FirstOrDefault().email)
+            {
+                var contupdate = updatecontactresult.FirstOrDefault();
+                contupdate.firstname = request.firstname;
+                contupdate.lastname = request.lastname;
+                contupdate.email = request.email;
+                contupdate.displayname = request.displayname;
+                contupdate.birthdate = request.birthdate;
+                contupdate.phonenumber = request.phonenumber;
+                contupdate.salutation = request.salutation;
+                await _repo.Save();
+                return new ContactDto { id = request.id };
 
-            await _repo.Save();
+            }
+            else if (updatecontactresult.Count > 0 && request.email != updatecontactresult.FirstOrDefault().email)
+                if (await check.IsUnique(request.email) == 0)
+                {
+                    var contupdate = updatecontactresult.FirstOrDefault();
+                    contupdate.firstname = request.firstname;
+                    contupdate.lastname = request.lastname;
+                    contupdate.email = request.email;
+                    contupdate.displayname = request.displayname;
+                    contupdate.birthdate = request.birthdate;
+                    contupdate.phonenumber = request.phonenumber;
+                    contupdate.salutation = request.salutation;
+                    await _repo.Save();
+                    return new ContactDto { id = request.id };
 
-            return null;
+                }
+
+            return new ContactDto { message = "Creation failed" }; ;
+
         }
     }
 }
