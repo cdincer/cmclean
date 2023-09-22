@@ -22,9 +22,9 @@ namespace cmclean.Application.Contacts.RegisterContact
             this.salutation = salutation;
             this.firstname = firstname;
             this.lastname = lastname;
+            this.email = email;
             this.displayname = displayname;
             this.birthdate = birthdate;
-            this.email = email;
             this.phonenumber = phonenumber;
         }
 

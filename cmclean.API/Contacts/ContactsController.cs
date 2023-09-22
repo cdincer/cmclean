@@ -23,7 +23,7 @@ public class ContactsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(RegisterContactCommandRequest ContactDto)
+    public async Task<IActionResult> RegisterContact(RegisterContactCommandRequest ContactDto)
     {
         var contact = await _mediator.Send(
             new RegisterContactCommand(
@@ -44,7 +44,7 @@ public class ContactsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllUser()
+    public async Task<IActionResult> GetAllContact()
     {
         var contact = await _mediator.Send(
           new GetAllContactDetailsQuery());
@@ -59,7 +59,7 @@ public class ContactsController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateUser(UpdateContactRequest updatecontactdto)
+    public async Task<IActionResult> UpdateContact(UpdateContactRequest updatecontactdto)
     {
         var contact = await _mediator.Send(
                   new UpdateContactCommand(
@@ -83,7 +83,7 @@ public class ContactsController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<IActionResult> DeleteUser(Guid guid)
+    public async Task<IActionResult> DeleteContact(Guid guid)
     {
         var GetDetails = await _mediator.Send(new DeleteContactCommand(guid));
         return Ok(GetDetails.message);
