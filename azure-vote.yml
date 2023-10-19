@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cmcleanapi-deployment
+spec:
+  selector:
+    matchLabels:
+      app: cmcleanapi
+  template:
+    metadata:
+      labels:
+        app: cmcleanapi
+    spec:
+      containers:
+      - name: cmcleanapi
+        image: yourregistry.azurecr.io/cmcleanapi:102
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "150m"
+        ports:
+        - containerPort: 5218
+      imagePullSecrets:
+        - name: candockersecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cmcleanapi-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: cmcleanapi
+  ports:
+  - port: 80
+    targetPort: 5218
