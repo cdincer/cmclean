@@ -35,7 +35,7 @@ public class ContactsController : ControllerBase
 
         if (contact != null && contact.id != null)
         {
-            return Ok(contact.id);
+            return Created(contact.id.ToString(),null);
         }
         else
         {
