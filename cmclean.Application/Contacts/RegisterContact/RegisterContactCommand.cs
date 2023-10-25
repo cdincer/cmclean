@@ -11,21 +11,15 @@ namespace cmclean.Application.Contacts.RegisterContact
         public DateTime? birthdate { get; set; }
         public string email { get; set; }//Must be unique
         public string? phonenumber { get; set; }
-        public RegisterContactCommand
-        (
-        string salutation, string firstname,
-        string lastname, string email,
-        string displayname, DateTime? birthdate,
-        string? phonenumber
-        )
+        public RegisterContactCommand (RegisterContactCommandRequest request )
         {
-            this.salutation = salutation;
-            this.firstname = firstname;
-            this.lastname = lastname;
-            this.email = email;
-            this.displayname = displayname;
-            this.birthdate = birthdate;
-            this.phonenumber = phonenumber;
+            this.salutation = request.salutation;
+            this.firstname = request.firstname;
+            this.lastname = request.lastname;
+            this.email = request.email;
+            this.displayname = request.displayname;
+            this.birthdate = request.birthdate;
+            this.phonenumber = request.phonenumber;
         }
 
     }

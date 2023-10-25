@@ -25,29 +25,14 @@ public class ContactsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> RegisterContact(RegisterContactCommandRequest ContactDto)
     {
-        var contact = await _mediator.Send(
-            new RegisterContactCommand(
-                ContactDto.salutation, ContactDto.firstname,
-                ContactDto.lastname, ContactDto.email,
-                ContactDto.displayname, ContactDto.birthdate,
-                ContactDto.phonenumber
-            ));
-
-        if (contact != null && contact.id != null)
-        {
-            return Created(contact.id.ToString(),null);
-        }
-        else
-        {
-            return BadRequest(contact.message);
-        }
+        var contact = await _mediator.Send(new RegisterContactCommand(ContactDto));
+         return Created(contact.id.ToString(),null);  
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAllContact()
     {
-        var contact = await _mediator.Send(
-          new GetAllContactDetailsQuery());
+        var contact = await _mediator.Send(new GetAllContactDetailsQuery());
         return Ok(contact);
     }
 
@@ -61,25 +46,10 @@ public class ContactsController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> UpdateContact(UpdateContactRequest updatecontactdto)
     {
-        var contact = await _mediator.Send(
-                  new UpdateContactCommand(
-                      updatecontactdto.id,
-                      updatecontactdto.salutation, updatecontactdto.firstname,
-                      updatecontactdto.lastname, updatecontactdto.email,
-                      updatecontactdto.displayname, updatecontactdto.birthdate,
-                      updatecontactdto.phonenumber
-                  ));
+      var contact = await _mediator.Send(new UpdateContactCommand(updatecontactdto));
 
 
-        if (contact != null && !string.IsNullOrWhiteSpace(contact.message))
-        {
-            return BadRequest(contact.message);
-
-        }
-        else
-        {
-            return Ok(contact.id);
-        }
+      return Ok(contact.id);
     }
 
     [HttpDelete]

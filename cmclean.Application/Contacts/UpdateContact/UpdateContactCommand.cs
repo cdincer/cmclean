@@ -1,4 +1,5 @@
 using cmclean.Application.Configuration.Commands;
+using cmclean.Contacts.UpdateContact;
 
 namespace cmclean.Application.Contacts.UpdateContact
 {
@@ -13,22 +14,16 @@ namespace cmclean.Application.Contacts.UpdateContact
         public string email { get; set; }//Must be unique
         public string? phonenumber { get; set; }
 
-        public UpdateContactCommand
-        (Guid id,
-        string salutation, string firstname,
-        string lastname, string email,
-        string displayname, DateTime? birthdate,
-        string? phonenumber
-        )
+        public UpdateContactCommand(UpdateContactRequest UpdateContactDto)
         {
-            this.id = id;
-            this.salutation = salutation;
-            this.firstname = firstname;
-            this.lastname = lastname;
-            this.email = email;
-            this.displayname = displayname;
-            this.birthdate = birthdate;
-            this.phonenumber = phonenumber;
+            this.id = UpdateContactDto.id;
+            this.salutation = UpdateContactDto.salutation;
+            this.firstname = UpdateContactDto.firstname;
+            this.lastname = UpdateContactDto.lastname;
+            this.email = UpdateContactDto.email;
+            this.displayname = UpdateContactDto.displayname;
+            this.birthdate = UpdateContactDto.birthdate;
+            this.phonenumber = UpdateContactDto.phonenumber;
         }
     }
 }
