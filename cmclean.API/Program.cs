@@ -1,5 +1,6 @@
 using System.Reflection;
 using cmclean.API.Helpers;
+using cmclean.API.Middleware;
 using cmclean.Application.Contacts;
 using cmclean.Application.Contacts.DeleteContact;
 using cmclean.Application.Contacts.GetAllContactDetails;
@@ -43,6 +44,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseLoggingMiddleware();
 
 app.UseAuthorization();
 
