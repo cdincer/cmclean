@@ -2,7 +2,7 @@
 
 namespace cmclean.Application.Features.ContactFeature.Queries.GetAllContacts;
 
-public class GetAllAuthorsQuery : IRequest<List<GetAllContactsResponse>>
+public class GetAllContactsQuery : IRequest<List<GetAllContactsResponse>>
 {
 
 }

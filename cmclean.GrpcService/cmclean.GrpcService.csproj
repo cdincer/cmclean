@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Protos\contact.proto" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<Protobuf Include="Protos\contact.proto" GrpcServices="Server" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Consul" Version="1.6.10.9" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+    <ProjectReference Include="..\cmclean.Persistence\cmclean.Persistence.csproj" />
+    <ProjectReference Include="..\Common.Logging\Common.Logging.csproj" />
+    <ProjectReference Include="..\Common.OpenTelemetry\Common.OpenTelemetry.csproj" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<Content Include="..\..\..\.dockerignore">
+			<Link>.dockerignore</Link>
+		</Content>
+		<Content Update="appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+</Project>
