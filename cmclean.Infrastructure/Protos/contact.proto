@@ -1,0 +1,60 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "cmclean.Infrastructure.Protos";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+service ContactProtoService {
+  rpc GetContacts(google.protobuf.Empty) returns (GetAllContactsProtoResponse);
+  rpc GetContactById(GetContactByIdProtoRequest) returns (GetContactByIdProtoResponse);
+  rpc CreateContact(CreateContactProtoRequest) returns (CreateContactProtoResponse);
+  rpc UpdateContact(UpdateContactProtoRequest) returns (UpdateContactProtoResponse);
+  rpc DeleteContact(DeleteContactProtoRequest) returns (DeleteContactProtoResponse);
+}
+
+message ContactProtoModel {
+  string id = 1;
+  string name = 2;
+  google.protobuf.Timestamp dateOfBirth = 3;
+}
+message GetAllContactsProtoResponse
+{
+  repeated ContactProtoModel Contacts = 1;
+};
+
+message GetContactByIdProtoRequest{
+  string ContactId =1;
+}
+message GetContactByIdProtoResponse
+{
+  ContactProtoModel Contact = 1;
+};
+
+message CreateContactProtoRequest {
+  string firstName = 1;
+  string lastName = 2;
+  google.protobuf.Timestamp dateOfBirth = 3;
+};
+
+message CreateContactProtoResponse {
+  ContactProtoModel Contact = 1;
+};
+
+message UpdateContactProtoRequest {
+  string id = 1;
+  string firstName = 2;
+  string lastName = 3;
+  google.protobuf.Timestamp dateOfBirth = 4;
+};
+message UpdateContactProtoResponse {
+  bool status = 1;
+};
+
+message DeleteContactProtoRequest {
+  string id = 1;
+}
+
+message DeleteContactProtoResponse {
+  bool status = 1;
+}
+
