@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "cmclean.LogConsumer": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
