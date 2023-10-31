@@ -11,19 +11,19 @@ services:
     image: cdincer/cmclean-minimal-api
     build:
       context: ../
-      dockerfile: src/cmclean.MinimalApi/Dockerfile
+      dockerfile: cmclean.MinimalApi/Dockerfile
 
   cmclean-grpc-service:
     image: cdincer/cmclean-grpc-service
     build:
       context: ../
-      dockerfile: src/cmclean.GrpcService/Dockerfile
+      dockerfile: cmclean.GrpcService/Dockerfile
 
   cmclean-log-consumer:
     image: cdincer/cmclean-log-consumer
     build:
       context: ../
-      dockerfile: src/cmclean.LogConsumer/Dockerfile
+      dockerfile: cmclean.LogConsumer/Dockerfile
 
   elasticsearch:
     image: cdincer/elasticsearch

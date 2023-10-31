@@ -32,7 +32,17 @@ public static class InfrastructureRegistration
                 };
                 grpcServiceAddress = uriBuilder.Uri.ToString().TrimEnd('/');
             }
-
+            if (registeredServices != null && registeredServices.Count > 0)
+            {
+                Console.WriteLine("Count of registered services in here " + registeredServices.Count);
+            }
+            else
+            {
+                Console.WriteLine("Registered services are empty");
+                Console.WriteLine(grpcServiceAddress + "Address Just Above Line36 findme");
+                Console.WriteLine(serviceName + "Port Just Above Line36 findme");
+            }
+   
             o.Address = new Uri(grpcServiceAddress);
 
         });

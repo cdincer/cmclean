@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -32,13 +32,16 @@
 
 
 	<ItemGroup>
-		<Content Include="..\..\..\.dockerignore">
-			<Link>.dockerignore</Link>
-		</Content>
 		<ProjectReference Include="..\cmclean.Infrastructure\cmclean.Infrastructure.csproj" />
 		<ProjectReference Include="..\cmclean.Persistence\cmclean.Persistence.csproj" />
 		<ProjectReference Include="..\Common.Logging\Common.Logging.csproj" />
 		<ProjectReference Include="..\Common.OpenTelemetry\Common.OpenTelemetry.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="..\..\..\.dockerignore">
+			<Link>.dockerignore</Link>
+		</Content>
 		<Content Update="appsettings.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>

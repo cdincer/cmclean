@@ -7,9 +7,6 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Protos\contact.proto" />
-  </ItemGroup>
 
 	<ItemGroup>
 		<Protobuf Include="Protos\contact.proto" GrpcServices="Server" />
