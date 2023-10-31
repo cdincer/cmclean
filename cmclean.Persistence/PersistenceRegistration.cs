@@ -13,7 +13,7 @@ namespace cmclean.Persistence
             services.AddTransient<IContactReadRepository, ContactReadRepository>();
             services.AddTransient<IContactWriteRepository, ContactWriteRepository>();
 
-            services.AddDbContext<CmcleanDbContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("Default")));
+            services.AddDbContext<CmcleanDbContext>(opt => opt.UseNpgsql(configuration.GetConnectionString("Default")));
 
             return services;
         }

@@ -7,39 +7,51 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{09D1C064-737
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{0986FED9-2B66-4F40-8DEB-379350A60F6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Logging", "Common.Logging\Common.Logging.csproj", "{83C8C9AE-6094-44AB-9B99-8DF98E499754}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Logging", "Common.Logging\Common.Logging.csproj", "{83C8C9AE-6094-44AB-9B99-8DF98E499754}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.OpenTelemetry", "Common.OpenTelemetry\Common.OpenTelemetry.csproj", "{33C1BDA6-62CE-4C5D-B4C9-13503480DFD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.OpenTelemetry", "Common.OpenTelemetry\Common.OpenTelemetry.csproj", "{33C1BDA6-62CE-4C5D-B4C9-13503480DFD8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Consumers", "Consumers", "{B3D19772-8446-465E-9726-37D2E573531F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cmclean.LogConsumer", "cmclean.LogConsumer\cmclean.LogConsumer.csproj", "{6FC9C710-9F7A-4E5F-9553-ADB988BE1F87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cmclean.LogConsumer", "cmclean.LogConsumer\cmclean.LogConsumer.csproj", "{6FC9C710-9F7A-4E5F-9553-ADB988BE1F87}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{57764491-4FDB-4401-AED0-4E746A2C718C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cmclean.Application", "cmclean.Application\cmclean.Application.csproj", "{6C738F41-E171-43AB-80D4-D6914B9D3799}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cmclean.Application", "cmclean.Application\cmclean.Application.csproj", "{6C738F41-E171-43AB-80D4-D6914B9D3799}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cmclean.Domain", "cmclean.Domain\cmclean.Domain.csproj", "{7F296CA4-2216-4394-83CC-C8D80AD4D974}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cmclean.Domain", "cmclean.Domain\cmclean.Domain.csproj", "{7F296CA4-2216-4394-83CC-C8D80AD4D974}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{91FEE2D0-7CC6-4246-9FD1-F34374A536BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cmclean.Infrastructure", "cmclean.Infrastructure\cmclean.Infrastructure.csproj", "{8B232BFB-F2BD-4162-AF5C-0EFCF68329B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cmclean.Infrastructure", "cmclean.Infrastructure\cmclean.Infrastructure.csproj", "{8B232BFB-F2BD-4162-AF5C-0EFCF68329B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cmclean.Persistence", "cmclean.Persistence\cmclean.Persistence.csproj", "{FFBBBFF7-DECA-4782-9716-93E846EF9631}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cmclean.Persistence", "cmclean.Persistence\cmclean.Persistence.csproj", "{FFBBBFF7-DECA-4782-9716-93E846EF9631}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{B0537143-F2B8-42DA-8EF6-D7EF55B118EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cmclean.GrpcService", "cmclean.GrpcService\cmclean.GrpcService.csproj", "{24418620-712B-40B8-AB04-136E6A91C541}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cmclean.GrpcService", "cmclean.GrpcService\cmclean.GrpcService.csproj", "{24418620-712B-40B8-AB04-136E6A91C541}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cmclean.MinimalApi", "cmclean.MinimalApi\cmclean.MinimalApi.csproj", "{E0595009-9D11-4DE0-A7AF-D65AF4C829DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cmclean.MinimalApi", "cmclean.MinimalApi\cmclean.MinimalApi.csproj", "{E0595009-9D11-4DE0-A7AF-D65AF4C829DA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devops", "devops", "{B29AE2AE-0020-4FD9-B1A0-3F2B8C3D0768}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devops", "devops", "{9328C3A1-1090-4E14-94D9-7C859430745A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-compose", "docker-compose", "{837BBF4B-4176-4807-B0D3-17F3FD076D14}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-compose", "docker-compose", "{217EE200-DC7E-4434-ADA0-68C444CF9DE9}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose\.env = docker-compose\.env
+		docker-compose\docker-compose.override.yml = docker-compose\docker-compose.override.yml
+		docker-compose\docker-compose.yml = docker-compose\docker-compose.yml
+	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "elasticsearch", "elasticsearch", "{4C0B23BC-9266-4F74-950F-76A382A9C385}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "elasticsearch", "elasticsearch", "{13BB4D0C-57D2-4A5C-A450-6BFAE1AACE60}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "kibana", "kibana", "{61DB303F-23CE-4B36-9271-5828963D783B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "kibana", "kibana", "{8EF16A02-8911-4DE0-85F6-589F4D20266C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{35BF3659-0648-48E5-B42F-2807C2216D04}"
+	ProjectSection(SolutionItems) = preProject
+		elasticsearch.yml = elasticsearch.yml
+	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{8C7471D7-041B-427D-B30D-D7EBAF5138B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +95,10 @@ Global
 		{E0595009-9D11-4DE0-A7AF-D65AF4C829DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0595009-9D11-4DE0-A7AF-D65AF4C829DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0595009-9D11-4DE0-A7AF-D65AF4C829DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C7471D7-041B-427D-B30D-D7EBAF5138B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C7471D7-041B-427D-B30D-D7EBAF5138B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C7471D7-041B-427D-B30D-D7EBAF5138B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C7471D7-041B-427D-B30D-D7EBAF5138B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,9 +118,10 @@ Global
 		{B0537143-F2B8-42DA-8EF6-D7EF55B118EE} = {09D1C064-737D-445D-87B1-A10E2925F7AF}
 		{24418620-712B-40B8-AB04-136E6A91C541} = {B0537143-F2B8-42DA-8EF6-D7EF55B118EE}
 		{E0595009-9D11-4DE0-A7AF-D65AF4C829DA} = {B0537143-F2B8-42DA-8EF6-D7EF55B118EE}
-		{837BBF4B-4176-4807-B0D3-17F3FD076D14} = {B29AE2AE-0020-4FD9-B1A0-3F2B8C3D0768}
-		{4C0B23BC-9266-4F74-950F-76A382A9C385} = {837BBF4B-4176-4807-B0D3-17F3FD076D14}
-		{61DB303F-23CE-4B36-9271-5828963D783B} = {837BBF4B-4176-4807-B0D3-17F3FD076D14}
+		{217EE200-DC7E-4434-ADA0-68C444CF9DE9} = {9328C3A1-1090-4E14-94D9-7C859430745A}
+		{13BB4D0C-57D2-4A5C-A450-6BFAE1AACE60} = {217EE200-DC7E-4434-ADA0-68C444CF9DE9}
+		{8EF16A02-8911-4DE0-85F6-589F4D20266C} = {217EE200-DC7E-4434-ADA0-68C444CF9DE9}
+		{35BF3659-0648-48E5-B42F-2807C2216D04} = {13BB4D0C-57D2-4A5C-A450-6BFAE1AACE60}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBE1C714-F789-46DB-A728-A8041C9FBABD}

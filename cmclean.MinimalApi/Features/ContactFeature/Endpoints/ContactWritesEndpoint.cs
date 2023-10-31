@@ -20,7 +20,7 @@ namespace cmclean.MinimalApi.Features.ContactFeature.Endpoints
 
         public IEndpointRouteBuilder RegisterRoute(IEndpointRouteBuilder endpoints)
         {
-            var ContactGroup = endpoints.MapGroup("/api/Contacts").AddEndpointFilter<ApiExceptionFilter>();
+            var ContactGroup = endpoints.MapGroup("/api/contacts").AddEndpointFilter<ApiExceptionFilter>();
 
             ContactGroup.MapPost("/", CreateContact)
 

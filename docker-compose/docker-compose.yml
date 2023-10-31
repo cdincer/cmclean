@@ -1,0 +1,61 @@
+version: '3.9'
+
+services:
+  cmclean-db:
+    image: postgres
+
+  portainer:
+    image: portainer/portainer-ce
+
+  cmclean-minimal-api:
+    image: cdincer/cmclean-minimal-api
+    build:
+      context: ../
+      dockerfile: src/cmclean.MinimalApi/Dockerfile
+
+  cmclean-grpc-service:
+    image: cdincer/cmclean-grpc-service
+    build:
+      context: ../
+      dockerfile: src/cmclean.GrpcService/Dockerfile
+
+  cmclean-log-consumer:
+    image: cdincer/cmclean-log-consumer
+    build:
+      context: ../
+      dockerfile: src/cmclean.LogConsumer/Dockerfile
+
+  elasticsearch:
+    image: cdincer/elasticsearch
+    build:
+      context: elasticsearch/
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+
+  kibana:
+    image: cdincer/kibana
+    build:
+      context: kibana/
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+
+  rabbitmq:
+    image: "rabbitmq:3.11.11-management"
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+  
+  zipkin-server:
+    image: openzipkin/zipkin
+
+  consul:
+    image: hashicorp/consul
+
+networks:
+  cmcleanNetwork:
+    driver: bridge
+
+volumes:
+  portainer_data:
+  elasticsearch:
+  jaeger-data:

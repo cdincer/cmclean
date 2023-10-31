@@ -14,7 +14,7 @@ public class  Contact: BaseEntity
     public DateTime LastchangeTimestamp { get; set; }
 
 
-    public void UpdateAuthor(string firstName, string lastName, DateTime dateOfBirth)
+    public void UpdateContact(string firstName, string lastName, DateTime dateOfBirth)
     {
         FirstName = firstName;
         LastName = lastName;

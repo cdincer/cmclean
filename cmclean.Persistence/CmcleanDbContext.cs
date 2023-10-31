@@ -33,7 +33,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<CmcleanDbC
                 .Build();
             connectionString = configuration.GetConnectionString("Default");
         }
-        builder.UseSqlServer(connectionString);
+        builder.UseNpgsql(connectionString);
         return new CmcleanDbContext(builder.Options);
     }
 }

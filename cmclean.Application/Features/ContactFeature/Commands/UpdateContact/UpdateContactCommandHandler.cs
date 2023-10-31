@@ -18,11 +18,11 @@ public class UpdateContactCommandHandler : IRequestHandler<UpdateContactCommand,
 
     public async Task<UpdateContactResponse> Handle(UpdateContactCommand request, CancellationToken cancellationToken)
     {
-        var author = await _contactReadRepository.GetByIdAsync(request.ContactId);
-        if (author is null)
-            throw new NotFoundException($"Author cannot found with id: {request.ContactId}");
+        var Contact = await _contactReadRepository.GetByIdAsync(request.ContactId);
+        if (Contact is null)
+            throw new NotFoundException($"Contact cannot found with id: {request.ContactId}");
         
-        author.UpdateAuthor(request.FirstName, request.LastName, request.DateOfBirth);
+        Contact.UpdateContact(request.FirstName, request.LastName, request.DateOfBirth);
         await _contactWriteRepository.SaveChangesAsync();
         var result = new UpdateContactResponse
         {
