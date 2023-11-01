@@ -38,8 +38,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-compose", "docker-compose", "{217EE200-DC7E-4434-ADA0-68C444CF9DE9}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose\.env = docker-compose\.env
-		docker-compose\docker-compose.override.yml = docker-compose\docker-compose.override.yml
-		docker-compose\docker-compose.yml = docker-compose\docker-compose.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "elasticsearch", "elasticsearch", "{13BB4D0C-57D2-4A5C-A450-6BFAE1AACE60}"
@@ -50,6 +48,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{35BF36
 	ProjectSection(SolutionItems) = preProject
 		elasticsearch.yml = elasticsearch.yml
 	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose\docker-compose.dcproj", "{F9F0C1D6-39BD-4CE4-9274-CB7D204495C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +93,10 @@ Global
 		{E0595009-9D11-4DE0-A7AF-D65AF4C829DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0595009-9D11-4DE0-A7AF-D65AF4C829DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0595009-9D11-4DE0-A7AF-D65AF4C829DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9F0C1D6-39BD-4CE4-9274-CB7D204495C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9F0C1D6-39BD-4CE4-9274-CB7D204495C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9F0C1D6-39BD-4CE4-9274-CB7D204495C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9F0C1D6-39BD-4CE4-9274-CB7D204495C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,6 +120,7 @@ Global
 		{13BB4D0C-57D2-4A5C-A450-6BFAE1AACE60} = {217EE200-DC7E-4434-ADA0-68C444CF9DE9}
 		{8EF16A02-8911-4DE0-85F6-589F4D20266C} = {217EE200-DC7E-4434-ADA0-68C444CF9DE9}
 		{35BF3659-0648-48E5-B42F-2807C2216D04} = {13BB4D0C-57D2-4A5C-A450-6BFAE1AACE60}
+		{F9F0C1D6-39BD-4CE4-9274-CB7D204495C8} = {217EE200-DC7E-4434-ADA0-68C444CF9DE9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBE1C714-F789-46DB-A728-A8041C9FBABD}
