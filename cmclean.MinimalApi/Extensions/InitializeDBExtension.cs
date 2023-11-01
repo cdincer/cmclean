@@ -26,17 +26,10 @@ namespace cmclean.MinimalApi.Extensions
                 command.CommandText = @"DROP TABLE IF EXISTS ""Contacts"" ";
                 command.ExecuteNonQuery();
 
-                command.CommandText = @"CREATE TABLE ""Contacts""(Id uuid, 
-                                                                Salutation VARCHAR(5),
+                command.CommandText = @"CREATE TABLE ""Contacts""(Id uuid,                                                              
                                                                 Firstname VARCHAR(24) NOT NULL,
-                                                                Lastname VARCHAR(24) NOT NULL,
-                                                                Displayname VARCHAR(50),
-                                                                Birthdate timestamp,                                                    
-                                                                CreationTimestamp timestamp DEFAULT NOW(),
-                                                                LastChangeTimestamp timestamp DEFAULT NOW(),
-                                                                NotifyHasBirthdaySoon boolean,
-                                                                Email VARCHAR(50) NOT NULL,
-                                                                Phonenumber VARCHAR(24),
+                                                                Lastname VARCHAR(24) NOT NULL,                                                           
+                                                                Birthdate timestamp,                                                                                                       
                                                                 PRIMARY KEY (Id))";
                 command.ExecuteNonQuery();
                 Console.WriteLine("Table creation is succesful");

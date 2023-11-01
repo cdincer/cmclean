@@ -50,12 +50,21 @@ public class GenericReadRepository<T> : IGenericReadRepository<T> where T : Base
 
     public virtual async Task<List<T?>> GetAll(bool asNoTracking = false)
     {
-        if (asNoTracking)
+        try
         {
-            return (await dbContext.Set<T>().AsNoTracking().ToListAsync())!;
-        }
+            if (asNoTracking)
+            {
+                return (await dbContext.Set<T>().AsNoTracking().ToListAsync())!;
+            }
 
-        return (await dbContext.Set<T>().ToListAsync())!;
+            return (await dbContext.Set<T>().ToListAsync())!;
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Database connection or table creation failed" + ex.Message);
+            return new List<T>();
+        }
     }
 
     public virtual async Task<T?> GetByIdAsync(Guid id, bool asNoTracking = false, params Expression<Func<T, object?>>[] includes)

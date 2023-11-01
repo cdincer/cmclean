@@ -17,6 +17,8 @@ public class ContactProfile : Profile
         CreateMap<UpdateContactRequest, UpdateContactCommand>().ReverseMap();
         CreateMap<DeleteContactRequest, DeleteContactCommand>().ReverseMap();
         CreateMap<Contact, CreateContactResponse>().ReverseMap();
+        CreateMap<Contact, GetAllContactsResponse>().ReverseMap();
+        CreateMap<Contact, GetContactByIdResponse>().ReverseMap();
 
     }
 }

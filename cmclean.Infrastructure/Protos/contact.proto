@@ -13,10 +13,10 @@ service ContactProtoService {
 }
 
 message ContactProtoModel {
-  string id = 1;
-  string firstName = 2;
-  string lastName = 3;
-  google.protobuf.Timestamp dateOfBirth = 4;
+  string Id = 1;
+  string FirstName = 2;
+  string LastName = 3;
+  google.protobuf.Timestamp DateOfBirth = 4;
 }
 message GetAllContactsProtoResponse
 {
@@ -32,9 +32,9 @@ message GetContactByIdProtoResponse
 };
 
 message CreateContactProtoRequest {
-  string firstName = 1;
-  string lastName = 2;
-  google.protobuf.Timestamp dateOfBirth = 3;
+   string FirstName = 1;
+  string LastName = 2;
+  google.protobuf.Timestamp DateOfBirth = 3;
 };
 
 message CreateContactProtoResponse {
@@ -42,10 +42,10 @@ message CreateContactProtoResponse {
 };
 
 message UpdateContactProtoRequest {
-  string id = 1;
-  string firstName = 2;
-  string lastName = 3;
-  google.protobuf.Timestamp dateOfBirth = 4;
+  string Id = 1;
+  string FirstName = 2;
+  string LastName = 3;
+  google.protobuf.Timestamp DateOfBirth = 4;
 };
 message UpdateContactProtoResponse {
   bool status = 1;
