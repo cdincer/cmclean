@@ -114,8 +114,10 @@ services:
       - "RabbitMqConfig:ExchangeType=fanout"
       - "RabbitMqConfig:Port=5672"
     depends_on:
-      - rabbitmq
-      - elasticsearch
+      elasticsearch:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
     restart: always
     networks:
       - cmcleanNetwork
@@ -158,6 +160,11 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
+    healthcheck:
+        test: rabbitmq-diagnostics -q ping
+        interval: 30s
+        timeout: 5s
+        retries: 5
     networks:
       - cmcleanNetwork
   jaeger:
