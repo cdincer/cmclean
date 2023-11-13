@@ -23,7 +23,7 @@ public class CreateContactCommandHandler : IRequestHandler<CreateContactCommand,
             throw new ArgumentException("Contact cannot be null");
         }
         var Contact = _mapper.Map<Contact>(request);
-
+        Contact.CreateContact();
         await _ContactWriteRepository.AddAsync(Contact);
         await _ContactWriteRepository.SaveChangesAsync();
 

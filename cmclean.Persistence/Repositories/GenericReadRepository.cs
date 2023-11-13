@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using cmclean.Application.Interfaces.Repositories;
 using cmclean.Domain.Entities;
+using Microsoft.Extensions.Configuration;
 
 namespace cmclean.Persistence.Repositories;
 
@@ -9,9 +10,11 @@ public class GenericReadRepository<T> : IGenericReadRepository<T> where T : Base
 {
     private readonly CmcleanDbContext dbContext;
 
-    public GenericReadRepository(CmcleanDbContext dbContext)
+    private readonly IConfiguration _configuration;
+    public GenericReadRepository(CmcleanDbContext dbContext, IConfiguration configuration)
     {
         this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 
     public virtual Task<List<T?>> Get(bool asNoTracking = false, Expression<Func<T?, bool>>? filter = null, params Expression<Func<T, object?>>[] includes)
