@@ -47,6 +47,6 @@ public static class WebApplicationExtensions
     {
         using var scope = app.Services.CreateScope();
         var dataContext = scope.ServiceProvider.GetRequiredService<CmcleanDbContext>();
-        dataContext.Database.Migrate();
+        //dataContext.Database.Migrate();
     }
 }

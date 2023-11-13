@@ -17,7 +17,7 @@ public static class WebApplicationExtensions
 
 
         //Db Migration
-        MigrateDatabase(app);
+        //MigrateDatabase(app);
         app.RegisterWithConsul();
         return app;
     }

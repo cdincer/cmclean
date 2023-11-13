@@ -3,16 +3,31 @@
 namespace cmclean.Domain.Model;
 public class  Contact: BaseEntity
 {
-    //public string? Salutation { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public string? DisplayName => DisplayName ?? $"{FirstName} {LastName}";
+    public string? DisplayName { get; set; }
+    //public string? DisplayName
+    //{
+    //    get { return DisplayName; }
+    //    set {
+    //        if (value == null)
+    //        {
+    //            DisplayName = $"{FirstName} {LastName}";
+    //        }
+    //        else
+    //        {
+    //            DisplayName = value;
+    //        }
+    //    }
+    //}
+    //public Contact()
+    //{
+    //    Id = Guid.NewGuid();
+    //}
+   
     public DateTime BirthDate { get; set; }
-    //public string Email { get; set; }
-    //public string? PhoneNumber { get; set; }
-    //public DateTime CreationTimestamp { get; set; }
-    //public DateTime LastchangeTimestamp { get; set; }
 
+  
 
     public void UpdateContact(string firstName, string lastName, DateTime dateOfBirth)
     {

@@ -16,7 +16,8 @@ message ContactProtoModel {
   string Id = 1;
   string FirstName = 2;
   string LastName = 3;
-  google.protobuf.Timestamp DateOfBirth = 4;
+  string DisplayName = 4;
+  google.protobuf.Timestamp DateOfBirth = 5;
 }
 message GetAllContactsProtoResponse
 {
@@ -32,9 +33,10 @@ message GetContactByIdProtoResponse
 };
 
 message CreateContactProtoRequest {
-   string FirstName = 1;
+  string FirstName = 1;
   string LastName = 2;
-  google.protobuf.Timestamp DateOfBirth = 3;
+  string DisplayName = 3;
+  google.protobuf.Timestamp DateOfBirth = 4;
 };
 
 message CreateContactProtoResponse {

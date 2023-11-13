@@ -71,7 +71,7 @@ public class ContactService : ContactProtoService.ContactProtoServiceBase
         try
         {
             var command = new CreateContactCommand(request.FirstName, request.LastName,
-                request.DateOfBirth.ToDateTime());
+                request.DateOfBirth.ToDateTime(), request.DisplayName);
             var result = await _mediator.Send(command);
             var Contact = _mapper.Map<ContactProtoModel>(result);
             return new CreateContactProtoResponse { Contact = Contact };
