@@ -1,0 +1,207 @@
+version: '3.9'
+
+services:
+  cmclean-db:
+    container_name: cmclean-db
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin1234
+      - POSTGRES_DB=Contactmanagerdb
+    restart: always
+    ports:
+      - "5432:5432"
+    networks:
+      - cmcleanNetwork
+
+  portainer:
+    container_name: portainer
+    restart: always
+    ports:
+      - "8080:8000"
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - cmcleanNetwork
+
+  cmclean-minimal-api:
+    container_name: cmclean-minimal-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:Default=Server=cmclean-db;Port=5432;Database=Contactmanagerdb;User Id=admin;Password=admin1234;"
+      - "AppSettings:ApplicationName=cmclean.MinimalApi"
+      - "AppSettings:Instance=2"
+      - "GrpcSettings:ContactGrpcServiceUrl=http://cmclean-grpc-service"
+      - "GrpcSettings:ContactGrpcServiceConsulName=cmcleanGrpcService"
+      - "RabbitMqConfig:VHostname=/"
+      - "RabbitMqConfig:Hostname=rabbitmq"
+      - "RabbitMqConfig:Username=rabbitmq"
+      - "RabbitMqConfig:Password=rabbitmq"
+      - "RabbitMqConfig:Exchange=LoggerQueue"
+      - "RabbitMqConfig:ExchangeType=fanout"
+      - "RabbitMqConfig:Port=5672"
+      - "JaegerSettings:Host=http://jaeger"
+      - "JaegerSettings:Port=4317"
+      - "JaegerSettings:SourceName=Api"
+      - "JaegerSettings:ServiceName=cmclean.MinimalApi"
+      - "ExporterSettings:UseExporter=jaeger"
+      - "Zipkin:Endpoint=http://zipkin-server:9411/api/v2/spans"
+      - "ConsulConfig:Address=http://consul:8500"
+      - "ConsulConfig:ServiceAddress=http://cmclean-minimal-api"
+      - "ConsulConfig:ServiceName=cmcleanMinimalApi"
+      - "ConsulConfig:ServiceId=cmcleanMinimalApi"
+    depends_on:
+      - cmclean-db
+      - cmclean-grpc-service
+      - rabbitmq
+      - jaeger
+      - zipkin-server
+      - consul
+    ports:
+      - "8001:80"
+    restart: always
+    networks:
+      - cmcleanNetwork
+
+  cmclean-grpc-service:
+    container_name: cmclean-grpc-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:Default=Server=cmclean-db;Port=5432;Database=Contactmanagerdb;User Id=admin;Password=admin1234;"
+      - "AppSettings:ApplicationName=cmclean.GrpcService"
+      - "AppSettings:Instance=2"
+      - "RabbitMqConfig:VHostname=/"
+      - "RabbitMqConfig:Hostname=rabbitmq"
+      - "RabbitMqConfig:Username=rabbitmq"
+      - "RabbitMqConfig:Password=rabbitmq"
+      - "RabbitMqConfig:Exchange=LoggerQueue"
+      - "RabbitMqConfig:ExchangeType=fanout"
+      - "RabbitMqConfig:Port=5672"
+      - "JaegerSettings:Host=http://jaeger"
+      - "JaegerSettings:Port=4317"
+      - "JaegerSettings:SourceName=Grpc"
+      - "JaegerSettings:ServiceName=cmclean.GrpcService"
+      - "ExporterSettings:UseExporter=jaeger"
+      - "Zipkin:Endpoint=http://zipkin-server:9411/api/v2/spans"
+      - "ConsulConfig:Address=http://consul:8500"
+      - "ConsulConfig:ServiceAddress=http://cmclean-grpc-service"
+      - "ConsulConfig:ServiceName=cmcleanGrpcService"
+      - "ConsulConfig:ServiceId=cmcleanGrpcService"
+    depends_on:
+      - cmclean-db
+      - rabbitmq
+      - jaeger
+      - zipkin-server
+      - consul
+    ports:
+      - "8002:80"
+    restart: always
+    networks:
+      - cmcleanNetwork
+
+  cmclean-log-consumer:
+    container_name: cmclean-log-consumer
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ElasticSearchConfig:ConnectionString=http://elasticsearch:9200"
+      - "ElasticSearchConfig:PingTimeMilliSeconds=10000"
+      - "RabbitMqConfig:Hostname=rabbitmq"
+      - "RabbitMqConfig:VHostname=/"
+      - "RabbitMqConfig:Username=rabbitmq"
+      - "RabbitMqConfig:Password=rabbitmq"
+      - "RabbitMqConfig:Exchange=LoggerQueue"
+      - "RabbitMqConfig:ExchangeType=fanout"
+      - "RabbitMqConfig:Port=5672"
+    depends_on:
+      elasticsearch:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+    restart: always
+    networks:
+      - cmcleanNetwork
+
+  elasticsearch:
+    container_name: elasticsearch
+    restart: always
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z
+      - elasticsearch:/usr/share/elasticsearch/data:Z
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      node.name: elasticsearch
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      discovery.type: single-node
+    networks:
+      - cmcleanNetwork
+    
+  kibana:
+    container_name: kibana
+    restart: always
+    volumes:
+      - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z
+    ports:
+      - 5601:5601
+    networks:
+      - cmcleanNetwork
+    depends_on:
+      - elasticsearch
+
+  rabbitmq:
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    healthcheck:
+        test: rabbitmq-diagnostics -q ping
+        interval: 30s
+        timeout: 5s
+        retries: 5
+    networks:
+      - cmcleanNetwork
+  jaeger:
+    container_name: jaeger
+    environment:
+      - SPAN_STORAGE_TYPE=badger
+      - BADGER_EPHEMERAL=true
+      - BADGER_DIRECTORY_VALUE=/badger/data
+      - BADGER_DIRECTORY_KEY=/badger/key
+    ports:
+      - 4317:4317
+      - 4318:4318
+      - 5775:5775/udp
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 5778:5778
+      - 16686:16686
+      - 14268:14268
+      - 14250:14250
+      - 14269:14269
+      #- 9411:9411
+    volumes:
+      - jaeger-data:/badger
+    networks:
+      - cmcleanNetwork
+  zipkin-server:
+    container_name: zipkin-server
+    ports:
+      - '9411:9411'
+    networks:
+      - cmcleanNetwork
+
+  consul:
+    container_name: consul
+    ports:
+      - 8500:8500
+      - 8600:8600/tcp
+      - 8600:8600/udp
+    networks:
+      - cmcleanNetwork

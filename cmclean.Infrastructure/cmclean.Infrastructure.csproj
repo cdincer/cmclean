@@ -5,10 +5,21 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-<ItemGroup>
-    <ProjectReference Include="..\cmclean.Domain\cmclean.Domain.csproj" />
+
+  <ItemGroup>
+    <Folder Include="Mapper\" />
   </ItemGroup>
-<ItemGroup>
-  <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
-</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Consul" Version="1.6.10.9" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<Protobuf Include="Protos\contact.proto" GrpcServices="Client" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\cmclean.Application\cmclean.Application.csproj" />
+  </ItemGroup>
+
 </Project>
