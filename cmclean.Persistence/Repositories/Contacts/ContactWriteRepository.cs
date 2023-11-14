@@ -6,20 +6,20 @@ using Npgsql;
 
 namespace cmclean.Persistence.Repositories.Contacts
 {
-    public class ContactWriteRepository : GenericWriteRepository<Contact>, IContactWriteRepository
+    public class ContactWriteRepository :IContactWriteRepository
     {
         private readonly IConfiguration _configuration;
-        public ContactWriteRepository(CmcleanDbContext dbContext, IConfiguration configuration) : base(dbContext, configuration)
+        public ContactWriteRepository( IConfiguration configuration) 
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
-        public override async Task<Contact> AddAsync(Contact entity)
+        public  async Task<Contact> AddAsync(Contact entity)
         {
 
-            var tester1 = _configuration["ConnectionStrings:Default"];
+            var constring = _configuration["ConnectionStrings:Default"];
             using var connection = new NpgsqlConnection
-              (tester1);
+              (constring);
 
             var affected =
                 await connection.ExecuteAsync
@@ -41,6 +41,16 @@ namespace cmclean.Persistence.Repositories.Contacts
                 throw new InvalidOperationException();
 
             return entity;
+        }
+
+        public bool Remove(Contact entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Contact Update(Contact entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

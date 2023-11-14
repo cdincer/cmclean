@@ -25,7 +25,6 @@ public class CreateContactCommandHandler : IRequestHandler<CreateContactCommand,
         var Contact = _mapper.Map<Contact>(request);
         Contact.CreateContact();
         await _ContactWriteRepository.AddAsync(Contact);
-        await _ContactWriteRepository.SaveChangesAsync();
 
         var mappedContact = _mapper.Map<CreateContactResponse>(Contact);
         return mappedContact;

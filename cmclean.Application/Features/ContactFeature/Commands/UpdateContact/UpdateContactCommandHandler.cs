@@ -23,7 +23,6 @@ public class UpdateContactCommandHandler : IRequestHandler<UpdateContactCommand,
             throw new NotFoundException($"Contact cannot found with id: {request.ContactId}");
         
         Contact.UpdateContact(request.FirstName, request.LastName, request.DateOfBirth);
-        await _contactWriteRepository.SaveChangesAsync();
         var result = new UpdateContactResponse
         {
             Status = true

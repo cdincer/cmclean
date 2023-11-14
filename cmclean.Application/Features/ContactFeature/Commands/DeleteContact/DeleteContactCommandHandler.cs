@@ -21,7 +21,6 @@ public class DeleteContactCommandHandler : IRequestHandler<DeleteContactCommand,
             throw new NotFoundException($"Contact cannot found with id: {request.ContactId}");
         
         _ContactWriteRepository.Remove(Contact);
-        await _ContactWriteRepository.SaveChangesAsync();
         var result = new DeleteContactResponse
         {
             Status = true

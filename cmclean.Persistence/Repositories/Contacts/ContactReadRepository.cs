@@ -11,25 +11,32 @@ using System.Threading.Tasks;
 
 namespace cmclean.Persistence.Repositories.Contacts;
 
-public class ContactReadRepository : GenericReadRepository<Contact>, IContactReadRepository
+public class ContactReadRepository : IContactReadRepository
 {
     private readonly IConfiguration _configuration;
-    public ContactReadRepository(CmcleanDbContext dbContext, IConfiguration configuration) : base(dbContext, configuration)
+    public ContactReadRepository(IConfiguration configuration)
     {
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 
-    public override async Task<List<Contact>> GetAll(bool asNoTracking = false)
+    public async Task<List<Contact?>> GetAll()
     {
-
-        var tester1 = _configuration["ConnectionStrings:Default"];
+        var constring = _configuration["ConnectionStrings:Default"];
         using var connection = new NpgsqlConnection
-          (tester1);
+          (constring);
 
         var Contacts = await connection.QueryAsync<Contact>(@"SELECT Id, Firstname, Lastname, Displayname, Birthdate FROM  ""Contacts""");
 
-    
+        return (List<Contact?>)Contacts;
+    }
 
-        return (List<Contact>)Contacts;
+    public Task<Contact?> GetByIdAsync(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Contact?> GetSingleAsync(string filter)
+    {
+        throw new NotImplementedException();
     }
 }
