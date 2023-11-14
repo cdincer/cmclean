@@ -30,12 +30,18 @@ public class ContactReadRepository : IContactReadRepository
         return (List<Contact?>)Contacts;
     }
 
-    public Task<Contact?> GetByIdAsync(Guid id)
+    public async Task<Contact?> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var constring = _configuration["ConnectionStrings:Default"];
+        using var connection = new NpgsqlConnection
+          (constring);
+
+        var Contact = await connection.QueryFirstAsync<Contact>(@"SELECT Id, Firstname, Lastname, Displayname, Birthdate FROM  ""Contacts"" where Id = @Id", new { Id = id });
+
+        return Contact;
     }
 
-    public Task<Contact?> GetSingleAsync(string filter)
+    public Task<Contact?> GetAsync(string filter)
     {
         throw new NotImplementedException();
     }
