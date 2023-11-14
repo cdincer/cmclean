@@ -10,6 +10,7 @@ using cmclean.Application.Features.ContactFeature.Commands.DeleteContact;
 using cmclean.Application.Features.ContactFeature.Commands.UpdateContact;
 using cmclean.Application.Features.ContactFeature.Queries.GetAllContacts;
 using cmclean.Application.Features.ContactFeature.Queries.GetContactById;
+using cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter;
 
 namespace cmclean.GrpcService.Services;
 
@@ -43,6 +44,38 @@ public class ContactService : ContactProtoService.ContactProtoServiceBase
 
             var Contact = _mapper.Map<ContactProtoModel>(result);
             return new GetContactByIdProtoResponse
+            {
+                Contact = Contact
+            };
+        }
+        catch (NotFoundException ex)
+        {
+            var metadata = new Metadata
+            {
+                {"exception-type", "NotFoundException"},
+                {"original-exception", JsonConvert.SerializeObject(ex)}
+            };
+            throw new RpcException(new Status(StatusCode.NotFound, ex.Message, ex), metadata);
+        }
+        catch (Exception ex)
+        {
+            var metadata = new Metadata
+            {
+                {"exception-type", "Exception"}
+            };
+            throw new RpcException(new Status(StatusCode.Internal, ex.Message, ex), metadata);
+        }
+    }
+
+    public override async Task<GetContactByFilterProtoResponse> GetContactByFilter(GetContactByFilterProtoRequest request, ServerCallContext context)
+    {
+        try
+        {
+            var filter = _mapper.Map<GetContactByFilterQuery>(request);
+            var result = await _mediator.Send(filter);
+
+            var Contact = _mapper.Map<ContactProtoModel>(result);
+            return new GetContactByFilterProtoResponse
             {
                 Contact = Contact
             };

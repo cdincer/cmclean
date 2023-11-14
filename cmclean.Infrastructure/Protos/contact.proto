@@ -7,6 +7,7 @@ import "google/protobuf/empty.proto";
 service ContactProtoService {
   rpc GetContacts(google.protobuf.Empty) returns (GetAllContactsProtoResponse);
   rpc GetContactById(GetContactByIdProtoRequest) returns (GetContactByIdProtoResponse);
+  rpc GetContactByFilter(GetContactByFilterProtoRequest) returns (GetContactByFilterProtoResponse);
   rpc CreateContact(CreateContactProtoRequest) returns (CreateContactProtoResponse);
   rpc UpdateContact(UpdateContactProtoRequest) returns (UpdateContactProtoResponse);
   rpc DeleteContact(DeleteContactProtoRequest) returns (DeleteContactProtoResponse);
@@ -30,6 +31,19 @@ message GetContactByIdProtoRequest{
 message GetContactByIdProtoResponse
 {
   ContactProtoModel Contact = 1;
+};
+
+message GetContactByFilterProtoRequest
+{
+  string FirstName = 1;
+  string LastName = 2;
+  string DisplayName = 3;
+  google.protobuf.Timestamp DateOfBirth = 4;
+}
+
+message GetContactByFilterProtoResponse
+{
+ repeated ContactProtoModel Contact = 1;
 };
 
 message CreateContactProtoRequest {

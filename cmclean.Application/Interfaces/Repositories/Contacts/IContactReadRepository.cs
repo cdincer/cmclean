@@ -1,3 +1,4 @@
+using cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter;
 using cmclean.Domain.Model;
 using System.Linq.Expressions;
 
@@ -7,5 +8,5 @@ public interface IContactReadRepository
 {
     Task<List<Contact>> GetAll();
     Task<Contact?> GetByIdAsync(Guid id);
-    Task<Contact?> GetAsync(string filter);
+    Task<Contact?> GetAsync(GetContactByFilterQuery getContactByFilterQuery);
 }

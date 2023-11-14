@@ -3,8 +3,10 @@ using cmclean.Application.Features.ContactFeature.Commands.CreateContact;
 using cmclean.Application.Features.ContactFeature.Commands.DeleteContact;
 using cmclean.Application.Features.ContactFeature.Commands.UpdateContact;
 using cmclean.Application.Features.ContactFeature.Queries.GetAllContacts;
+using cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter;
 using cmclean.Application.Features.ContactFeature.Queries.GetContactById;
 using cmclean.Application.Interfaces.GrpcServices.ContactGrpc;
+using cmclean.Domain.Model;
 using cmclean.Infrastructure.Protos;
 
 namespace cmclean.Infrastructure.Services.GrpcServices.ContactGrpc
@@ -62,6 +64,16 @@ namespace cmclean.Infrastructure.Services.GrpcServices.ContactGrpc
             var response = await _ContactProtoService.DeleteContactAsync(request);
             var deletedContact = _mapper.Map<DeleteContactResponse>(response);
             return deletedContact;
+        }
+
+        public async Task<GetContactByFilterResponse> GetContactByFilterAsync(GetContactByFilterQuery GetContactByFilterQuery)
+        {
+            var request = _mapper.Map<GetContactByFilterProtoRequest>(GetContactByFilterQuery);
+
+            var result = await _ContactProtoService.GetContactByFilterAsync(request);
+
+            var Contact = _mapper.Map<GetContactByFilterResponse>(result.Contact);
+            return Contact;
         }
     }
 

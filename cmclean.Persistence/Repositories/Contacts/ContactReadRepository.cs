@@ -1,4 +1,5 @@
-﻿using cmclean.Application.Interfaces.Repositories.Contacts;
+﻿using cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter;
+using cmclean.Application.Interfaces.Repositories.Contacts;
 using cmclean.Domain.Model;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -41,7 +42,7 @@ public class ContactReadRepository : IContactReadRepository
         return Contact;
     }
 
-    public Task<Contact?> GetAsync(string filter)
+    public Task<Contact?> GetAsync(GetContactByFilterQuery getContactByFilterQuery)
     {
         throw new NotImplementedException();
     }

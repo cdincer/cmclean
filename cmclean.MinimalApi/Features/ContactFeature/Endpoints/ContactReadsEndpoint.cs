@@ -1,9 +1,11 @@
 ﻿using cmclean.Application.Common.Error.Response;
 using cmclean.Application.Features.ContactFeature.Queries.GetAllContacts;
+using cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter;
 using cmclean.Application.Features.ContactFeature.Queries.GetContactById;
 using cmclean.Application.Interfaces.GrpcServices.ContactGrpc;
 using cmclean.MinimalApi.Abstractions;
 using cmclean.MinimalApi.Filters;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace cmclean.MinimalApi.Features.ContactFeature.Endpoints
@@ -37,6 +39,15 @@ namespace cmclean.MinimalApi.Features.ContactFeature.Endpoints
                 .Produces<ErrorResponse>(404)
                 .Produces<ErrorResponse>(500);
 
+            ContactGroup.MapPost("filter/", GetContactByFilter)
+           .AddEndpointFilter<GuidValidationFilter>()
+           .WithName("GetContactByFilter")
+           .WithDisplayName("Contact Reads Endpoints")
+           .WithTags("Contacts")
+           .Produces<GetContactByFilterResponse>(200)
+           .Produces<ErrorResponse>(404)
+           .Produces<ErrorResponse>(500);
+
 
             return ContactGroup;
 
@@ -52,6 +63,12 @@ namespace cmclean.MinimalApi.Features.ContactFeature.Endpoints
         private async Task<IResult> GetContactById(string id)
         {
             var Contact = await _ContactGrpcService.GetContactByIdAsync(id);
+            return TypedResults.Ok(Contact);
+        }
+
+        private async Task<IResult> GetContactByFilter([FromBody]GetContactByFilterQuery filterQuery)
+        {
+            var Contact = await _ContactGrpcService.GetContactByFilterAsync(filterQuery);
             return TypedResults.Ok(Contact);
         }
 

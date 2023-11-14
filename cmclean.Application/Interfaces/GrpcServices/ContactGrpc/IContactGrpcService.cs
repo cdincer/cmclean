@@ -2,6 +2,7 @@
 using cmclean.Application.Features.ContactFeature.Commands.DeleteContact;
 using cmclean.Application.Features.ContactFeature.Commands.UpdateContact;
 using cmclean.Application.Features.ContactFeature.Queries.GetAllContacts;
+using cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter;
 using cmclean.Application.Features.ContactFeature.Queries.GetContactById;
 
 namespace cmclean.Application.Interfaces.GrpcServices.ContactGrpc
@@ -10,6 +11,7 @@ namespace cmclean.Application.Interfaces.GrpcServices.ContactGrpc
     {
         Task<List<GetAllContactsResponse>> GetContactsAsync();
         Task<GetContactByIdResponse> GetContactByIdAsync(string ContactID);
+        Task<GetContactByFilterResponse> GetContactByFilterAsync(GetContactByFilterQuery GetContactByFilterQuery);
         Task<CreateContactResponse> CreateContactAsync(CreateContactRequest Contact);
         Task<UpdateContactResponse> UpdateContactAsync(UpdateContactRequest Contact, string ContactID);
         Task<DeleteContactResponse> DeleteContactAsync(DeleteContactRequest Contact);
