@@ -51,6 +51,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{35BF36
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose\docker-compose.dcproj", "{F9F0C1D6-39BD-4CE4-9274-CB7D204495C8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{B475CB76-F3B3-4BB2-93F3-D2786BBF7E2A}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose\kibana\config\kibana.yml = docker-compose\kibana\config\kibana.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +126,7 @@ Global
 		{8EF16A02-8911-4DE0-85F6-589F4D20266C} = {217EE200-DC7E-4434-ADA0-68C444CF9DE9}
 		{35BF3659-0648-48E5-B42F-2807C2216D04} = {13BB4D0C-57D2-4A5C-A450-6BFAE1AACE60}
 		{F9F0C1D6-39BD-4CE4-9274-CB7D204495C8} = {217EE200-DC7E-4434-ADA0-68C444CF9DE9}
+		{B475CB76-F3B3-4BB2-93F3-D2786BBF7E2A} = {8EF16A02-8911-4DE0-85F6-589F4D20266C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBE1C714-F789-46DB-A728-A8041C9FBABD}
