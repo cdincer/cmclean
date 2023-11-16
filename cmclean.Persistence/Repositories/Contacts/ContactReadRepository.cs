@@ -42,8 +42,22 @@ public class ContactReadRepository : IContactReadRepository
         return Contact;
     }
 
-    public Task<Contact?> GetAsync(GetContactByFilterQuery getContactByFilterQuery)
+    public async Task<List<Contact?>> GetAsync(GetContactByFilterQuery getContactByFilterQuery)
     {
-        throw new NotImplementedException();
+        var constring = _configuration["ConnectionStrings:Default"];
+        using var connection = new NpgsqlConnection
+          (constring);
+
+        var Contacts = await connection.QueryAsync<Contact?>(@"SELECT Id, Firstname, Lastname, Displayname, Birthdate FROM  ""Contacts"" where 
+        (Firstname = @Firstname OR  @Firstname IS NULL) AND
+        (Lastname = @Lastname OR  @Lastname IS NULL) AND
+        (Displayname = @Displayname OR  @Displayname IS NULL) AND
+        (Birthdate = @Birthdate OR  @Birthdate IS NULL)
+        ", new { Firstname = getContactByFilterQuery.FirstName,
+                 Lastname = getContactByFilterQuery.LastName,
+                 Displayname = getContactByFilterQuery.DisplayName,
+                 Birthdate = getContactByFilterQuery.DateOfBirth});
+
+        return (List<Contact?>)Contacts;
     }
 }

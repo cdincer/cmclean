@@ -37,9 +37,7 @@ public class ContactProfile : Profile
                 opt.MapFrom(src => src.DateOfBirth.ToDateTime()));
         
 
-               CreateMap<GetContactByFilterQuery, GetContactByFilterProtoRequest>()
-            .ForMember(dest => dest.DateOfBirth, opt =>
-                opt.MapFrom(src => Timestamp.FromDateTime(src.DateOfBirth.ToUniversalTime()))).ReverseMap();
+               CreateMap<GetContactByFilterQuery, GetContactByFilterProtoRequest>().ReverseMap();
 
         CreateMap<CreateContactResponse, ContactProtoModel>()
             .ForMember(dest => dest.DateOfBirth, opt =>

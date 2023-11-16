@@ -3,6 +3,7 @@ using cmclean.Application.Features.ContactFeature.Commands.CreateContact;
 using cmclean.Application.Features.ContactFeature.Commands.DeleteContact;
 using cmclean.Application.Features.ContactFeature.Commands.UpdateContact;
 using cmclean.Application.Features.ContactFeature.Queries.GetAllContacts;
+using cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter;
 using cmclean.Application.Features.ContactFeature.Queries.GetContactById;
 using cmclean.Domain.Model;
 
@@ -19,6 +20,6 @@ public class ContactProfile : Profile
         CreateMap<Contact, CreateContactResponse>().ReverseMap();
         CreateMap<Contact, GetAllContactsResponse>().ReverseMap();
         CreateMap<Contact, GetContactByIdResponse>().ReverseMap();
-
+        CreateMap<Contact, GetContactByFilterResponse>().ReverseMap();
     }
 }

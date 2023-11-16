@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter
 {
-    public class GetContactByFilterQuery : IRequest<GetContactByFilterResponse>
+    public class GetContactByFilterQuery : IRequest<List<GetContactByFilterResponse>>
     {
-        public string FirstName { get; init; }
-        public string LastName { get; init; }
-        public string DisplayName { get; init; }
+        public string? FirstName { get; init; }
+        public string? LastName { get; init; }
+        public string? DisplayName { get; init; }
 
-        public DateTime DateOfBirth { get; init; }
+        public DateTime? DateOfBirth { get; init; }
     }
 }

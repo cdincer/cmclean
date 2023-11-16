@@ -74,10 +74,10 @@ public class ContactService : ContactProtoService.ContactProtoServiceBase
             var filter = _mapper.Map<GetContactByFilterQuery>(request);
             var result = await _mediator.Send(filter);
 
-            var Contact = _mapper.Map<ContactProtoModel>(result);
+            var Contacts = _mapper.Map<List<ContactProtoModel>>(result);
             return new GetContactByFilterProtoResponse
             {
-                Contact = Contact
+                Contacts = { Contacts }
             };
         }
         catch (NotFoundException ex)

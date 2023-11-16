@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter
 {
-    public class GetContactByFilterQueryHandler : IRequestHandler<GetContactByFilterQuery, GetContactByFilterResponse>
+    public class GetContactByFilterQueryHandler : IRequestHandler<GetContactByFilterQuery, List<GetContactByFilterResponse>>
     {
 
         private readonly IContactReadRepository _ContactReadRepository;
@@ -24,14 +24,14 @@ namespace cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter
             _mapper = mapper;
         }
 
-        public async Task<GetContactByFilterResponse> Handle(GetContactByFilterQuery request, CancellationToken cancellationToken)
+        public async Task<List<GetContactByFilterResponse>> Handle(GetContactByFilterQuery request, CancellationToken cancellationToken)
         {
             var Contact = await _ContactReadRepository.GetAsync(request);
             if (Contact is null)
             {
                 throw new NotFoundException($"Contact cannot found with sent in parameters: {request.FirstName}, {request.LastName}, {request.DateOfBirth}");
             }
-            return _mapper.Map<GetContactByFilterResponse>(Contact);
+            return _mapper.Map<List<GetContactByFilterResponse>>(Contact);
         }
     }
 }

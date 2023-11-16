@@ -66,14 +66,14 @@ namespace cmclean.Infrastructure.Services.GrpcServices.ContactGrpc
             return deletedContact;
         }
 
-        public async Task<GetContactByFilterResponse> GetContactByFilterAsync(GetContactByFilterQuery GetContactByFilterQuery)
+        public async Task<List<GetContactByFilterResponse>> GetContactByFilterAsync(GetContactByFilterQuery GetContactByFilterQuery)
         {
             var request = _mapper.Map<GetContactByFilterProtoRequest>(GetContactByFilterQuery);
 
             var result = await _ContactProtoService.GetContactByFilterAsync(request);
 
-            var Contact = _mapper.Map<GetContactByFilterResponse>(result.Contact);
-            return Contact;
+            var Contacts = _mapper.Map<List<GetContactByFilterResponse>>(result.Contacts);
+            return Contacts;
         }
     }
 

@@ -35,15 +35,15 @@ message GetContactByIdProtoResponse
 
 message GetContactByFilterProtoRequest
 {
-  string FirstName = 1;
-  string LastName = 2;
-  string DisplayName = 3;
-  google.protobuf.Timestamp DateOfBirth = 4;
+  optional string FirstName = 1;
+  optional string LastName = 2;
+  optional string DisplayName = 3;
+  optional google.protobuf.Timestamp DateOfBirth = 4;
 }
 
 message GetContactByFilterProtoResponse
 {
- ContactProtoModel Contact = 1;
+ repeated ContactProtoModel Contacts = 1;
 };
 
 message CreateContactProtoRequest {

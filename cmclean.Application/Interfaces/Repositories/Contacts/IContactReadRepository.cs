@@ -8,5 +8,5 @@ public interface IContactReadRepository
 {
     Task<List<Contact>> GetAll();
     Task<Contact?> GetByIdAsync(Guid id);
-    Task<Contact?> GetAsync(GetContactByFilterQuery getContactByFilterQuery);
+    Task<List<Contact?>> GetAsync(GetContactByFilterQuery getContactByFilterQuery);
 }
