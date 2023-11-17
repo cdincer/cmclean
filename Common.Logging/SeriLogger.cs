@@ -17,8 +17,9 @@ public static class SeriLogger
 
         return new LoggerConfiguration()
             .Enrich.FromLogContext()
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-            .MinimumLevel.Override("System", LogEventLevel.Information)
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Verbose)
+            .MinimumLevel.Override("System", LogEventLevel.Verbose)
+            .MinimumLevel.Override("Grpc", LogEventLevel.Verbose)
             .MinimumLevel.Information()
             .WriteTo.Console()
             .WriteTo.RabbitMQ((clientConfiguration, sinkConfiguration) =>
