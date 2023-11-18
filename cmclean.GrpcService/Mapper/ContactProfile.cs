@@ -28,7 +28,11 @@ namespace cmclean.GrpcService.Mapper
 
             CreateMap<GetContactByFilterQuery, GetContactByFilterProtoRequest>()
          .ForMember(dest => dest.DateOfBirth, opt =>
-              opt.MapFrom(src => Timestamp.FromDateTime(src.DateOfBirth.Value.ToUniversalTime()))).ReverseMap();
+              opt.MapFrom(src => Timestamp.FromDateTime(src.DateOfBirth.ToUniversalTime())));
+
+            CreateMap<GetContactByFilterProtoRequest, GetContactByFilterQuery>()
+           .ForMember(dest => dest.DateOfBirth, opt =>
+               opt.MapFrom(src => src.DateOfBirth.ToDateTime()));
 
             CreateMap<GetContactByFilterResponse, ContactProtoModel>()
                .ForMember(dest => dest.DateOfBirth, opt =>

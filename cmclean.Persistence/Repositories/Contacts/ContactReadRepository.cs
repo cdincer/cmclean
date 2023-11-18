@@ -2,11 +2,13 @@
 using cmclean.Application.Interfaces.Repositories.Contacts;
 using cmclean.Domain.Model;
 using Dapper;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -47,6 +49,14 @@ public class ContactReadRepository : IContactReadRepository
         var constring = _configuration["ConnectionStrings:Default"];
         using var connection = new NpgsqlConnection
           (constring);
+
+
+        foreach (var prop in getContactByFilterQuery.GetType().GetProperties())
+        {
+            Console.WriteLine(prop.Name + prop.GetValue(getContactByFilterQuery, null));
+        }
+
+
 
         var Contacts = await connection.QueryAsync<Contact?>(@"SELECT Id, Firstname, Lastname, Displayname, Birthdate FROM  ""Contacts"" where 
         (Firstname = @Firstname OR  @Firstname IS NULL) AND

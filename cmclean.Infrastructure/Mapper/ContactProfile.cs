@@ -35,9 +35,10 @@ public class ContactProfile : Profile
         CreateMap<ContactProtoModel, CreateContactRequest>()
             .ForMember(dest => dest.DateOfBirth, opt =>
                 opt.MapFrom(src => src.DateOfBirth.ToDateTime()));
-        
 
-               CreateMap<GetContactByFilterQuery, GetContactByFilterProtoRequest>().ReverseMap();
+        CreateMap<GetContactByFilterQuery, GetContactByFilterProtoRequest>()
+        .ForMember(dest => dest.DateOfBirth, opt =>
+        opt.MapFrom(src => Timestamp.FromDateTime(src.DateOfBirth.ToUniversalTime()))).ReverseMap();
 
         CreateMap<CreateContactResponse, ContactProtoModel>()
             .ForMember(dest => dest.DateOfBirth, opt =>
