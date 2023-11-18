@@ -71,7 +71,6 @@ public class ContactService : ContactProtoService.ContactProtoServiceBase
     {
         try
         {
-            Console.WriteLine("break");
             var filter = _mapper.Map<GetContactByFilterQuery>(request);
             var result = await _mediator.Send(filter);
 

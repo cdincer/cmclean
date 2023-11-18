@@ -2,15 +2,8 @@
 using cmclean.Application.Interfaces.Repositories.Contacts;
 using cmclean.Domain.Model;
 using Dapper;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace cmclean.Persistence.Repositories.Contacts;
 
@@ -53,12 +46,23 @@ public class ContactReadRepository : IContactReadRepository
 
         foreach (var prop in getContactByFilterQuery.GetType().GetProperties())
         {
-            Console.WriteLine(prop.Name + prop.GetValue(getContactByFilterQuery, null));
+            string CurrentValue = prop.GetValue(getContactByFilterQuery, null).ToString();
+            var property = typeof(GetContactByFilterQuery).GetProperty(prop.Name);
+           
+            if (string.IsNullOrWhiteSpace(CurrentValue))
+            {
+                property.SetValue(getContactByFilterQuery, null, null);
+            }
+            else if(CurrentValue == "01/01/0001 00:00:00")
+            {
+                property.SetValue(getContactByFilterQuery, null, null);
+            }
         }
 
 
 
-        var Contacts = await connection.QueryAsync<Contact?>(@"SELECT Id, Firstname, Lastname, Displayname, Birthdate FROM  ""Contacts"" where 
+        var Contacts = await connection.QueryAsync<Contact?>
+        (@"SELECT Id, Firstname, Lastname, Displayname, Birthdate FROM  ""Contacts"" where 
         (Firstname = @Firstname OR  @Firstname IS NULL) AND
         (Lastname = @Lastname OR  @Lastname IS NULL) AND
         (Displayname = @Displayname OR  @Displayname IS NULL) AND
