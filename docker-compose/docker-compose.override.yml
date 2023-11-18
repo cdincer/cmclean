@@ -95,8 +95,7 @@ services:
       - zipkin-server
       - consul
     ports:
-      - "8002:80"
-      - "5001:80" 
+      - "5001:80"
     restart: always
     networks:
       - cmcleanNetwork
