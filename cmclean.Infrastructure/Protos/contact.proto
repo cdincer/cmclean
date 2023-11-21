@@ -15,10 +15,16 @@ service ContactProtoService {
 
 message ContactProtoModel {
   string Id = 1;
-  string FirstName = 2;
-  string LastName = 3;
-  string DisplayName = 4;
-  google.protobuf.Timestamp DateOfBirth = 5;
+  string Salutation = 2;
+  string FirstName = 3;
+  string LastName = 4;
+  string DisplayName = 5;
+  google.protobuf.Timestamp BirthDate = 6;
+  google.protobuf.Timestamp CreationTimestamp = 7;
+  google.protobuf.Timestamp LastChangeTimeStamp = 8;
+  bool NotifyHasBirthdaySoon = 9;
+  string Email = 10;
+  string Phonenumber = 11;
 }
 message GetAllContactsProtoResponse
 {
@@ -38,7 +44,7 @@ message GetContactByFilterProtoRequest
    string FirstName = 1;
    string LastName = 2;
    string DisplayName = 3;
-  google.protobuf.Timestamp DateOfBirth = 4;
+  google.protobuf.Timestamp BirthDate = 4;
 }
 
 message GetContactByFilterProtoResponse
@@ -47,10 +53,13 @@ message GetContactByFilterProtoResponse
 };
 
 message CreateContactProtoRequest {
-  string FirstName = 1;
-  string LastName = 2;
-  string DisplayName = 3;
-  google.protobuf.Timestamp DateOfBirth = 4;
+  string Salutation = 1;
+  string FirstName = 2;
+  string LastName = 3;
+  string DisplayName = 4;
+  google.protobuf.Timestamp BirthDate = 5;
+  string Email = 6;
+  string Phonenumber = 7;
 };
 
 message CreateContactProtoResponse {
@@ -61,7 +70,7 @@ message UpdateContactProtoRequest {
   string Id = 1;
   string FirstName = 2;
   string LastName = 3;
-  google.protobuf.Timestamp DateOfBirth = 4;
+  google.protobuf.Timestamp BirthDate = 4;
 };
 message UpdateContactProtoResponse {
   bool status = 1;

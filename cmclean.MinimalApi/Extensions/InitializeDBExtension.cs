@@ -26,42 +26,22 @@ namespace cmclean.MinimalApi.Extensions
                 command.CommandText = @"DROP TABLE IF EXISTS ""Contacts"" ";
                 command.ExecuteNonQuery();
 
-                command.CommandText = @"CREATE TABLE ""Contacts""(Id uuid,                                                              
+                command.CommandText = @"CREATE TABLE ""Contacts""(Id uuid, 
+                                                                Salutation VARCHAR(5),
                                                                 Firstname VARCHAR(24) NOT NULL,
                                                                 Lastname VARCHAR(24) NOT NULL,
-                                                                Displayname VARCHAR(24),                                                           
-                                                                Birthdate timestamp,                                                                                                       
+                                                                Displayname VARCHAR(50),
+                                                                Birthdate timestamp,                                                    
+                                                                CreationTimestamp timestamp,
+                                                                LastChangeTimestamp timestamp,
+                                                                NotifyHasBirthdaySoon boolean,
+                                                                Email VARCHAR(50) UNIQUE NOT NULL,
+                                                                Phonenumber VARCHAR(24),
                                                                 PRIMARY KEY (Id))";
                 command.ExecuteNonQuery();
                 Console.WriteLine("Table creation is succesful");
                 #endregion
-                /*
-                #region Triggers
-                //Time adjusted in 2 triggers for my time zone.
-                command.CommandText = @"CREATE OR REPLACE FUNCTION change_creationtimestamp() RETURNS trigger AS $change_creationtimestamp$
-                BEGIN
-                    NEW.creationtimestamp := NOW() + interval '3 hours';
-                    NEW.lastchangetimestamp := NOW() + interval '3 hours';
-                    RETURN NEW;
-                END;
-                $change_creationtimestamp$ LANGUAGE plpgsql;";
-                command.ExecuteNonQuery();
-                command.CommandText = @"CREATE OR REPLACE TRIGGER change_creationtimestamp BEFORE INSERT ON ""Contacts""
-                FOR EACH ROW EXECUTE FUNCTION change_creationtimestamp();";
-                command.ExecuteNonQuery();
-                command.CommandText = @"CREATE OR REPLACE FUNCTION change_lastchangetimestamp() RETURNS trigger AS $change_lastchangetimestamp$
-                 BEGIN
-                -- Remember who changed the payroll when
-                NEW.lastchangetimestamp := NOW() + interval '3 hours';
-                RETURN NEW;
-                END;
-                $change_lastchangetimestamp$ LANGUAGE plpgsql; ";
-                command.ExecuteNonQuery();
-                command.CommandText = @"CREATE OR REPLACE TRIGGER change_lastchangetimestamp BEFORE UPDATE ON ""Contacts""
-                                        FOR EACH ROW EXECUTE FUNCTION change_lastchangetimestamp();";
-                command.ExecuteNonQuery();
-                Console.WriteLine("Trigger creation succesful");
-                #endregion
+                
                 #region Sample Records For Testing
                 Guid TrialGuid = Guid.NewGuid();
                 command.CommandText =
@@ -92,7 +72,7 @@ namespace cmclean.MinimalApi.Extensions
                 command.ExecuteNonQuery();
                 Console.WriteLine("Third test user created / stricly for update user scenario");
                 #endregion
-              */
+              
             }
             catch (NpgsqlException ex)
             {

@@ -11,6 +11,6 @@ namespace cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter
         public Guid Id { get; init; }
         public string FirstName { get; init; }
         public string LastName { get; init; }
-        public DateTime DateOfBirth { get; init; }
+        public DateTime BirthDate { get; init; }
     }
 }

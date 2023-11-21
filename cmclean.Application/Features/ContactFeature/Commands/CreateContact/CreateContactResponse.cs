@@ -5,5 +5,8 @@ public record CreateContactResponse
     public Guid Id { get; init; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public DateTime DateOfBirth { get; init; }
+    public string DisplayName { get; set; }
+    public DateTime BirthDate { get; init; }
+    public string Email { get; init; }
+    public string Phonenumber { get; init; }
 }

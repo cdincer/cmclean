@@ -24,9 +24,11 @@ namespace cmclean.Persistence.Repositories.Contacts
             var affected =
                 await connection.ExecuteAsync
                     (@"INSERT INTO ""Contacts"" (Id, Firstname, Lastname, 
-                    Displayname, Birthdate)
+                    Displayname, Birthdate,CreationTimestamp,
+                     LastChangeTimeStamp,Email,Phonenumber)
                     VALUES (@Id, @Firstname , @Lastname , 
-                    @Displayname, @Birthdate)",
+                    @Displayname, @Birthdate, @CreationTimestamp,
+                    @LastChangeTimeStamp,@Email,@Phonenumber)",
                             new
                             {
                                 id = entity.Id,
@@ -34,7 +36,10 @@ namespace cmclean.Persistence.Repositories.Contacts
                                 Lastname = entity.LastName,
                                 Displayname = entity.DisplayName,
                                 Birthdate = entity.BirthDate,
-
+                                CreationTimestamp = entity.CreationTimestamp,
+                                LastChangeTimeStamp = entity.LastChangeTimeStamp,
+                                Email = entity.Email,
+                                Phonenumber = entity.Phonenumber
                             });
 
             if (affected == 0)

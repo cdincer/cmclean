@@ -17,43 +17,43 @@ public class ContactProfile : Profile
     public ContactProfile()
     {
         CreateMap<ContactProtoModel, GetAllContactsResponse>()
-            .ForMember(dest => dest.DateOfBirth, opt =>
-                opt.MapFrom(src => src.DateOfBirth.ToDateTime()));
+            .ForMember(dest => dest.BirthDate, opt =>
+                opt.MapFrom(src => src.BirthDate.ToDateTime()));
 
         CreateMap<ContactProtoModel, GetContactByFilterResponse>()
-           .ForMember(dest => dest.DateOfBirth, opt =>
-               opt.MapFrom(src => src.DateOfBirth.ToDateTime()));
+           .ForMember(dest => dest.BirthDate, opt =>
+               opt.MapFrom(src => src.BirthDate.ToDateTime()));
 
         CreateMap<ContactProtoModel, GetContactByIdResponse>()
-            .ForMember(dest => dest.DateOfBirth, opt =>
-                opt.MapFrom(src => src.DateOfBirth.ToDateTime()));
+            .ForMember(dest => dest.BirthDate, opt =>
+                opt.MapFrom(src => src.BirthDate.ToDateTime()));
 
         CreateMap<ContactProtoModel, CreateContactResponse>()
-            .ForMember(dest => dest.DateOfBirth, opt =>
-                opt.MapFrom(src => src.DateOfBirth.ToDateTime()));
+            .ForMember(dest => dest.BirthDate, opt =>
+                opt.MapFrom(src => src.BirthDate.ToDateTime()));
 
         CreateMap<ContactProtoModel, CreateContactRequest>()
-            .ForMember(dest => dest.DateOfBirth, opt =>
-                opt.MapFrom(src => src.DateOfBirth.ToDateTime()));
+            .ForMember(dest => dest.BirthDate, opt =>
+                opt.MapFrom(src => src.BirthDate.ToDateTime()));
 
         CreateMap<GetContactByFilterQuery, GetContactByFilterProtoRequest>()
-        .ForMember(dest => dest.DateOfBirth, opt =>
-        opt.MapFrom(src => Timestamp.FromDateTime(src.DateOfBirth.ToUniversalTime()))).ReverseMap();
+        .ForMember(dest => dest.BirthDate, opt =>
+        opt.MapFrom(src => Timestamp.FromDateTime(src.BirthDate.ToUniversalTime()))).ReverseMap();
 
         CreateMap<CreateContactResponse, ContactProtoModel>()
-            .ForMember(dest => dest.DateOfBirth, opt =>
-                opt.MapFrom(src => Timestamp.FromDateTime(src.DateOfBirth)));
+            .ForMember(dest => dest.BirthDate, opt =>
+                opt.MapFrom(src => Timestamp.FromDateTime(src.BirthDate)));
 
         CreateMap<UpdateContactProtoResponse, UpdateContactResponse>();
         CreateMap<DeleteContactProtoResponse, DeleteContactResponse>();
 
         CreateMap<CreateContactRequest, CreateContactProtoRequest>()
-            .ForMember(dest => dest.DateOfBirth, opt =>
-                opt.MapFrom(src => Timestamp.FromDateTime(src.DateOfBirth.ToUniversalTime()))).ReverseMap();
+            .ForMember(dest => dest.BirthDate, opt =>
+                opt.MapFrom(src => Timestamp.FromDateTime(src.BirthDate.ToUniversalTime()))).ReverseMap();
 
         CreateMap<UpdateContactRequest, UpdateContactProtoRequest>()
-            .ForMember(dest => dest.DateOfBirth, opt =>
-                opt.MapFrom(src => Timestamp.FromDateTime(src.DateOfBirth.ToUniversalTime())))
+            .ForMember(dest => dest.BirthDate, opt =>
+                opt.MapFrom(src => Timestamp.FromDateTime(src.BirthDate.ToUniversalTime())))
             .ForMember(dest => dest.Id, opt =>
                 opt.MapFrom(src => src.ContactId.ToString())).ReverseMap();
 

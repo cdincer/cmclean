@@ -14,24 +14,24 @@ namespace cmclean.GrpcService.Mapper
         public ContactProfile()
         {
             CreateMap<GetAllContactsResponse, ContactProtoModel>()
-             .ForMember(dest => dest.DateOfBirth, opt =>
-                 opt.MapFrom(src => Timestamp.FromDateTime(src.DateOfBirth.ToUniversalTime())));
+             .ForMember(dest => dest.BirthDate, opt =>
+                 opt.MapFrom(src => Timestamp.FromDateTime(src.BirthDate.ToUniversalTime())));
 
             CreateMap<GetContactByIdResponse, ContactProtoModel>()
-                .ForMember(dest => dest.DateOfBirth, opt =>
-                    opt.MapFrom(src => Timestamp.FromDateTime(src.DateOfBirth.ToUniversalTime())));
+                .ForMember(dest => dest.BirthDate, opt =>
+                    opt.MapFrom(src => Timestamp.FromDateTime(src.BirthDate.ToUniversalTime())));
 
             CreateMap<CreateContactResponse, ContactProtoModel>()
-                .ForMember(dest => dest.DateOfBirth, opt =>
-                    opt.MapFrom(src => Timestamp.FromDateTime(src.DateOfBirth.ToUniversalTime())));
+                .ForMember(dest => dest.BirthDate, opt =>
+                    opt.MapFrom(src => Timestamp.FromDateTime(src.BirthDate.ToUniversalTime())));
 
             CreateMap<GetContactByFilterProtoRequest, GetContactByFilterQuery>()
-           .ForMember(dest => dest.DateOfBirth, opt =>
-               opt.MapFrom(src => src.DateOfBirth.ToDateTime()));
+           .ForMember(dest => dest.BirthDate, opt =>
+               opt.MapFrom(src => src.BirthDate.ToDateTime()));
 
             CreateMap<GetContactByFilterResponse, ContactProtoModel>()
-               .ForMember(dest => dest.DateOfBirth, opt =>
-              opt.MapFrom(src => Timestamp.FromDateTime(src.DateOfBirth.ToUniversalTime())));
+               .ForMember(dest => dest.BirthDate, opt =>
+              opt.MapFrom(src => Timestamp.FromDateTime(src.BirthDate.ToUniversalTime())));
         }
     }
 }

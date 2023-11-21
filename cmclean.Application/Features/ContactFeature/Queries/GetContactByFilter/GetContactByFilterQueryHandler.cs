@@ -29,7 +29,7 @@ namespace cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter
             var Contact = await _ContactReadRepository.GetAsync(request);
             if (Contact is null)
             {
-                throw new NotFoundException($"Contact cannot found with sent in parameters: {request.FirstName}, {request.LastName}, {request.DateOfBirth}");
+                throw new NotFoundException($"Contact cannot found with sent in parameters: {request.FirstName}, {request.LastName}, {request.BirthDate}");
             }
             return _mapper.Map<List<GetContactByFilterResponse>>(Contact);
         }

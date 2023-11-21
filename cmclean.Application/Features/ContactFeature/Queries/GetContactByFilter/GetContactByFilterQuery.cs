@@ -13,6 +13,6 @@ namespace cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter
         public string LastName { get; init; }
         public string DisplayName { get; init; }
 
-        public DateTime DateOfBirth { get; init; }
+        public DateTime BirthDate { get; init; }
     }
 }

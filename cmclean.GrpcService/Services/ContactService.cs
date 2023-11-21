@@ -103,8 +103,8 @@ public class ContactService : ContactProtoService.ContactProtoServiceBase
     {
         try
         {
-            var command = new CreateContactCommand(request.FirstName, request.LastName,
-                request.DateOfBirth.ToDateTime(), request.DisplayName);
+            var command = new CreateContactCommand(request.FirstName, request.LastName, request.DisplayName,
+                                                     request.BirthDate.ToDateTime(),request.Email,request.Phonenumber);
             var result = await _mediator.Send(command);
             var Contact = _mapper.Map<ContactProtoModel>(result);
             return new CreateContactProtoResponse { Contact = Contact };
@@ -132,7 +132,7 @@ public class ContactService : ContactProtoService.ContactProtoServiceBase
     {
         try
         {
-            var command = new UpdateContactCommand(Guid.Parse(request.Id), request.FirstName, request.LastName, request.DateOfBirth.ToDateTime());
+            var command = new UpdateContactCommand(Guid.Parse(request.Id), request.FirstName, request.LastName, request.BirthDate.ToDateTime());
             await _mediator.Send(command);
             return new UpdateContactProtoResponse { Status = true };
         }

@@ -70,7 +70,7 @@ public class ContactReadRepository : IContactReadRepository
         ", new { Firstname = getContactByFilterQuery.FirstName,
                  Lastname = getContactByFilterQuery.LastName,
                  Displayname = getContactByFilterQuery.DisplayName,
-                 Birthdate = getContactByFilterQuery.DateOfBirth});
+                 Birthdate = getContactByFilterQuery.BirthDate});
 
         return (List<Contact?>)Contacts;
     }

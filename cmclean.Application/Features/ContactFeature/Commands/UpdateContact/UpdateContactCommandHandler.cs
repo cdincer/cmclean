@@ -22,7 +22,7 @@ public class UpdateContactCommandHandler : IRequestHandler<UpdateContactCommand,
         if (Contact is null)
             throw new NotFoundException($"Contact cannot found with id: {request.ContactId}");
         
-        Contact.UpdateContact(request.FirstName, request.LastName, request.DateOfBirth);
+        Contact.UpdateContact(request.FirstName, request.LastName, request.BirthDate);
         var result = new UpdateContactResponse
         {
             Status = true
