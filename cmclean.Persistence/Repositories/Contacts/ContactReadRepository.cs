@@ -21,7 +21,7 @@ public class ContactReadRepository : IContactReadRepository
         using var connection = new NpgsqlConnection
           (constring);
 
-        var Contacts = await connection.QueryAsync<Contact>(@"SELECT Id, Firstname, Lastname, Displayname, Birthdate FROM  ""Contacts""");
+        var Contacts = await connection.QueryAsync<Contact>(@"SELECT Id, Salutation, Firstname, Lastname, Displayname, Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber FROM  ""Contacts""");
 
         return (List<Contact?>)Contacts;
     }

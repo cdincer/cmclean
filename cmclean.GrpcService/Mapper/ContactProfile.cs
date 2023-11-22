@@ -15,7 +15,11 @@ namespace cmclean.GrpcService.Mapper
         {
             CreateMap<GetAllContactsResponse, ContactProtoModel>()
              .ForMember(dest => dest.BirthDate, opt =>
-                 opt.MapFrom(src => Timestamp.FromDateTime(src.BirthDate.ToUniversalTime())));
+             opt.MapFrom(src => Timestamp.FromDateTime(src.BirthDate.ToUniversalTime())))
+             .ForMember(dest => dest.CreationTimestamp, opt =>
+             opt.MapFrom(src => Timestamp.FromDateTime(src.CreationTimestamp.ToUniversalTime())))
+             .ForMember(dest => dest.LastChangeTimeStamp, opt =>
+             opt.MapFrom(src => Timestamp.FromDateTime(src.LastChangeTimeStamp.ToUniversalTime())));
 
             CreateMap<GetContactByIdResponse, ContactProtoModel>()
                 .ForMember(dest => dest.BirthDate, opt =>
