@@ -30,7 +30,11 @@ public class ContactProfile : Profile
 
         CreateMap<ContactProtoModel, GetContactByIdResponse>()
             .ForMember(dest => dest.BirthDate, opt =>
-                opt.MapFrom(src => src.BirthDate.ToDateTime()));
+            opt.MapFrom(src => src.BirthDate.ToDateTime()))
+            .ForMember(dest => dest.CreationTimestamp, opt =>
+            opt.MapFrom(src => src.CreationTimestamp.ToDateTime()))
+            .ForMember(dest => dest.LastChangeTimeStamp, opt =>
+            opt.MapFrom(src => src.LastChangeTimeStamp.ToDateTime()));
 
         CreateMap<ContactProtoModel, CreateContactResponse>()
             .ForMember(dest => dest.BirthDate, opt =>
