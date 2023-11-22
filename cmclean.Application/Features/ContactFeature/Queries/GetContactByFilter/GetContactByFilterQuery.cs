@@ -9,7 +9,6 @@ namespace cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter
 {
     public class GetContactByFilterQuery : IRequest<List<GetContactByFilterResponse>>
     {
-        public string Salutation { get; init; }
         public string FirstName { get; init; }
         public string LastName { get; init; }
         public string DisplayName { get; init; }

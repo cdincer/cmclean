@@ -34,7 +34,6 @@ namespace cmclean.MinimalApi.Extensions
                                                                 Birthdate timestamp,                                                    
                                                                 CreationTimestamp timestamp,
                                                                 LastChangeTimestamp timestamp,
-                                                                NotifyHasBirthdaySoon boolean,
                                                                 Email VARCHAR(50) UNIQUE NOT NULL,
                                                                 Phonenumber VARCHAR(24),
                                                                 PRIMARY KEY (Id))";
@@ -47,9 +46,9 @@ namespace cmclean.MinimalApi.Extensions
                 command.CommandText =
                 @"INSERT INTO ""Contacts"""
                 + "(Id, Salutation, Firstname, Lastname, Displayname, "
-                + "Birthdate, CreationTimestamp, LastChangeTimestamp, NotifyHasBirthdaySoon, Email, Phonenumber)"
+                + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
                 + $"VALUES ('{TrialGuid}','Mr', 'Can' , 'Dincer' ,'','2016-09-12T19:10:25',"
-                + $"'{DateTime.Now}','{DateTime.Now}', true,'trialrun1@email.com','02123445566')";
+                + $"'{DateTime.Now}','{DateTime.Now}','trialrun1@email.com','02123445566')";
                 command.ExecuteNonQuery();
                 Console.WriteLine("First test user created");
 
@@ -57,18 +56,18 @@ namespace cmclean.MinimalApi.Extensions
                 command.CommandText =
                 @"INSERT INTO ""Contacts"""
                 + "(Id, Salutation, Firstname, Lastname, Displayname, "
-                + "Birthdate, CreationTimestamp, LastChangeTimestamp, NotifyHasBirthdaySoon, Email, Phonenumber)"
+                + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
                 + $"VALUES ('{TrialGuid}','Mr', 'Cem' , 'Dicer' ,'','2016-09-16T19:10:25',"
-                + $"'{DateTime.Now}', '{DateTime.Now}', true,'trialrun2@email.com','02123558899')";
+                + $"'{DateTime.Now}', '{DateTime.Now}','trialrun2@email.com','02123558899')";
                 command.ExecuteNonQuery();
                 Console.WriteLine("Second test user created");
 
                 command.CommandText =
                @"INSERT INTO ""Contacts"""
                + "(Id, Salutation, Firstname, Lastname, Displayname, "
-               + "Birthdate, CreationTimestamp, LastChangeTimestamp, NotifyHasBirthdaySoon, Email, Phonenumber)"
+               + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
                + $"VALUES ('4b2056a9-7ee4-47b1-a64f-15770ceab7aa','Ms', 'Kimberly' , 'Director' ,'KimDirector','1974-11-13T19:10:25',"
-               + $"'{DateTime.Now}', '{DateTime.Now}', true,'trialrun3@email.com','02124669900')";
+               + $"'{DateTime.Now}', '{DateTime.Now}','trialrun3@email.com','02124669900')";
                 command.ExecuteNonQuery();
                 Console.WriteLine("Third test user created / stricly for update user scenario");
                 #endregion
