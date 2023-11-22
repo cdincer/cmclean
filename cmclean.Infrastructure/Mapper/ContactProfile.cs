@@ -25,8 +25,12 @@ public class ContactProfile : Profile
             opt.MapFrom(src => src.LastChangeTimeStamp.ToDateTime()));
 
         CreateMap<ContactProtoModel, GetContactByFilterResponse>()
-           .ForMember(dest => dest.BirthDate, opt =>
-               opt.MapFrom(src => src.BirthDate.ToDateTime()));
+            .ForMember(dest => dest.BirthDate, opt =>
+            opt.MapFrom(src => src.BirthDate.ToDateTime()))
+            .ForMember(dest => dest.CreationTimestamp, opt =>
+            opt.MapFrom(src => src.CreationTimestamp.ToDateTime()))
+            .ForMember(dest => dest.LastChangeTimeStamp, opt =>
+            opt.MapFrom(src => src.LastChangeTimeStamp.ToDateTime()));
 
         CreateMap<ContactProtoModel, GetContactByIdResponse>()
             .ForMember(dest => dest.BirthDate, opt =>

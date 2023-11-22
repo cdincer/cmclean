@@ -55,22 +55,26 @@ public class ContactReadRepository : IContactReadRepository
             }
             else if(CurrentValue == "01/01/0001 00:00:00")
             {
-                property.SetValue(getContactByFilterQuery, null, null);
+                property.SetValue(getContactByFilterQuery, DateTime.MinValue.AddDays(1), null);
             }
         }
 
 
-
         var Contacts = await connection.QueryAsync<Contact?>
-        (@"SELECT Id, Firstname, Lastname, Displayname, Birthdate FROM  ""Contacts"" where 
+        (@"SELECT Id, Salutation, Firstname, Lastname, Displayname, Birthdate, Email, Phonenumber  FROM  ""Contacts"" where 
         (Firstname = @Firstname OR  @Firstname IS NULL) AND
         (Lastname = @Lastname OR  @Lastname IS NULL) AND
         (Displayname = @Displayname OR  @Displayname IS NULL) AND
-        (Birthdate = @Birthdate OR  @Birthdate IS NULL)
+        (Birthdate = @Birthdate OR  @Birthdate >= '0001-01-02') AND
+        (Email = @Email OR  @Email IS NULL) AND
+        (Phonenumber = @Phonenumber OR  @Phonenumber IS NULL)
         ", new { Firstname = getContactByFilterQuery.FirstName,
                  Lastname = getContactByFilterQuery.LastName,
                  Displayname = getContactByFilterQuery.DisplayName,
-                 Birthdate = getContactByFilterQuery.BirthDate});
+                 Birthdate = getContactByFilterQuery.BirthDate,
+                 Email = getContactByFilterQuery.Email,
+                 Phonenumber = getContactByFilterQuery.Phonenumber
+              });
 
         return (List<Contact?>)Contacts;
     }

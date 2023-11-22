@@ -45,6 +45,8 @@ message GetContactByFilterProtoRequest
    string LastName = 2;
    string DisplayName = 3;
    google.protobuf.Timestamp BirthDate = 4;
+   string Email = 5;
+   string Phonenumber = 6;
 }
 
 message GetContactByFilterProtoResponse
