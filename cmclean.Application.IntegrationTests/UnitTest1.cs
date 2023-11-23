@@ -1,94 +1,25 @@
+using cmclean.Domain.Model;
 using Docker.DotNet;
 using Docker.DotNet.Models;
+using Npgsql;
+using Xunit.Abstractions;
+using Dapper;
+using System.Data;
 
 namespace cmclean.Application.IntegrationTests
 {
     public class UnitTest1
     {
+        private readonly ITestOutputHelper _testOutputHelper;
+
+
+        public UnitTest1(ITestOutputHelper output)
+        {
+            this._testOutputHelper = output;
+        }
+  
         [Fact]
         public async void Test1()
-        {
-            using (var conf = new DockerClientConfiguration(new Uri("npipe://./pipe/docker_engine"))) // localhost
-            using (var client = conf.CreateClient())
-            {
-
-                const string ContainerName = "GitLabTests";
-                const string ImageName = "gitlab/gitlab-ee";
-                const string ImageTag = "latest";
-
-                var containers = await client.Containers.ListContainersAsync(new ContainersListParameters() { All = true });
-                var container = containers.FirstOrDefault(c => c.Names.Contains("/" + ContainerName));
-                if (container == null)
-                {
-                    // Download image
-                    await client.Images.CreateImageAsync(new ImagesCreateParameters() { FromImage = ImageName, Tag = ImageTag }, new AuthConfig(), new Progress<JSONMessage>());
-
-                    // Create the container
-                    var config = new Config()
-                    {
-                        Hostname = "localhost"
-                    };
-
-                    // Configure the ports to expose
-                    var hostConfig = new HostConfig()
-                    {
-                        PortBindings = new Dictionary<string, IList<PortBinding>>
-                        {
-                         { "80/tcp", new List<PortBinding> 
-                            { 
-                             new PortBinding { HostIP = "127.0.0.1", HostPort = "8080" }
-                             } 
-                         } 
-                        }
-                    };
-
-                    // Create the container
-                    var response = await client.Containers.CreateContainerAsync(new CreateContainerParameters(config)
-                    {
-                        Image = ImageName + ":" + ImageTag,
-                        Name = ContainerName,
-                        Tty = false,
-                        HostConfig = hostConfig,
-                    });
-
-                    // Get the container object
-                    containers = await client.Containers.ListContainersAsync(new ContainersListParameters() { All = true });
-                    container = containers.First(c => c.ID == response.ID);
-
-                    if (container.State != "running")
-                    {
-                        var started = await client.Containers.StartContainerAsync(container.ID, new ContainerStartParameters());
-                        if (!started)
-                        {
-                            Assert.Fail("Cannot start the docker container");
-                        }
-                    }
-
-                    using (var httpClient = new HttpClient())
-                    {
-                        while (true)
-                        {
-                            try
-                            {
-                                using (var response2 = await httpClient.GetAsync("http://localhost:8080"))
-                                {
-                                    if (response2.IsSuccessStatusCode)
-                                        break;
-                                }
-                            }
-                            catch
-                            {
-                                Console.WriteLine("Couldn't reach gitlab page for health check.");
-                            }
-                        }
-                    }
-                }
-
-            }
-        }
-
-        [Fact]
-        public async void Test2()
         {
             using (var conf = new DockerClientConfiguration(new Uri("npipe://./pipe/docker_engine"))) // localhost
             using (var client = conf.CreateClient())
@@ -123,15 +54,22 @@ namespace cmclean.Application.IntegrationTests
                          }
                         }
                     };
-
+                    HealthConfig PostGresHealthConfig = new();
+                    PostGresHealthConfig.Test = new List<string> { "CMD-SHELL", "pg_isready", "-d" , "db_prod" };
+                    PostGresHealthConfig.Interval = TimeSpan.FromSeconds(30);
+                    PostGresHealthConfig.Timeout = TimeSpan.FromSeconds(60);
+                    PostGresHealthConfig.Retries = 5;
+                    PostGresHealthConfig.StartPeriod = 300000000000;
                     // Create the container
+
                     var response = await client.Containers.CreateContainerAsync(new CreateContainerParameters(config)
                     {
                         Image = ImageName + ":" + ImageTag,
                         Name = ContainerName,
                         Tty = false,
                         HostConfig = hostConfig,
-                        Env = new List<string> { "POSTGRES_USER = admin", "POSTGRES_PASSWORD=admin1234", "POSTGRES_DB=Contactmanagerdb" }
+                        Env = new List<string> { "POSTGRES_USER=admin", "POSTGRES_PASSWORD=admin1234", "POSTGRES_DB=Contactmanagerdb" },
+                        Healthcheck = PostGresHealthConfig
                     });                         
                                                 
                     // Get the container object
@@ -147,24 +85,101 @@ namespace cmclean.Application.IntegrationTests
                         }
                     }
 
-                    //using (var httpClient = new HttpClient())
-                    //{
-                    //    while (true)
-                    //    {
-                    //        try
-                    //        {
-                    //            using (var response2 = await httpClient.GetAsync("http://localhost:5432"))
-                    //            {
-                    //                if (response2.IsSuccessStatusCode)
-                    //                    break;
-                    //            }
-                    //        }
-                    //        catch
-                    //        {
-                    //            Console.WriteLine("Couldn't reach gitlab page for health check.");
-                    //        }
-                    //    }
-                    //}
+                    try
+                    {
+                        string ConnectionString = "Server=127.0.0.1;Port=5432;Database=Contactmanagerdb;User Id=admin;Password=admin1234;";
+                        using var connection = new NpgsqlConnection
+                        (ConnectionString);
+                        connection.Open();
+
+                        using var command = new NpgsqlCommand
+                        {
+                            Connection = connection
+                        };
+                        #region Table Creation
+                        command.CommandText = @"DROP TABLE IF EXISTS ""Contacts"" ";
+                        command.ExecuteNonQuery();
+
+                        command.CommandText = @"CREATE TABLE ""Contacts""(Id uuid, 
+                                                                Salutation VARCHAR(5),
+                                                                Firstname VARCHAR(24),
+                                                                Lastname VARCHAR(24),
+                                                                Displayname VARCHAR(50),
+                                                                Birthdate timestamp,                                                    
+                                                                CreationTimestamp timestamp,
+                                                                LastChangeTimestamp timestamp,
+                                                                Email VARCHAR(50) UNIQUE,
+                                                                Phonenumber VARCHAR(24),
+                                                                PRIMARY KEY (Id))";
+                        command.ExecuteNonQuery();
+                        Console.WriteLine("Table creation is succesful");
+                        #endregion
+
+                        #region Sample Records For Testing
+                        Guid TrialGuid = Guid.NewGuid();
+                        command.CommandText =
+                        @"INSERT INTO ""Contacts"""
+                        + "(Id, Salutation, Firstname, Lastname, Displayname, "
+                        + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
+                        + $"VALUES ('{TrialGuid}','Mr', 'Jeffrey' , 'Donovan' ,'','1968-05-11T19:10:25',"
+                        + $"'{DateTime.Now}','{DateTime.Now}','trialrun1@email.com','02123445566')";
+                        command.ExecuteNonQuery();
+                        Console.WriteLine("First test user created");
+
+                        TrialGuid = Guid.NewGuid();
+                        command.CommandText =
+                        @"INSERT INTO ""Contacts"""
+                        + "(Id, Salutation, Firstname, Lastname, Displayname, "
+                        + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
+                        + $"VALUES ('{TrialGuid}','Mr', 'Bruce' , 'Campbell' ,'','1958-06-22T19:10:25',"
+                        + $"'{DateTime.Now}', '{DateTime.Now}','trialrun2@email.com','02123558899')";
+                        command.ExecuteNonQuery();
+                        Console.WriteLine("Second test user created");
+
+                        command.CommandText =
+                       @"INSERT INTO ""Contacts"""
+                       + "(Id, Salutation, Firstname, Lastname, Displayname, "
+                       + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
+                       + $"VALUES ('4b2056a9-7ee4-47b1-a64f-15770ceab7aa','Ms', 'Kimberly' , 'Director' ,'KimDirector','1974-11-13T19:10:25',"
+                       + $"'{DateTime.Now}', '{DateTime.Now}','trialrun3@email.com','02124669900')";
+                        command.ExecuteNonQuery();
+                        Console.WriteLine("Third test user created stricly for update user scenario");
+
+                        command.CommandText =
+                         @"INSERT INTO ""Contacts"""
+                         + "(Id, Salutation, Firstname, Lastname, Displayname, "
+                         + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
+                         + $"VALUES ('104142c0-7248-48aa-b230-5798810adf58','Ms', 'Evelyn' , 'Hampshire' ,'EveH','{DateTime.Now.AddDays(12)}',"
+                         + $"'{DateTime.Now}', '{DateTime.Now}','trialrun4@email.com','02124669901')";
+                        command.ExecuteNonQuery();
+                        Console.WriteLine("Fourth test user created to see for Birthday under the check range scenario");
+
+                        command.CommandText =
+                        @"INSERT INTO ""Contacts"""
+                        + "(Id, Salutation, Firstname, Lastname, Displayname, "
+                        + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
+                        + $"VALUES ('15423c8b-6f3d-4848-868a-ff10e2835e60','Mr', 'Matthew' , 'Lillard' ,'MShagl','{DateTime.Now.AddDays(15)}',"
+                        + $"'{DateTime.Now}', '{DateTime.Now}','trialrun5@email.com','02124669902')";
+                        command.ExecuteNonQuery();
+                        Console.WriteLine("Fifth test user created to see for Birthday over the check range scenario");
+                        command.CommandText = @"SELECT Id, Salutation, Firstname, Lastname, Displayname, Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber FROM  ""Contacts""";
+
+                        var ConnectionString2 = "Server=127.0.0.1;Port=5432;Database=Contactmanagerdb;User Id=admin;Password=admin1234;";
+                        using var connection2 = new NpgsqlConnection (ConnectionString2);
+                        var Contacts = await connection.QueryAsync<Contact>(@"SELECT Id, Salutation, Firstname, Lastname, Displayname, Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber FROM  ""Contacts""");
+
+                        foreach(var Contact in Contacts)
+                        {
+                            _testOutputHelper.WriteLine("Contact name: " + Contact.FirstName);
+                        }
+                        #endregion
+
+                    }
+                    catch (NpgsqlException ex)
+                    {
+                        Console.WriteLine("Database connection or table creation failed" + ex.Message);
+                    }
+
                 }
 
             }
