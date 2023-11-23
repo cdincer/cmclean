@@ -6,7 +6,7 @@ public class Contact: BaseEntity
     public string Salutation { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public string? DisplayName { get; set; }
+    public string DisplayName { get; set; }
     public DateTime BirthDate { get; set; }
     public DateTime CreationTimestamp { get; private set; }
     public DateTime LastChangeTimeStamp { get; private set; }
@@ -14,15 +14,14 @@ public class Contact: BaseEntity
     public string Email { get; set; }
     public string Phonenumber { get; set; }
 
-
     public void CreateContact()
     {
         this.Id = Guid.NewGuid();
         this.CreationTimestamp = DateTime.Now;
         this.LastChangeTimeStamp = DateTime.Now;
-    }
+        this.DisplayName = this.DisplayName.Length != 0 ? DisplayName : Salutation + FirstName + LastName; ;
 
-  
+    }
 
     public void UpdateContact(string salutation, string firstName, string lastName, 
                               string displayName, DateTime birthDate, string email, string phonenumber)
@@ -30,7 +29,7 @@ public class Contact: BaseEntity
         Salutation = salutation;
         FirstName = firstName;
         LastName = lastName;
-        DisplayName = displayName;
+        DisplayName = displayName.Length != 0 ? displayName : salutation + firstName + lastName; ;
         BirthDate = birthDate;
         LastChangeTimeStamp = DateTime.Now;
         Email = email;

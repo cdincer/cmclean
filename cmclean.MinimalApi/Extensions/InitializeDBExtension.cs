@@ -28,13 +28,13 @@ namespace cmclean.MinimalApi.Extensions
 
                 command.CommandText = @"CREATE TABLE ""Contacts""(Id uuid, 
                                                                 Salutation VARCHAR(5),
-                                                                Firstname VARCHAR(24) NOT NULL,
-                                                                Lastname VARCHAR(24) NOT NULL,
+                                                                Firstname VARCHAR(24),
+                                                                Lastname VARCHAR(24),
                                                                 Displayname VARCHAR(50),
                                                                 Birthdate timestamp,                                                    
                                                                 CreationTimestamp timestamp,
                                                                 LastChangeTimestamp timestamp,
-                                                                Email VARCHAR(50) UNIQUE NOT NULL,
+                                                                Email VARCHAR(50) UNIQUE,
                                                                 Phonenumber VARCHAR(24),
                                                                 PRIMARY KEY (Id))";
                 command.ExecuteNonQuery();

@@ -6,9 +6,9 @@ public class CreateContactCommand : IRequest<CreateContactResponse>
 {
     public string Salutation { get; private set; }
     public string FirstName { get; private set; } 
-    public string LastName { get; private  set; }
+    public string LastName { get; private set; }
     public string DisplayName { get; private set; }
-    public DateTime BirthDate { get; private  set; }
+    public DateTime BirthDate { get; private set; }
     public string Email { get; set; }
     public string Phonenumber { get; set; }
 
