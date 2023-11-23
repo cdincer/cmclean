@@ -61,7 +61,7 @@ public class ContactReadRepository : IContactReadRepository
 
 
         var Contacts = await connection.QueryAsync<Contact?>
-        (@"SELECT Id, Salutation, Firstname, Lastname, Displayname, Birthdate, Email, Phonenumber  FROM  ""Contacts"" where 
+        (@"SELECT Id, Salutation, Firstname, Lastname, Displayname, Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber FROM ""Contacts"" where 
         (Firstname = @Firstname OR  @Firstname IS NULL) AND
         (Lastname = @Lastname OR  @Lastname IS NULL) AND
         (Displayname = @Displayname OR  @Displayname IS NULL) AND
