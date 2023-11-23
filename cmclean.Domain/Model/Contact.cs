@@ -8,8 +8,8 @@ public class Contact: BaseEntity
     public string LastName { get; set; }
     public string? DisplayName { get; set; }
     public DateTime BirthDate { get; set; }
-    public DateTime CreationTimestamp { get; set; }
-    public DateTime LastChangeTimeStamp { get; set; }
+    public DateTime CreationTimestamp { get; private set; }
+    public DateTime LastChangeTimeStamp { get; private set; }
     public bool NotifyHasBirthdaySoon { get; set; }
     public string Email { get; set; }
     public string Phonenumber { get; set; }
