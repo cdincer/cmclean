@@ -55,7 +55,7 @@ public class ContactReadRepository : IContactReadRepository
             }
             else if(CurrentValue == "01/01/0001 00:00:00")
             {
-                property.SetValue(getContactByFilterQuery, DateTime.MinValue.AddDays(1), null);
+                property.SetValue(getContactByFilterQuery, DateTime.MinValue, null);
             }
         }
 
@@ -65,7 +65,7 @@ public class ContactReadRepository : IContactReadRepository
         (Firstname = @Firstname OR  @Firstname IS NULL) AND
         (Lastname = @Lastname OR  @Lastname IS NULL) AND
         (Displayname = @Displayname OR  @Displayname IS NULL) AND
-        (Birthdate = @Birthdate OR  @Birthdate >= '0001-01-02') AND
+        (Birthdate = @Birthdate OR  '1111-11-01' > @Birthdate) AND
         (Email = @Email OR  @Email IS NULL) AND
         (Phonenumber = @Phonenumber OR  @Phonenumber IS NULL)
         ", new { Firstname = getContactByFilterQuery.FirstName,

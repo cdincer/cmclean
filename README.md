@@ -5,7 +5,7 @@ Use Docker-compose to start everything up through CLI
 Or you can use the debug option in Visual Studio to start it up and look through it.
 
 
-# Query Testing
+# Filter Query Testing
   {
     "firstName": "",
     "lastName": "Dicer",
