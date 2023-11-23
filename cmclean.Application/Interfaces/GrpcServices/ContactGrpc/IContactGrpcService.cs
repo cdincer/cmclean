@@ -13,7 +13,7 @@ namespace cmclean.Application.Interfaces.GrpcServices.ContactGrpc
         Task<GetContactByIdResponse> GetContactByIdAsync(string ContactID);
         Task<List<GetContactByFilterResponse>> GetContactByFilterAsync(GetContactByFilterQuery GetContactByFilterQuery);
         Task<CreateContactResponse> CreateContactAsync(CreateContactRequest Contact);
-        Task<UpdateContactResponse> UpdateContactAsync(UpdateContactRequest Contact, string ContactID);
+        Task<UpdateContactResponse> UpdateContactAsync(UpdateContactRequest Contact);
         Task<DeleteContactResponse> DeleteContactAsync(DeleteContactRequest Contact);
     }
 }

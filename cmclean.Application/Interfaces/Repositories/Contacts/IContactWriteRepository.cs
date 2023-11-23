@@ -5,6 +5,6 @@ namespace cmclean.Application.Interfaces.Repositories.Contacts;
 public interface IContactWriteRepository
 {
     Task<Contact> AddAsync(Contact entity);
-    Contact Update(Contact entity);
-    bool Remove(Contact entity);
+    Task<bool> Update(Contact entity);
+    Task<bool> Remove(Contact entity);
 }

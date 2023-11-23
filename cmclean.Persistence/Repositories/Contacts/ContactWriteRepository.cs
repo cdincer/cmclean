@@ -49,14 +49,40 @@ namespace cmclean.Persistence.Repositories.Contacts
             return entity;
         }
 
-        public bool Remove(Contact entity)
+        public async Task<bool>  Remove(Contact entity)
         {
             throw new NotImplementedException();
         }
 
-        public Contact Update(Contact entity)
+        public async Task<bool> Update(Contact entity)
         {
-            throw new NotImplementedException();
+            var constring = _configuration["ConnectionStrings:Default"];
+            using var connection = new NpgsqlConnection
+              (constring);
+
+            var affected =
+               await connection.ExecuteAsync
+                   (@"UPDATE ""Contacts"" SET Salutation = @Salutation, Firstname =  @Firstname, 
+                    Lastname = @Lastname , Displayname = @Displayname, Birthdate = @Birthdate, 
+                    LastChangeTimestamp = @LastChangeTimestamp, Email = @Email,Phonenumber = @Phonenumber
+                    WHERE Id = @Id",
+                           new
+                           {
+                               id = entity.Id,
+                               Salutation = entity.Salutation,
+                               Firstname = entity.FirstName,
+                               Lastname = entity.LastName,
+                               Displayname = entity.DisplayName,
+                               Birthdate = entity.BirthDate,
+                               LastChangeTimeStamp = entity.LastChangeTimeStamp,
+                               Email = entity.Email,
+                               Phonenumber = entity.Phonenumber
+                           });
+
+            if (affected == 0)
+                return false;
+
+            return true;
         }
     }
 }

@@ -47,7 +47,7 @@ namespace cmclean.MinimalApi.Extensions
                 @"INSERT INTO ""Contacts"""
                 + "(Id, Salutation, Firstname, Lastname, Displayname, "
                 + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
-                + $"VALUES ('{TrialGuid}','Mr', 'Can' , 'Dincer' ,'','2016-09-12T19:10:25',"
+                + $"VALUES ('{TrialGuid}','Mr', 'Jeffrey' , 'Donovan' ,'','1968-05-11T19:10:25',"
                 + $"'{DateTime.Now}','{DateTime.Now}','trialrun1@email.com','02123445566')";
                 command.ExecuteNonQuery();
                 Console.WriteLine("First test user created");
@@ -57,7 +57,7 @@ namespace cmclean.MinimalApi.Extensions
                 @"INSERT INTO ""Contacts"""
                 + "(Id, Salutation, Firstname, Lastname, Displayname, "
                 + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
-                + $"VALUES ('{TrialGuid}','Mr', 'Cem' , 'Dicer' ,'','2016-09-16T19:10:25',"
+                + $"VALUES ('{TrialGuid}','Mr', 'Bruce' , 'Campbell' ,'','1958-06-22T19:10:25',"
                 + $"'{DateTime.Now}', '{DateTime.Now}','trialrun2@email.com','02123558899')";
                 command.ExecuteNonQuery();
                 Console.WriteLine("Second test user created");

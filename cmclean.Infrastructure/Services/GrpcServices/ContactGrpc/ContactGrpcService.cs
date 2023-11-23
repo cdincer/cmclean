@@ -49,10 +49,9 @@ namespace cmclean.Infrastructure.Services.GrpcServices.ContactGrpc
                 return new CreateContactResponse();
             }
         }
-        public async Task<UpdateContactResponse> UpdateContactAsync(UpdateContactRequest Contact, string ContactID)
+        public async Task<UpdateContactResponse> UpdateContactAsync(UpdateContactRequest Contact)
         {
             var request = _mapper.Map<UpdateContactProtoRequest>(Contact);
-            request.Id = ContactID;
             var response = await _ContactProtoService.UpdateContactAsync(request);
             var updatedContact = _mapper.Map<UpdateContactResponse>(response);
             return updatedContact;

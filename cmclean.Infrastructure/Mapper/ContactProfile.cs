@@ -65,9 +65,7 @@ public class ContactProfile : Profile
 
         CreateMap<UpdateContactRequest, UpdateContactProtoRequest>()
             .ForMember(dest => dest.BirthDate, opt =>
-                opt.MapFrom(src => Timestamp.FromDateTime(src.BirthDate.ToUniversalTime())))
-            .ForMember(dest => dest.Id, opt =>
-                opt.MapFrom(src => src.ContactId.ToString())).ReverseMap();
+                opt.MapFrom(src => Timestamp.FromDateTime(src.BirthDate.ToUniversalTime())));
 
         CreateMap<DeleteContactRequest, DeleteContactProtoRequest>();
     }

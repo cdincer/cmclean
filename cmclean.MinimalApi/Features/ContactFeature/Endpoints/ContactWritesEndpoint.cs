@@ -33,7 +33,7 @@ namespace cmclean.MinimalApi.Features.ContactFeature.Endpoints
                 .Produces<ErrorResponse>(500);
 
 
-            ContactGroup.MapPut("/{id}", UpdateContact)
+            ContactGroup.MapPut("/", UpdateContact)
                  .AddEndpointFilter<GuidValidationFilter>()
                  .WithName("UpdateContact")
                 .WithDisplayName("Contact Writes Endpoints")
@@ -60,9 +60,9 @@ namespace cmclean.MinimalApi.Features.ContactFeature.Endpoints
             return TypedResults.Ok(addedContact);
         }
 
-        private async Task<IResult> UpdateContact(UpdateContactRequest Contact, string id)
+        private async Task<IResult> UpdateContact(UpdateContactRequest Contact)
         {
-            await _ContactGrpcService.UpdateContactAsync(Contact, id);
+            await _ContactGrpcService.UpdateContactAsync(Contact);
             return TypedResults.NoContent();
         }
 

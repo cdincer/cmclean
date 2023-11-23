@@ -10,10 +10,8 @@ public class GetAllContactsQueryHandler : IRequestHandler<GetAllContactsQuery, L
     private readonly IMapper _mapper;
     public GetAllContactsQueryHandler(IContactReadRepository ContactReadRepository ,IMapper mapper)
     {
-
         _ContactReadRepository = ContactReadRepository;       
         _mapper = mapper;
-
     }
 
     public async Task<List<GetAllContactsResponse>> Handle(GetAllContactsQuery request, CancellationToken cancellationToken)

@@ -24,10 +24,16 @@ public class Contact: BaseEntity
 
   
 
-    public void UpdateContact(string firstName, string lastName, DateTime birthDate)
+    public void UpdateContact(string salutation, string firstName, string lastName, 
+                              string displayName, DateTime birthDate, string email, string phonenumber)
     {
+        Salutation = salutation;
         FirstName = firstName;
         LastName = lastName;
+        DisplayName = displayName;
         BirthDate = birthDate;
+        LastChangeTimeStamp = DateTime.Now;
+        Email = email;
+        Phonenumber = phonenumber;
     }
 }

@@ -70,10 +70,15 @@ message CreateContactProtoResponse {
 
 message UpdateContactProtoRequest {
   string Id = 1;
-  string FirstName = 2;
-  string LastName = 3;
-  google.protobuf.Timestamp BirthDate = 4;
+  string Salutation = 2;
+  string FirstName = 3;
+  string LastName = 4;
+  string DisplayName = 5;
+  google.protobuf.Timestamp BirthDate = 6;
+  string Email = 7;
+  string Phonenumber = 8;
 };
+
 message UpdateContactProtoResponse {
   bool status = 1;
 };

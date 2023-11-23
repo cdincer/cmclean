@@ -132,7 +132,9 @@ public class ContactService : ContactProtoService.ContactProtoServiceBase
     {
         try
         {
-            var command = new UpdateContactCommand(Guid.Parse(request.Id), request.FirstName, request.LastName, request.BirthDate.ToDateTime());
+            var command = new UpdateContactCommand(Guid.Parse(request.Id), request.Salutation, request.FirstName, 
+                                                   request.LastName, request.DisplayName ,request.BirthDate.ToDateTime(), 
+                                                   request.Email, request.Phonenumber);
             await _mediator.Send(command);
             return new UpdateContactProtoResponse { Status = true };
         }
