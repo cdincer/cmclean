@@ -5,10 +5,10 @@ namespace cmclean.Application.Features.ContactFeature.Commands.DeleteContact;
 
 public class DeleteContactRequest
 {
-    public Guid ContactId { get; private set; }
+    public Guid Id { get; private set; }
     
-    public DeleteContactRequest(Guid contactId)
+    public DeleteContactRequest(Guid id)
     {
-        ContactId = contactId;
+        Id = id;
     }
 }

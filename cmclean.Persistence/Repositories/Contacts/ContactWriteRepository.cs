@@ -51,7 +51,19 @@ namespace cmclean.Persistence.Repositories.Contacts
 
         public async Task<bool>  Remove(Contact entity)
         {
-            throw new NotImplementedException();
+            var constring = _configuration["ConnectionStrings:Default"];
+            using var connection = new NpgsqlConnection
+              (constring);
+
+            var affected =
+                await connection.ExecuteAsync
+                    (@"DELETE FROM ""Contacts"" WHERE Id = @Id",
+                new { Id = entity.Id });
+
+            if (affected == 0)
+                return false;
+
+            return true;
         }
 
         public async Task<bool> Update(Contact entity)

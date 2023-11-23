@@ -16,14 +16,14 @@ public class DeleteContactCommandHandler : IRequestHandler<DeleteContactCommand,
     }
     public async Task<DeleteContactResponse> Handle(DeleteContactCommand request, CancellationToken cancellationToken)
     {
-        var Contact = await _ContactReadRepository.GetByIdAsync(request.ContactId);
+        var Contact = await _ContactReadRepository.GetByIdAsync(request.Id);
         if (Contact is null)
-            throw new NotFoundException($"Contact cannot found with id: {request.ContactId}");
+            throw new NotFoundException($"Contact cannot found with id: {request.Id}");
         
-        _ContactWriteRepository.Remove(Contact);
+       var affected = await _ContactWriteRepository.Remove(Contact);
         var result = new DeleteContactResponse
         {
-            Status = true
+            Status = affected
         };
         return result;
     }
