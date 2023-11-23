@@ -2,19 +2,12 @@
 using cmclean.Application.Common.Behaviours;
 using cmclean.Application.Common.Exceptions;
 using cmclean.Application.Features.ContactFeature.Commands.UpdateContact;
-using cmclean.Application.Features.ContactFeature.Commands.UpdateContact;
 using cmclean.Application.Interfaces.Repositories.Contacts;
 using cmclean.Domain.Model;
 using FluentAssertions;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace cmclean.Application.UnitTests.Features.ContactFeature.Commands.UpdateContact
 {
