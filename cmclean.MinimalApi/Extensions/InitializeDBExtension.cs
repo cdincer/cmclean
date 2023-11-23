@@ -69,9 +69,28 @@ namespace cmclean.MinimalApi.Extensions
                + $"VALUES ('4b2056a9-7ee4-47b1-a64f-15770ceab7aa','Ms', 'Kimberly' , 'Director' ,'KimDirector','1974-11-13T19:10:25',"
                + $"'{DateTime.Now}', '{DateTime.Now}','trialrun3@email.com','02124669900')";
                 command.ExecuteNonQuery();
-                Console.WriteLine("Third test user created / stricly for update user scenario");
+                Console.WriteLine("Third test user created stricly for update user scenario");
+
+                command.CommandText =
+                 @"INSERT INTO ""Contacts"""
+                 + "(Id, Salutation, Firstname, Lastname, Displayname, "
+                 + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
+                 + $"VALUES ('104142c0-7248-48aa-b230-5798810adf58','Ms', 'Evelyn' , 'Hampshire' ,'EveH','{DateTime.Now.AddDays(12)}',"
+                 + $"'{DateTime.Now}', '{DateTime.Now}','trialrun4@email.com','02124669901')";
+                command.ExecuteNonQuery();
+                Console.WriteLine("Fourth test user created to see for Birthday under the check range scenario");
+
+                command.CommandText =
+                @"INSERT INTO ""Contacts"""
+                + "(Id, Salutation, Firstname, Lastname, Displayname, "
+                + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
+                + $"VALUES ('15423c8b-6f3d-4848-868a-ff10e2835e60','Mr', 'Matthew' , 'Lillard' ,'MShagl','{DateTime.Now.AddDays(15)}',"
+                + $"'{DateTime.Now}', '{DateTime.Now}','trialrun5@email.com','02124669902')";
+                command.ExecuteNonQuery();
+                Console.WriteLine("Fifth test user created to see for Birthday over the check range scenario");
+
                 #endregion
-              
+
             }
             catch (NpgsqlException ex)
             {
