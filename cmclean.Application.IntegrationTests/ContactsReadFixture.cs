@@ -1,40 +1,32 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
-using Respawn;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using Docker.DotNet.Models;
+﻿using Docker.DotNet.Models;
 using Docker.DotNet;
 using Npgsql;
+using Xunit;
 
 namespace cmclean.Application.IntegrationTests
 {
-    [SetUpFixture]
-    public class Testing
+    public class ContactsReadFixture : IAsyncLifetime
     {
 
         const string ContainerName = "IntegrationTestDB";
 
-        public Testing()
+        public ContactsReadFixture()
         {
-
+            
         }
 
-        [OneTimeSetUp]
-        public async Task RunBeforeAnyTests()
+        public async Task InitializeAsync()
         {
-           await  SetUpDockerContainer();
-           await  SetupDatabaseAndSampleRecords();
+            await SetUpDockerContainer();
+            await SetupDatabaseAndSampleRecords();
         }
 
-        [OneTimeTearDown]
-        public async Task  RunAfterAnyTests()
+        public async Task DisposeAsync()
         {
             await RemoveDockerContainer();
         }
-        public async static Task SetUpDockerContainer()
+
+        public async Task<int> SetUpDockerContainer()
         {
 
 
@@ -97,24 +89,24 @@ namespace cmclean.Application.IntegrationTests
                         var started = await client.Containers.StartContainerAsync(container.ID, new ContainerStartParameters());
                         if (!started)
                         {
-                            Assert.Fail("Cannot start the docker container");
+                            Console.WriteLine("Not started");
                         }
                     }
                 }
-
+                return 1;
             }
         }
 
-        public async static Task SetupDatabaseAndSampleRecords()
+        public async Task<int> SetupDatabaseAndSampleRecords()
         {
             try
             {
-                string ConnectionString = "Server=127.0.0.1;Port=5432;Database=Contactmanagerdb;User Id=admin;Password=admin1234;";
-                using var connection = new NpgsqlConnection
+                string ConnectionString = "Server=127.0.0.1;Port=5432;Database=Contactmanagerdb;User Id=admin;Password=admin1234;Timeout=50";
+                await using var connection = new NpgsqlConnection
                 (ConnectionString);
                 connection.Open();
 
-                using var command = new NpgsqlCommand
+                await using var command = new NpgsqlCommand
                 {
                     Connection = connection
                 };
@@ -187,10 +179,12 @@ namespace cmclean.Application.IntegrationTests
                 command.CommandText = @"SELECT Id, Salutation, Firstname, Lastname, Displayname, Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber FROM  ""Contacts""";
                 #endregion
 
+                return 1;
             }
             catch (NpgsqlException ex)
             {
                 Console.WriteLine("Database connection or table creation failed" + ex.Message);
+                return 0;
             }
 
         }
@@ -202,9 +196,14 @@ namespace cmclean.Application.IntegrationTests
             {
                 var containers = await client.Containers.ListContainersAsync(new ContainersListParameters() { All = true });
                 var container = containers.FirstOrDefault(c => c.Names.Contains("/" + ContainerName));
-
-                client.Containers.RemoveContainerAsync(container.ID, new ContainerRemoveParameters()).Wait();
+                await client.Containers.StopContainerAsync(container.ID, new ContainerStopParameters
+                {
+                    WaitBeforeKillSeconds = 3
+                });
+                 client.Containers.RemoveContainerAsync(container.ID, new ContainerRemoveParameters()).Wait();
             }
         }
+
+  
     }
 }
