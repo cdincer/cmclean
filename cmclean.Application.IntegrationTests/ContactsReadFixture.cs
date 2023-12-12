@@ -12,13 +12,13 @@ namespace cmclean.Application.IntegrationTests
 
         public ContactsReadFixture()
         {
-            
+
         }
 
         public async Task InitializeAsync()
         {
-            await SetUpDockerContainer();
-            await SetupDatabaseAndSampleRecords();
+            await PostgreSQLContainerCreation();
+            await ExecuteTestSampleCommands();
         }
 
         public async Task DisposeAsync()
@@ -26,7 +26,7 @@ namespace cmclean.Application.IntegrationTests
             await RemoveDockerContainer();
         }
 
-        public async Task<int> SetUpDockerContainer()
+        public async Task<int> PostgreSQLContainerCreation()
         {
 
 
@@ -97,24 +97,43 @@ namespace cmclean.Application.IntegrationTests
             }
         }
 
-        public async Task<int> SetupDatabaseAndSampleRecords()
+        public async Task<int> ExecuteTestSampleCommands()
         {
-            try
-            {
-                string ConnectionString = "Server=127.0.0.1;Port=5432;Database=Contactmanagerdb;User Id=admin;Password=admin1234;Timeout=50";
-                await using var connection = new NpgsqlConnection
-                (ConnectionString);
-                connection.Open();
-
-                await using var command = new NpgsqlCommand
+            var connectionEstablised = false;
+            var start = DateTime.UtcNow;
+            int maxWaitTimeSeconds = 20;
+            while (!connectionEstablised && start.AddSeconds(maxWaitTimeSeconds) > DateTime.UtcNow)
+            { 
+                try
                 {
-                    Connection = connection
-                };
-                #region Table Creation
-                command.CommandText = @"DROP TABLE IF EXISTS ""Contacts"" ";
-                command.ExecuteNonQuery();
+                    string ConnectionStringT = "Server=127.0.0.1;Port=5432;Database=Contactmanagerdb;User Id=admin;Password=admin1234;Timeout=50";
+                    await using var connectionT = new NpgsqlConnection
+                    (ConnectionStringT);
+                    await connectionT.OpenAsync();
+                    connectionEstablised = true;
 
-                command.CommandText = @"CREATE TABLE ""Contacts""(Id uuid, 
+                }
+                catch
+                {
+                    // If opening the npgSQL connection fails, SQL Server is not ready yet
+                    await Task.Delay(500);
+                }
+            }
+            string ConnectionString = "Server=127.0.0.1;Port=5432;Database=Contactmanagerdb;User Id=admin;Password=admin1234;Timeout=50";
+            await using var connection = new NpgsqlConnection
+            (ConnectionString);
+            connection.Open();
+
+            await using var command = new NpgsqlCommand
+            {
+                Connection = connection
+            };
+            #region Table Creation
+            string TBUDateTimeFormat = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
+            command.CommandText = @"DROP TABLE IF EXISTS ""Contacts"" ";
+            command.ExecuteNonQuery();
+
+            command.CommandText = @"CREATE TABLE ""Contacts""(Id uuid, 
                                                                 Salutation VARCHAR(5),
                                                                 Firstname VARCHAR(24),
                                                                 Lastname VARCHAR(24),
@@ -125,67 +144,63 @@ namespace cmclean.Application.IntegrationTests
                                                                 Email VARCHAR(50) UNIQUE,
                                                                 Phonenumber VARCHAR(24),
                                                                 PRIMARY KEY (Id))";
-                command.ExecuteNonQuery();
-                Console.WriteLine("Table creation is succesful");
-                #endregion
+            command.ExecuteNonQuery();
+            Console.WriteLine("Table creation is succesful");
+            #endregion
 
-                #region Sample Records For Testing
-                Guid TrialGuid = Guid.NewGuid();
-                command.CommandText =
-                @"INSERT INTO ""Contacts"""
-                + "(Id, Salutation, Firstname, Lastname, Displayname, "
-                + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
-                + $"VALUES ('{TrialGuid}','Mr', 'Jeffrey' , 'Donovan' ,'','1968-05-11T19:10:25',"
-                + $"'{DateTime.Now}','{DateTime.Now}','trialrun1@email.com','02123445566')";
-                command.ExecuteNonQuery();
-                Console.WriteLine("First test user created");
+            #region Sample Records For Testing
+            Guid TrialGuid = Guid.NewGuid();
+            command.CommandText =
+            @"INSERT INTO ""Contacts"""
+            + "(Id, Salutation, Firstname, Lastname, Displayname, "
+            + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
+            + $"VALUES ('{TrialGuid}','Mr', 'Jeffrey' , 'Donovan' ,'','1968-05-11T19:10:25',"
+            + $"'{TBUDateTimeFormat}','{TBUDateTimeFormat}','trialrun1@email.com','02123445566')";
+            command.ExecuteNonQuery();
+            Console.WriteLine("First test user created");
 
-                TrialGuid = Guid.NewGuid();
-                command.CommandText =
-                @"INSERT INTO ""Contacts"""
-                + "(Id, Salutation, Firstname, Lastname, Displayname, "
-                + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
-                + $"VALUES ('{TrialGuid}','Mr', 'Bruce' , 'Campbell' ,'','1958-06-22T19:10:25',"
-                + $"'{DateTime.Now}', '{DateTime.Now}','trialrun2@email.com','02123558899')";
-                command.ExecuteNonQuery();
-                Console.WriteLine("Second test user created");
+            TrialGuid = Guid.NewGuid();
+            command.CommandText =
+            @"INSERT INTO ""Contacts"""
+            + "(Id, Salutation, Firstname, Lastname, Displayname, "
+            + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
+            + $"VALUES ('{TrialGuid}','Mr', 'Bruce' , 'Campbell' ,'','1958-06-22T19:10:25',"
+            + $"'{TBUDateTimeFormat}', '{TBUDateTimeFormat}','trialrun2@email.com','02123558899')";
+            command.ExecuteNonQuery();
+            Console.WriteLine("Second test user created");
 
-                command.CommandText =
-               @"INSERT INTO ""Contacts"""
-               + "(Id, Salutation, Firstname, Lastname, Displayname, "
-               + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
-               + $"VALUES ('4b2056a9-7ee4-47b1-a64f-15770ceab7aa','Ms', 'Kimberly' , 'Director' ,'KimDirector','1974-11-13T19:10:25',"
-               + $"'{DateTime.Now}', '{DateTime.Now}','trialrun3@email.com','02124669900')";
-                command.ExecuteNonQuery();
-                Console.WriteLine("Third test user created stricly for update user scenario");
+            command.CommandText =
+           @"INSERT INTO ""Contacts"""
+           + "(Id, Salutation, Firstname, Lastname, Displayname, "
+           + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
+           + $"VALUES ('4b2056a9-7ee4-47b1-a64f-15770ceab7aa','Ms', 'Kimberly' , 'Director' ,'KimDirector','1974-11-13T19:10:25',"
+           + $"'{TBUDateTimeFormat}', '{TBUDateTimeFormat}','trialrun3@email.com','02124669900')";
+            command.ExecuteNonQuery();
+            Console.WriteLine("Third test user created stricly for update user scenario");
 
-                command.CommandText =
-                 @"INSERT INTO ""Contacts"""
-                 + "(Id, Salutation, Firstname, Lastname, Displayname, "
-                 + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
-                 + $"VALUES ('104142c0-7248-48aa-b230-5798810adf58','Ms', 'Evelyn' , 'Hampshire' ,'EveH','{DateTime.Now.AddDays(12)}',"
-                 + $"'{DateTime.Now}', '{DateTime.Now}','trialrun4@email.com','02124669901')";
-                command.ExecuteNonQuery();
-                Console.WriteLine("Fourth test user created to see for Birthday under the check range scenario");
+            command.CommandText =
+             @"INSERT INTO ""Contacts"""
+             + "(Id, Salutation, Firstname, Lastname, Displayname, "
+             + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
+             + $"VALUES ('104142c0-7248-48aa-b230-5798810adf58','Ms', 'Evelyn' , 'Hampshire' ,'EveH','{DateTime.Now.AddDays(12).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}',"
+             + $"'{TBUDateTimeFormat}', '{TBUDateTimeFormat}','trialrun4@email.com','02124669901')";
+            command.ExecuteNonQuery();
+            Console.WriteLine("Fourth test user created to see for Birthday under the check range scenario");
 
-                command.CommandText =
-                @"INSERT INTO ""Contacts"""
-                + "(Id, Salutation, Firstname, Lastname, Displayname, "
-                + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
-                + $"VALUES ('15423c8b-6f3d-4848-868a-ff10e2835e60','Mr', 'Matthew' , 'Lillard' ,'MShagl','{DateTime.Now.AddDays(15)}',"
-                + $"'{DateTime.Now}', '{DateTime.Now}','trialrun5@email.com','02124669902')";
-                command.ExecuteNonQuery();
-                Console.WriteLine("Fifth test user created to see for Birthday over the check range scenario");
-                command.CommandText = @"SELECT Id, Salutation, Firstname, Lastname, Displayname, Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber FROM  ""Contacts""";
-                #endregion
+            command.CommandText =
+            @"INSERT INTO ""Contacts"""
+            + "(Id, Salutation, Firstname, Lastname, Displayname, "
+            + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
+            + $"VALUES ('15423c8b-6f3d-4848-868a-ff10e2835e60','Mr', 'Matthew' , 'Lillard' ,'MShagl','{DateTime.Now.AddDays(15).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}',"
+            + $"'{TBUDateTimeFormat}', '{TBUDateTimeFormat}','trialrun5@email.com','02124669902')";
+            command.ExecuteNonQuery();
+            Console.WriteLine("Fifth test user created to see for Birthday over the check range scenario");
+            command.CommandText = @"SELECT Id, Salutation, Firstname, Lastname, Displayname, Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber FROM  ""Contacts""";
+            #endregion
 
-                return 1;
-            }
-            catch (NpgsqlException ex)
-            {
-                Console.WriteLine("Database connection or table creation failed" + ex.Message);
-                return 0;
-            }
+            return 1;
+
+
 
         }
 
@@ -200,10 +215,10 @@ namespace cmclean.Application.IntegrationTests
                 {
                     WaitBeforeKillSeconds = 3
                 });
-                 client.Containers.RemoveContainerAsync(container.ID, new ContainerRemoveParameters()).Wait();
+                client.Containers.RemoveContainerAsync(container.ID, new ContainerRemoveParameters()).Wait();
             }
         }
 
-  
+
     }
 }
