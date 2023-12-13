@@ -4,15 +4,31 @@ namespace cmclean.MinimalApi.Extensions
 {
     public static class InitializeDBExtension
     {
-        public static IServiceCollection SetupTableAndSampleRecords(this IServiceCollection services, string ConnectionString)
+        public static async Task<IServiceCollection> SetupTableAndSampleRecords(this IServiceCollection services, string ConnectionString)
         {
-            /*
-            Quotes are added around the tables because PostGreSql doesn't play nice with Entity Framework.
-            Ef expects a table with uppercase and 's' on default. Postgresql doesn't like uppercases. I can use a package here
-            which is shown on Npgsql side but that's not fun for solving the problem right ?
-            */
+ 
             try
             {
+                var connectionEstablised = false;
+                var start = DateTime.UtcNow;
+                int maxWaitTimeSeconds = 20;
+                while (!connectionEstablised && start.AddSeconds(maxWaitTimeSeconds) > DateTime.UtcNow)
+                {
+                    try
+                    {
+                        string ConnectionStringT = "Server=cmclean-db;Port=5432;Database=Contactmanagerdb;User Id=admin;Password=admin1234;";
+                        await using var connectionT = new NpgsqlConnection
+                        (ConnectionStringT);
+                        await connectionT.OpenAsync();
+                        connectionEstablised = true;
+                    }
+                    catch
+                    {
+                        // If opening the npgSQL connection fails, SQL Server is not ready yet
+                        await Task.Delay(500);
+                    }
+                }
+
 
                 using var connection = new NpgsqlConnection
                 (ConnectionString);
