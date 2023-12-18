@@ -25,7 +25,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
              @"INSERT INTO ""Contacts"""
              + "(Id, Salutation, Firstname, Lastname, Displayname, "
              + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
-             + $"VALUES ('{TrialGuid}','Ms', 'Jon' , 'Hamm' ,'JDog','{DateTime.Now.AddDays(12).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}',"
+             + $"VALUES ('{TrialGuid}','Mr', 'Jon' , 'Hamm' ,'JDog','{DateTime.Now.AddDays(12).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}',"
              + $"'{DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}', '{DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}','jonhamm@email.com','02124669901')";
             command.ExecuteNonQuery();
             TrialGuid = Guid.NewGuid();
@@ -42,7 +42,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
             @"INSERT INTO ""Contacts"""
             + "(Id, Salutation, Firstname, Lastname, Displayname, "
             + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
-            + $"VALUES ('{TrialGuid}','Mrs', 'Jon' , 'Bovi' ,'JBow','{DateTime.Now.AddDays(8).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}',"
+            + $"VALUES ('{TrialGuid}','Mr', 'Jon' , 'Bovi' ,'JBow','{DateTime.Now.AddDays(8).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}',"
             + $"'{DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}', '{DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}','jonbovi@email.com','02124669902')";
             command.ExecuteNonQuery();
 
