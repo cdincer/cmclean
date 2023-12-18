@@ -7,12 +7,12 @@ using System.Net.Http.Json;
 namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint
 {
     [Collection("Read Collection")]
-    public class GetContactByFilterTests
+    public class GetContactByFilterTests : IClassFixture<GetContactByFilterTestsDatabaseFixture>
     {
-        private readonly ContactsReadFixture _fixture;
-        public GetContactByFilterTests(ContactsReadFixture fixture)
+        GetContactByFilterTestsDatabaseFixture fixture;
+        public GetContactByFilterTests(GetContactByFilterTestsDatabaseFixture fixture)
         {
-            _fixture = fixture;
+            this.fixture = fixture;
         }
 
         [Fact]
@@ -35,6 +35,50 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint
             List<GetContactByFilterResponse?> contactList = await response.Content.ReadFromJsonAsync<List<GetContactByFilterResponse?>>();
             contactList.Should().BeAssignableTo<List<GetContactByFilterResponse?>>();
             contactList.Count.Should().Be(1);
+        }
+
+        [Fact]
+        public async Task GetByFilterNameMultiple()
+        {
+
+
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:8001/");
+            GetContactByFilterTestQuery getContactByFilterTestQuery = new();
+            getContactByFilterTestQuery.FirstName = "Jon";
+            getContactByFilterTestQuery.LastName = "";
+            getContactByFilterTestQuery.DisplayName = "";
+            getContactByFilterTestQuery.Email = "";
+            getContactByFilterTestQuery.Phonenumber = "";
+            getContactByFilterTestQuery.BirthDate = DateTime.MinValue;
+
+            HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/filter", getContactByFilterTestQuery);
+
+            List<GetContactByFilterResponse?> contactList = await response.Content.ReadFromJsonAsync<List<GetContactByFilterResponse?>>();
+            contactList.Should().BeAssignableTo<List<GetContactByFilterResponse?>>();
+            contactList.Count.Should().Be(2);
+        }
+
+        [Fact]
+        public async Task GetByFilterSurname()
+        {
+
+
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:8001/");
+            GetContactByFilterTestQuery getContactByFilterTestQuery = new();
+            getContactByFilterTestQuery.FirstName = "";
+            getContactByFilterTestQuery.LastName = "Hamm";
+            getContactByFilterTestQuery.DisplayName = "";
+            getContactByFilterTestQuery.Email = "";
+            getContactByFilterTestQuery.Phonenumber = "";
+            getContactByFilterTestQuery.BirthDate = DateTime.MinValue;
+
+            HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/filter", getContactByFilterTestQuery);
+
+            List<GetContactByFilterResponse?> contactList = await response.Content.ReadFromJsonAsync<List<GetContactByFilterResponse?>>();
+            contactList.Should().BeAssignableTo<List<GetContactByFilterResponse?>>();
+            contactList.Count.Should().Be(2);
         }
 
 
@@ -60,6 +104,9 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint
             contactList.Should().BeAssignableTo<List<GetContactByFilterResponse?>>();
             contactList.Count.Should().Be(1);
         }
+
+
+      
 
         public class GetContactByFilterTestQuery
         {
