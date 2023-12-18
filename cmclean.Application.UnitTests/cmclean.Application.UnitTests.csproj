@@ -10,6 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Common\**" />
+    <Compile Remove="Features\ContactFeature\Queries\**" />
+    <EmbeddedResource Remove="Common\**" />
+    <EmbeddedResource Remove="Features\ContactFeature\Queries\**" />
+    <None Remove="Common\**" />
+    <None Remove="Features\ContactFeature\Queries\**" />
+  </ItemGroup>
+
+  <ItemGroup>
 	  <PackageReference Include="FluentAssertions" Version="6.12.0" />
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
@@ -24,11 +33,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Features\ContactFeature\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,11 +1,19 @@
+using AutoMapper;
+using cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter;
+using cmclean.Application.Interfaces.Repositories.Contacts;
+using cmclean.Domain.Model;
 using FluentValidation;
 
 namespace cmclean.Application.Features.ContactFeature.Commands.CreateContact;
 
 public class CreateContactValidator : AbstractValidator<CreateContactCommand>
 {
-    public CreateContactValidator()
-    {
+    private readonly IContactReadRepository _ContactReadRepository;
+
+    public CreateContactValidator(IContactReadRepository ContactReadRepository)
+    {  
+        _ContactReadRepository = ContactReadRepository;
+
         RuleFor(_ => _.Salutation)
             .NotNull()
             .NotEmpty()
@@ -19,8 +27,25 @@ public class CreateContactValidator : AbstractValidator<CreateContactCommand>
             .NotEmpty()
             .MinimumLength(2);
         RuleFor(_ => _.Email)
-            .NotNull()
-            .NotEmpty()
-            .EmailAddress();
+         .NotNull()
+         .NotEmpty()
+         .EmailAddress();
+
+        RuleFor(x => x.Email).Custom((checkEmail, context) => {
+            string temp = checkEmail;
+           var uniqueCheckResults =  _ContactReadRepository.GetAsync(new GetContactByFilterQuery()
+            {
+                FirstName = "",
+                LastName = "",
+                DisplayName = "",
+                BirthDate = DateTime.MinValue,
+                Email = temp,
+                Phonenumber = ""
+            }).Result;
+
+            if(uniqueCheckResults != null && uniqueCheckResults.Count != 0 )
+            context.AddFailure("Email must be unique");
+        });
+
     }
 }
