@@ -3,7 +3,7 @@ using FluentAssertions;
 
 using System.Net.Http.Json;
 
-namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint
+namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.GetAllContactsTests
 {
     [Collection("Read Collection")]
     public class GetAllContactsTests
@@ -14,7 +14,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint
         }
 
         [Fact]
-        public async Task GetAll()
+        public async Task TestGetAllContacts_CheckValidity_ResultsMoreThanTwo()
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:8001/");

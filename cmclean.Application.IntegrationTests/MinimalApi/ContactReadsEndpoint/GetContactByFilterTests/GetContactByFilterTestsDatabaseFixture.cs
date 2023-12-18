@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint
+namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.GetContactByFilterTests
 {
     public class GetContactByFilterTestsDatabaseFixture : IDisposable
     {

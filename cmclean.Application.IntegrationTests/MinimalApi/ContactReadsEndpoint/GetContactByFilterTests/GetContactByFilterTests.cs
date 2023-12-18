@@ -4,7 +4,7 @@ using Npgsql;
 using System.Net.Http.Json;
 
 
-namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint
+namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.GetContactByFilterTests
 {
     [Collection("Read Collection")]
     public class GetContactByFilterTests : IClassFixture<GetContactByFilterTestsDatabaseFixture>
@@ -16,9 +16,9 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint
         }
 
         [Fact]
-        public async Task GetByFilterName()
+        public async Task TestGetContactByFilter_GetOneRecordWithThatFirstName_NoValidationExcepiton()
         {
-        
+
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:8001/");
@@ -38,7 +38,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint
         }
 
         [Fact]
-        public async Task GetByFilterNameMultiple()
+        public async Task TestGetContactByFilter_GetMultipleRecordWithThatFirstName_NoValidationExcepiton()
         {
 
 
@@ -60,7 +60,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint
         }
 
         [Fact]
-        public async Task GetByFilterSurname()
+        public async Task TestGetContactByFilter_GetMultipleRecordWithThatLastName_NoValidationExcepiton()
         {
 
 
@@ -84,7 +84,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint
 
 
         [Fact]
-        public async Task GetByFilterNameAndSurname()
+        public async Task TestGetContactByFilter_GetSingleContactWithFirstNameAndLastName_NoValidationExcepiton()
         {
 
 
@@ -106,7 +106,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint
         }
 
 
-      
+
 
         public class GetContactByFilterTestQuery
         {
