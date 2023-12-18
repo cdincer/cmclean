@@ -6,11 +6,11 @@ using System.Net.Http.Json;
 namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint
 {
     [Collection("Read Collection")]
-    public class ContactsGetAllTests
+    public class GetAllContactsTests
     {
 
         private readonly ContactsReadFixture _fixture;
-        public ContactsGetAllTests(ContactsReadFixture fixture)
+        public GetAllContactsTests(ContactsReadFixture fixture)
         {
             _fixture = fixture;
         }
