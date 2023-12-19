@@ -127,7 +127,7 @@ namespace cmclean.Application.UnitTests.Features.ContactFeature.Commands.CreateC
         }
 
         /// <summary>
-        /// Testing validation behaviour for Salutation, it shouldn't be shorter than 2 characters.
+        /// Testing validation behaviour for Salutation, it shouldn't be shorter than 2 characters and not empty.
         /// </summary>
         /// <returns>ValidationException</returns>
         [Fact]
@@ -157,7 +157,7 @@ namespace cmclean.Application.UnitTests.Features.ContactFeature.Commands.CreateC
         }
 
         [Fact]
-        public async Task TestCreateContacT_CreateContactWithDuplicateEmailShouldReturn_ValidationErrors()
+        public async Task TestCreateContact_CreateContactWithDuplicateEmailShouldReturn_ValidationErrors()
         {
             var contact = _contacts[0];
             var createContactRequest = new CreateContactRequest(contact.Salutation, contact.FirstName, contact.LastName,
@@ -175,10 +175,12 @@ namespace cmclean.Application.UnitTests.Features.ContactFeature.Commands.CreateC
                 Email = contact.Email,
                 Phonenumber = ""
             };
-            //TO-DO: Handle specific type of variable for mocking = _contactReadRepository.Setup(x => x.GetAsync(query)).ReturnsAsync(nonUniqList);
+            //Because of extension method in validator, this mocking can be only done with IsAny
+            //More Info:https://stackoverflow.com/questions/60712223/how-do-i-mock-an-abstractvalidator-that-is-using-rule-sets
             _contactReadRepository.Setup(x => x.GetAsync(It.IsAny<GetContactByFilterQuery>())).ReturnsAsync(nonUniqList);
             _createContactCommandHandler = new CreateContactCommandHandler(_contactWriteRepository.Object, _mapper);
             _createContactValidator = new CreateContactValidator(_contactReadRepository.Object);
+
             var command = _mapper.Map<CreateContactCommand>(createContactRequest);
             var validationResult = await _createContactValidator.ValidateAsync(command);
             var result = await _createContactCommandHandler.Handle(command, CancellationToken.None);
