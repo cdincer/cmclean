@@ -39,10 +39,7 @@ namespace cmclean.Application.UnitTests.Features.ContactFeature.Commands.CreateC
             _services.AddLogging();
             _serviceProvider = _services.BuildServiceProvider();
             _mapper = _serviceProvider.GetService<IMapper>()!;
-
-
             _logger = new Mock<ILogger<CreateContactCommand>>();
-            _createContactValidator = new CreateContactValidator(_contactReadRepository.Object);
 
             _contacts = new List<Contact>
            {
@@ -134,7 +131,7 @@ namespace cmclean.Application.UnitTests.Features.ContactFeature.Commands.CreateC
         /// </summary>
         /// <returns>ValidationException</returns>
         [Fact]
-        public async Task TestCreateContact_CreateContactWithInvalidCommandShouldReturn_ValidationException()
+        public async Task TestCreateContact_CreateContactWithInvalidCommandShouldReturn_ValidationErrors()
         {
             var contact = _contacts[2];
             var createContactRequest = new CreateContactRequest(contact.Salutation, contact.FirstName, contact.LastName,
@@ -157,6 +154,36 @@ namespace cmclean.Application.UnitTests.Features.ContactFeature.Commands.CreateC
             _createContactValidator = new CreateContactValidator(_contactReadRepository.Object);
             var validationResult = await _createContactValidator.ValidateAsync(command);
             validationResult.Errors.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public async Task TestCreateContacT_CreateContactWithDuplicateEmailShouldReturn_ValidationErrors()
+        {
+            var contact = _contacts[0];
+            var createContactRequest = new CreateContactRequest(contact.Salutation, contact.FirstName, contact.LastName,
+                                                                contact.DisplayName, contact.BirthDate, contact.Email, contact.Phonenumber);
+            List<Contact?> nonUniqList = new List<Contact?>
+            {
+                contact
+            };
+            var query = new GetContactByFilterQuery()
+            {
+                FirstName = "",
+                LastName = "",
+                DisplayName = "",
+                BirthDate = DateTime.MinValue,
+                Email = contact.Email,
+                Phonenumber = ""
+            };
+            //TO-DO: Handle specific type of variable for mocking = _contactReadRepository.Setup(x => x.GetAsync(query)).ReturnsAsync(nonUniqList);
+            _contactReadRepository.Setup(x => x.GetAsync(It.IsAny<GetContactByFilterQuery>())).ReturnsAsync(nonUniqList);
+            _createContactCommandHandler = new CreateContactCommandHandler(_contactWriteRepository.Object, _mapper);
+            _createContactValidator = new CreateContactValidator(_contactReadRepository.Object);
+            var command = _mapper.Map<CreateContactCommand>(createContactRequest);
+            var validationResult = await _createContactValidator.ValidateAsync(command);
+            var result = await _createContactCommandHandler.Handle(command, CancellationToken.None);
+
+            validationResult.Errors.Count.Should().Be(1);
         }
     }
 }

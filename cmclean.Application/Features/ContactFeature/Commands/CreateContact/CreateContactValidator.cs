@@ -31,9 +31,9 @@ public class CreateContactValidator : AbstractValidator<CreateContactCommand>
          .NotEmpty()
          .EmailAddress();
 
-        RuleFor(x => x.Email).Custom((checkEmail, context) => {
+        RuleFor(x => x.Email).Custom(async (checkEmail, context) => {
             string temp = checkEmail;
-           var uniqueCheckResults =  _ContactReadRepository.GetAsync(new GetContactByFilterQuery()
+           var uniqueCheckResults =  await _ContactReadRepository.GetAsync(new GetContactByFilterQuery()
             {
                 FirstName = "",
                 LastName = "",
@@ -41,7 +41,7 @@ public class CreateContactValidator : AbstractValidator<CreateContactCommand>
                 BirthDate = DateTime.MinValue,
                 Email = temp,
                 Phonenumber = ""
-            }).Result;
+            });
 
             if(uniqueCheckResults != null && uniqueCheckResults.Count != 0 )
             context.AddFailure("Email must be unique");

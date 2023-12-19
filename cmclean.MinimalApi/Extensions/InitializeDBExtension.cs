@@ -7,9 +7,11 @@ namespace cmclean.MinimalApi.Extensions
         public static IServiceCollection SetupTableAndSampleRecords(this IServiceCollection services, string ConnectionString)
         {
             /*
-            Quotes are added around the tables because PostGreSql doesn't play nice with Entity Framework.
-            Ef expects a table with uppercase and 's' on default. Postgresql doesn't like uppercases. I can use a package here
-            which is shown on Npgsql side but that's not fun for solving the problem right ?
+            This extension method is strictly added for demonstration purposes. It is only for reviewing this project and having a smooth start.
+            So you can experiment with a clean slate every time and so you don't have to add sample records or keep messing around with docker/kubernetes volumes.
+            Otherwise what you see here is can be done in integration tests project and to a certain extent, adding sample records to a database is already done in this project.
+            Just for full effect and clarity, I would never include or suggest doing something like this in a real life project,something that would be released to dev,uat,prod,
+            even for hobby projects. This file and its execution is strictly for understanding, training/experimenting with this project.
             */
             try
             {
