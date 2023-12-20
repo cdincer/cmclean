@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint
 {
     [CollectionDefinition("Read Collection")]
-    public class ReadCollection : ICollectionFixture<ContactsReadFixture>
+    public class ReadCollection : ICollectionFixture<ContactsEndpointsFixture>
     {
     }
 }
