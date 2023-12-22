@@ -18,8 +18,6 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
         [Fact]
         public async Task TestGetContactByFilter_GetOneRecordWithThatFirstName_NoValidationExcepiton()
         {
-
-
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:8001/");
             GetContactByFilterTestQuery getContactByFilterTestQuery = new();
@@ -40,8 +38,6 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
         [Fact]
         public async Task TestGetContactByFilter_GetMultipleRecordWithThatFirstName_NoValidationExcepiton()
         {
-
-
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:8001/");
             GetContactByFilterTestQuery getContactByFilterTestQuery = new();
@@ -62,8 +58,6 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
         [Fact]
         public async Task TestGetContactByFilter_GetMultipleRecordWithThatLastName_NoValidationExcepiton()
         {
-
-
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:8001/");
             GetContactByFilterTestQuery getContactByFilterTestQuery = new();
