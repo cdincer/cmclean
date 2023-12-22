@@ -5,7 +5,7 @@ using System.Net.Http.Json;
 
 namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.GetAllContactsTests
 {
-    [Collection("Read Collection")]
+    [Collection("ContactsEndpoint Collection")]
     public class GetAllContactsTests
     {
 

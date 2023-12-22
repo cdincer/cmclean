@@ -6,7 +6,7 @@ using System.Net.Http.Json;
 
 namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.GetContactByFilterTests
 {
-    [Collection("Read Collection")]
+    [Collection("ContactsEndpoint Collection")]
     public class GetContactByFilterTests : IClassFixture<GetContactByFilterTestsDatabaseFixture>
     {
         GetContactByFilterTestsDatabaseFixture fixture;

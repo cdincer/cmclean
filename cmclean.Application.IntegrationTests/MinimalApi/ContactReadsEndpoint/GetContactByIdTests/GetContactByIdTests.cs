@@ -12,7 +12,7 @@ using static cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoin
 
 namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.GetContactByIdTests
 {
-    [Collection("Read Collection")]
+    [Collection("ContactsEndpoint Collection")]
     public class GetContactByIdTests : IClassFixture<GetContactByIdTestsDatabaseFixture>
     {
         GetContactByIdTestsDatabaseFixture fixture;
