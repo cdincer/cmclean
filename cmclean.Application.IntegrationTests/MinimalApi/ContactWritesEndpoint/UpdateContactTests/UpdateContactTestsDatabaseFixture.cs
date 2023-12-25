@@ -1,10 +1,4 @@
-﻿using cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.CreateContactTests;
-using cmclean.Domain.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using cmclean.Domain.Model;
 
 namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.UpdateContactTests
 {

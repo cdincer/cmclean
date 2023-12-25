@@ -49,7 +49,7 @@ namespace cmclean.Persistence.Repositories.Contacts
             return entity;
         }
 
-        public async Task<bool>  Remove(Contact entity)
+        public async Task<bool> Remove(Contact entity)
         {
             var constring = _configuration["ConnectionStrings:Default"];
             using var connection = new NpgsqlConnection
