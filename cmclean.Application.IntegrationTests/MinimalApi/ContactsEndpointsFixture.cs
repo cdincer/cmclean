@@ -1,19 +1,60 @@
-﻿using Npgsql;
+﻿using Ductus.FluentDocker.Model.Common;
+using Ductus.FluentDocker.Services;
+using Ductus.FluentDocker.Builders;
+using Ductus.FluentDocker.Commands;
+using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 
-namespace cmclean.MinimalApi.Extensions
+namespace cmclean.Application.IntegrationTests.MinimalApi
 {
-    public static class InitializeDBExtension
+    public class ContactsEndpointsFixture : IAsyncLifetime
     {
-        public static async Task<IServiceCollection> SetupTableAndSampleRecords(this IServiceCollection services, string ConnectionString)
+        public ContactsEndpointsFixture()
         {
 
-            /*
-            This extension method is strictly added for demonstration purposes. It is only for reviewing this project and having a smooth start,
-            so you can experiment with a clean slate every time and so you don't have to add sample records or keep messing around with docker/kubernetes volumes.
-            Otherwise what you see here is can be done in integration tests project and to a certain extent, adding sample records to a database is already done in that project.
-            Just for full effect and clarity, I would never include or suggest doing something like this in a real life project,something that would be released to dev,uat,prod,
-            even for hobby projects. This file and its execution is strictly for understanding, training/experimenting with this project.
-            */
+        }
+
+        public async Task InitializeAsync()
+        {
+            await FullContainer();
+        }
+
+        public async Task DisposeAsync()
+        {
+            await RemoveDockerContainer();
+        }
+
+        public async Task FullContainer()
+        {
+            DirectoryInfo StartingPoint = new DirectoryInfo(Directory.GetCurrentDirectory());
+            DirectoryInfo MainFolderPath = StartingPoint.Parent.Parent.Parent.Parent;
+            var mainyml = Path.Combine(MainFolderPath.ToString(), (TemplateString)"docker-compose/docker-compose.yml");
+            var overrideyml = Path.Combine(MainFolderPath.ToString(), (TemplateString)"docker-compose/docker-compose.override.yml");
+
+            var container =
+                  new Builder().UseContainer().UseCompose().FromFile(overrideyml).FromFile(mainyml).Build().Start();
+        }
+
+        public async static Task RemoveDockerContainer()
+        {
+            var hosts = new Hosts().Discover();
+            var _docker = hosts.FirstOrDefault(x => x.IsNative) ?? hosts.FirstOrDefault(x => x.Name == "default");
+            var response = _docker.Host.InspectContainers();
+            ;
+            foreach (var containerElement in response.Data)
+            {
+                _docker.Host.RemoveContainer(containerElement.Id, true, true, null);
+            }
+
+        }
+
+        //Same as MinimalAPI project's InitializeDBExtension. In a real life project it's supposed to be here, it's not redundant.
+        //Because of this project's purpose we focus on the MinimalAPI's execution and turn this off for the time being.
+        public static async Task SetupTableAndSampleRecords()
+        {
+
+            string ConnectionString = "Server=localhost;Port=5432;Database=Contactmanagerdb;User Id=admin;Password=admin1234;";
+
 
             try
             {
@@ -58,7 +99,7 @@ namespace cmclean.MinimalApi.Extensions
                                                                 Birthdate timestamp,                                                    
                                                                 CreationTimestamp timestamp,
                                                                 LastChangeTimestamp timestamp,
-                                                                Email VARCHAR(50),
+                                                                Email VARCHAR(50) UNIQUE,
                                                                 Phonenumber VARCHAR(24),
                                                                 PRIMARY KEY (Id))";
                 command.ExecuteNonQuery();
@@ -72,7 +113,7 @@ namespace cmclean.MinimalApi.Extensions
                 + "(Id, Salutation, Firstname, Lastname, Displayname, "
                 + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
                 + $"VALUES ('{TrialGuid}','Mr', 'Jeffrey' , 'Donovan' ,'','1968-05-11T19:10:25',"
-                + $"'{DateTime.Now}','{DateTime.Now}','trialrun1@email.com','02123445566')";
+                + $"'{DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}','{DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}','trialrun1@email.com','02123445566')";
                 command.ExecuteNonQuery();
                 Console.WriteLine("First test user created");
 
@@ -82,7 +123,7 @@ namespace cmclean.MinimalApi.Extensions
                 + "(Id, Salutation, Firstname, Lastname, Displayname, "
                 + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
                 + $"VALUES ('{TrialGuid}','Mr', 'Bruce' , 'Campbell' ,'','1958-06-22T19:10:25',"
-                + $"'{DateTime.Now}', '{DateTime.Now}','trialrun2@email.com','02123558899')";
+                + $"'{DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}', '{DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}','trialrun2@email.com','02123558899')";
                 command.ExecuteNonQuery();
                 Console.WriteLine("Second test user created");
 
@@ -91,7 +132,7 @@ namespace cmclean.MinimalApi.Extensions
                + "(Id, Salutation, Firstname, Lastname, Displayname, "
                + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
                + $"VALUES ('4b2056a9-7ee4-47b1-a64f-15770ceab7aa','Ms', 'Kimberly' , 'Director' ,'KimDirector','1974-11-13T19:10:25',"
-               + $"'{DateTime.Now}', '{DateTime.Now}','trialrun3@email.com','02124669900')";
+               + $"'{DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}', '{DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}','trialrun3@email.com','02124669900')";
                 command.ExecuteNonQuery();
                 Console.WriteLine("Third test user created stricly for update user scenario");
 
@@ -99,8 +140,8 @@ namespace cmclean.MinimalApi.Extensions
                  @"INSERT INTO ""Contacts"""
                  + "(Id, Salutation, Firstname, Lastname, Displayname, "
                  + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
-                 + $"VALUES ('104142c0-7248-48aa-b230-5798810adf58','Ms', 'Evelyn' , 'Hampshire' ,'EveH','{DateTime.Now.AddDays(12)}',"
-                 + $"'{DateTime.Now}', '{DateTime.Now}','trialrun4@email.com','02124669901')";
+                 + $"VALUES ('104142c0-7248-48aa-b230-5798810adf58','Ms', 'Evelyn' , 'Hampshire' ,'EveH','{DateTime.Now.AddDays(12).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}',"
+                 + $"'{DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}', '{DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}','trialrun4@email.com','02124669901')";
                 command.ExecuteNonQuery();
                 Console.WriteLine("Fourth test user created to see for Birthday under the check range scenario");
 
@@ -108,8 +149,8 @@ namespace cmclean.MinimalApi.Extensions
                 @"INSERT INTO ""Contacts"""
                 + "(Id, Salutation, Firstname, Lastname, Displayname, "
                 + "Birthdate, CreationTimestamp, LastChangeTimestamp, Email, Phonenumber)"
-                + $"VALUES ('15423c8b-6f3d-4848-868a-ff10e2835e60','Mr', 'Matthew' , 'Lillard' ,'MShagl','{DateTime.Now.AddDays(15)}',"
-                + $"'{DateTime.Now}', '{DateTime.Now}','trialrun5@email.com','02124669902')";
+                + $"VALUES ('15423c8b-6f3d-4848-868a-ff10e2835e60','Mr', 'Matthew' , 'Lillard' ,'MShagl','{DateTime.Now.AddDays(15).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}',"
+                + $"'{DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}', '{DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")}','trialrun5@email.com','02124669902')";
                 command.ExecuteNonQuery();
                 Console.WriteLine("Fifth test user created to see for Birthday over the check range scenario");
 
@@ -121,7 +162,7 @@ namespace cmclean.MinimalApi.Extensions
                 Console.WriteLine("Database connection or table creation failed" + ex.Message);
             }
 
-            return services;
         }
+
     }
 }
