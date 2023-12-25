@@ -40,7 +40,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
                     { "Mr", "Test","User4", "User4Surname", new DateTime(2000, DateTime.Now.Month, DateTime.Now.AddDays(15).Day), "afterlimitbirthday@email.com", "12341234" }
           };
         [Theory, MemberData(nameof(BirthdayCalculationCases))]
-        public async Task TestCreateContact_BirthdateCalculation_ValidResponses(string Salutation, string FirstName, string LastName, string DisplayName,
+        public async Task TestGetContactById_BirthdateCalculation_ValidResponses(string Salutation, string FirstName, string LastName, string DisplayName,
                                                                 DateTime BirthDate, string Email, string Phonenumber)
         {
             HttpClient client = new HttpClient();

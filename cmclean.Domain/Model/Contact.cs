@@ -39,7 +39,7 @@ public class Contact: BaseEntity
         this.Id = Guid.NewGuid();
         this.CreationTimestamp = DateTime.Now;
         this.LastChangeTimeStamp = DateTime.Now;
-        this.DisplayName = this.DisplayName.Length != 0 ? DisplayName : Salutation + FirstName + LastName;
+        this.DisplayName = this.DisplayName.Length == 0 ? Salutation + FirstName + LastName : DisplayName ;
     }
 
     public void UpdateContact(string salutation, string firstName, string lastName, 
@@ -48,7 +48,7 @@ public class Contact: BaseEntity
         Salutation = salutation;
         FirstName = firstName;
         LastName = lastName;
-        DisplayName = displayName.Length != 0 ? displayName : salutation + firstName + lastName; ;
+        DisplayName = displayName.Length == 0 ? salutation + firstName + lastName : displayName;
         BirthDate = birthDate;
         LastChangeTimeStamp = DateTime.Now;
         Email = email;

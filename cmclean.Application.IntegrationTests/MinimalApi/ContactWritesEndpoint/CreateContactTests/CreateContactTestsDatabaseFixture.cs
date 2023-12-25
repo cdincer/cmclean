@@ -1,7 +1,6 @@
 ﻿using cmclean.Domain.Model;
-using Npgsql;
 
-namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint
+namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.CreateContactTests
 {
     public class CreateContactTestsDatabaseFixture
     {

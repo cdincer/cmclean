@@ -1,16 +1,8 @@
 ﻿using cmclean.Application.Features.ContactFeature.Commands.CreateContact;
-using cmclean.Application.Features.ContactFeature.Queries.GetContactById;
-using cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.GetContactByFilterTests;
-using cmclean.Domain.Model;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint
+namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.CreateContactTests
 {
     [Collection("ContactsEndpoint Collection")]
 
@@ -20,7 +12,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint
 
         public CreateContactTests(CreateContactTestsDatabaseFixture fixture)
         {
-            this.fixture = fixture; 
+            this.fixture = fixture;
         }
 
         [Fact]
@@ -54,10 +46,10 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint
             createContact.Should().BeAssignableTo<CreateContactResponse>();
             createContact.FirstName.Should().BeEquivalentTo("Alex");
             createContact.LastName.Should().BeEquivalentTo("Garland");
-            createContact.DisplayName.Should().Be(contact.Salutation+contact.FirstName+ contact.LastName);
+            createContact.DisplayName.Should().Be(contact.Salutation + contact.FirstName + contact.LastName);
         }
 
-        public static TheoryData<string, string, string, string, DateTime, string,string> MissingFieldCases =
+        public static TheoryData<string, string, string, string, DateTime, string, string> MissingFieldCases =
         new()
         {
             { "", "Test","User1", "NoSalutation", new DateTime(2018, 12, 31), "nosalutation@email.com", "12341234" },

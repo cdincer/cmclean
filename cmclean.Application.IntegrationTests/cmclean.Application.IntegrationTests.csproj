@@ -35,5 +35,9 @@
     <ProjectReference Include="..\cmclean.Application\cmclean.Application.csproj" />
     <ProjectReference Include="..\cmclean.Domain\cmclean.Domain.csproj" />
   </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="MinimalApi\ContactWritesEndpoint\DeleteContactTests\" />
+  </ItemGroup>
 
 </Project>
