@@ -40,7 +40,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint
             createContact.LastName.Should().BeEquivalentTo("Boyle");
         }
         [Fact]
-        public async Task TestCreateContact_ValidContactWithoutDisplayName_NoException()
+        public async Task TestCreateContact_ValidContactWithoutDisplayName_ReturnMergedDisplayName()
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:8001/");
@@ -57,18 +57,28 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint
             createContact.DisplayName.Should().Be(contact.Salutation+contact.FirstName+ contact.LastName);
         }
 
+        public static TheoryData<string, string, string, string, DateTime, string,string> MissingFieldCases =
+        new()
+        {
+            { "", "Test","User1", "NoSalutation", new DateTime(2018, 12, 31), "nosalutation@email.com", "12341234" },
+            { "Mr", "","User2", "NoFirstName", new DateTime(2018, 12, 31), "nofirstname@email.com", "12341234" },
+            { "Mr", "Test","", "NoLastName", new DateTime(2018, 12, 31), "nolastname@email.com", "12341234" },
+            { "Mr", "Test","User4", "NoEmail", new DateTime(2018, 12, 31), "", "12341234" }
+        };
+        [Theory, MemberData(nameof(MissingFieldCases))]
+        public async Task TestCreateContact_MissingFields_NoExceptionGracefulFailure(string Salutation, string FirstName, string LastName, string DisplayName,
+                                                                DateTime BirthDate, string Email, string Phonenumber)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:8001/");
+            var createContactRequest = new CreateContactRequest(Salutation, FirstName, LastName,
+                                                                DisplayName, BirthDate, Email, Phonenumber);
 
-        //[Fact]
-        //public async Task TestCreateContact_NoEmail_NoException()
-        //{
-        //    HttpClient client = new HttpClient();
-        //    client.BaseAddress = new Uri("http://localhost:8001/");
-        //    var contact = fixture._contacts[2];
-        //    var createContactRequest = new CreateContactRequest(contact.Salutation, contact.FirstName, contact.LastName,
-        //                                                        contact.DisplayName, contact.BirthDate, contact.Email, contact.Phonenumber);
-
-        //    HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/", createContactRequest);
-        //    CreateContactResponse createContact = await response.Content.ReadFromJsonAsync<CreateContactResponse>();       
-        //}
+            HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/", createContactRequest);
+            CreateContactResponse createContact = await response.Content.ReadFromJsonAsync<CreateContactResponse>();
+            createContact.Should().BeAssignableTo<CreateContactResponse>();
+            createContact.FirstName.Should().BeEquivalentTo(null);
+            createContact.LastName.Should().BeEquivalentTo(null);
+        }
     }
 }

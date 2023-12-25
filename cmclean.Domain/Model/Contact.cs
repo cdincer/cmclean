@@ -15,10 +15,11 @@ public class Contact: BaseEntity
     {
         get
         {
+            int YearAdjustment = 0;
             bool birthDayCalc = false;
             if (BirthDate.ToString() != "01/01/0001 00:00:00")
             {
-                int YearAdjustment = DateTime.Now.Year - BirthDate.Year;
+                YearAdjustment = DateTime.Now.Year > BirthDate.Year ? DateTime.Now.Year - BirthDate.Year : 0;
                 DateTime CurrBirthDate = BirthDate.AddYears(YearAdjustment);
                 DateTime checkBirthDayEndDate = DateTime.Now.AddDays(UserBirthDateCheck);
                 if (CurrBirthDate >= DateTime.Now && CurrBirthDate <= checkBirthDayEndDate)
@@ -38,8 +39,7 @@ public class Contact: BaseEntity
         this.Id = Guid.NewGuid();
         this.CreationTimestamp = DateTime.Now;
         this.LastChangeTimeStamp = DateTime.Now;
-        this.DisplayName = this.DisplayName.Length != 0 ? DisplayName : Salutation + FirstName + LastName; ;
-
+        this.DisplayName = this.DisplayName.Length != 0 ? DisplayName : Salutation + FirstName + LastName;
     }
 
     public void UpdateContact(string salutation, string firstName, string lastName, 

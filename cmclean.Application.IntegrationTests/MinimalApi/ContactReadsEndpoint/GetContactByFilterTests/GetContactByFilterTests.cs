@@ -1,6 +1,5 @@
 ﻿using cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter;
 using FluentAssertions;
-using Npgsql;
 using System.Net.Http.Json;
 
 
@@ -80,8 +79,6 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
         [Fact]
         public async Task TestGetContactByFilter_GetSingleContactWithFirstNameAndLastName_NoValidationExcepiton()
         {
-
-
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:8001/");
             GetContactByFilterTestQuery getContactByFilterTestQuery = new();
@@ -98,9 +95,6 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
             contactList.Should().BeAssignableTo<List<GetContactByFilterResponse?>>();
             contactList.Count.Should().Be(1);
         }
-
-
-
 
         public class GetContactByFilterTestQuery
         {
