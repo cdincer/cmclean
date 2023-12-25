@@ -14,10 +14,6 @@ public static class WebApplicationExtensions
         app.MapGet("/",
             () =>
                 "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
-
-
-        //Db Migration
-        //MigrateDatabase(app);
         app.RegisterWithConsul();
         return app;
     }
@@ -48,11 +44,4 @@ public static class WebApplicationExtensions
             consulClient.Agent.ServiceDeregister(registration.ID).Wait();
         });
     }
-    private static void MigrateDatabase(IHost app)
-    {
-        using var scope = app.Services.CreateScope();
-        var dataContext = scope.ServiceProvider.GetRequiredService<CmcleanDbContext>();
-        dataContext.Database.Migrate();
-    }
-
 }

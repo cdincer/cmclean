@@ -10,9 +10,6 @@ public static class WebApplicationExtensions
         app.UseSwagger();
         app.UseSwaggerUI();
         app.UseHttpsRedirection();
-
-        //Db Migration
-        MigrateDatabase(app);
         app.RegisterWithConsul();
         return app;
     }
@@ -42,11 +39,5 @@ public static class WebApplicationExtensions
             app.Logger.LogInformation("DeRegistering from Consul");
             consulClient.Agent.ServiceDeregister(registration.ID).Wait();
         });
-    }
-    private static void MigrateDatabase(IHost app)
-    {
-        using var scope = app.Services.CreateScope();
-        var dataContext = scope.ServiceProvider.GetRequiredService<CmcleanDbContext>();
-        //dataContext.Database.Migrate();
     }
 }
