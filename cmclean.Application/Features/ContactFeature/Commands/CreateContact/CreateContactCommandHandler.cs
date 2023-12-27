@@ -2,13 +2,15 @@
 using MediatR;
 using cmclean.Application.Interfaces.Repositories.Contacts;
 using cmclean.Domain.Model;
+using cmclean.Application.Common.Results;
 
 namespace cmclean.Application.Features.ContactFeature.Commands.CreateContact;
 
-public class CreateContactCommandHandler : IRequestHandler<CreateContactCommand, CreateContactResponse>
+public class CreateContactCommandHandler : IRequestHandler<CreateContactCommand, IDataResult<CreateContactResponse>>
 {
     private readonly IMapper _mapper;
     private readonly IContactWriteRepository _ContactWriteRepository;
+    private readonly string BlankId = "00000000-0000-0000-0000-000000000000";
 
     public CreateContactCommandHandler(IContactWriteRepository ContactWriteRepository, IMapper mapper)
     {
@@ -16,7 +18,7 @@ public class CreateContactCommandHandler : IRequestHandler<CreateContactCommand,
         _mapper = mapper;
 
     }
-    public async Task<CreateContactResponse> Handle(CreateContactCommand request, CancellationToken cancellationToken)
+    public async Task<IDataResult<CreateContactResponse>> Handle(CreateContactCommand request, CancellationToken cancellationToken)
     {
         if (request == null)
         {
@@ -26,7 +28,13 @@ public class CreateContactCommandHandler : IRequestHandler<CreateContactCommand,
         Contact.CreateContact();
         await _ContactWriteRepository.AddAsync(Contact);
 
+        if(Contact.Id.ToString() == BlankId)
+        {
+            return new ErrorDataResult<CreateContactResponse>($"Couldn't add contact to database.");
+        }
+
         var mappedContact = _mapper.Map<CreateContactResponse>(Contact);
-        return mappedContact;
+        var result = new SuccessDataResult<CreateContactResponse>(mappedContact,"Success");
+        return result;
     }
 }

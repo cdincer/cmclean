@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using cmclean.Application.Common.Results;
 using cmclean.Application.Features.ContactFeature.Commands.CreateContact;
 using cmclean.Application.Features.ContactFeature.Commands.DeleteContact;
 using cmclean.Application.Features.ContactFeature.Commands.UpdateContact;
@@ -34,19 +35,23 @@ namespace cmclean.Infrastructure.Services.GrpcServices.ContactGrpc
             var Contact = _mapper.Map<GetContactByIdResponse>(result.Contact);
             return Contact;
         }
-        public async Task<CreateContactResponse> CreateContactAsync(CreateContactRequest Contact)
+        public async Task<IDataResult<CreateContactResponse>> CreateContactAsync(CreateContactRequest Contact)
         {
             try
             {
                 var request = _mapper.Map<CreateContactProtoRequest>(Contact);
                 var result = await _ContactProtoService.CreateContactAsync(request);
-                var addedContact = _mapper.Map<CreateContactResponse>(result.Contact);
-                return addedContact;
+                if(result.Success)
+                {
+                    var addedContact = _mapper.Map<CreateContactResponse>(result);
+                    return new SuccessDataResult<CreateContactResponse>(new CreateContactResponse() { Data = addedContact.Data }, "Success"); 
+                }
+            return new ErrorDataResult<CreateContactResponse>($"Create Contact attempt failed.");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                return new CreateContactResponse();
+                return new ErrorDataResult<CreateContactResponse>($"Couldn't add contact to database.");
             }
         }
         public async Task<UpdateContactResponse> UpdateContactAsync(UpdateContactRequest Contact)

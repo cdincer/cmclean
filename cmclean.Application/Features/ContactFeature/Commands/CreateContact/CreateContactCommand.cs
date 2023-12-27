@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using cmclean.Application.Common.Results;
+using MediatR;
 
 namespace cmclean.Application.Features.ContactFeature.Commands.CreateContact;
 
-public class CreateContactCommand : IRequest<CreateContactResponse>
+public class CreateContactCommand : IRequest<IDataResult<CreateContactResponse>>
 {
     public string Salutation { get; private set; }
     public string FirstName { get; private set; } 

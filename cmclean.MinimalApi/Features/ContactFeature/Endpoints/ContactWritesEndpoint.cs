@@ -1,8 +1,10 @@
 ﻿using cmclean.Application.Common.Error.Response;
+using cmclean.Application.Common.Results;
 using cmclean.Application.Features.ContactFeature.Commands.CreateContact;
 using cmclean.Application.Features.ContactFeature.Commands.DeleteContact;
 using cmclean.Application.Features.ContactFeature.Commands.UpdateContact;
 using cmclean.Application.Interfaces.GrpcServices.ContactGrpc;
+using cmclean.Domain.Model;
 using cmclean.MinimalApi.Abstractions;
 using cmclean.MinimalApi.Filters;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -54,23 +56,27 @@ namespace cmclean.MinimalApi.Features.ContactFeature.Endpoints
             return ContactGroup;
         }
 
-        private async Task<IResult> CreateContact(CreateContactRequest Contact)
+        private async Task<IDataResult<Contact>> CreateContact(CreateContactRequest Contact)
         {
             var addedContact = await _ContactGrpcService.CreateContactAsync(Contact);
-            return TypedResults.Ok(addedContact);
+            if(addedContact.Success)
+            {
+                return new SuccessDataResult<Contact>(addedContact.Data.Data, addedContact.Message);
+            }
+            return new ErrorDataResult<Contact>(new Contact(),addedContact.Message);
         }
 
-        private async Task<IResult> UpdateContact(UpdateContactRequest Contact)
+        private async Task<Application.Common.Results.IResult> UpdateContact(UpdateContactRequest Contact)
         {
             await _ContactGrpcService.UpdateContactAsync(Contact);
-            return TypedResults.NoContent();
+            return new SuccessResult("Succesfully Updated");
         }
 
-        private async Task<IResult> DeleteContact(string id)
+        private async Task<Application.Common.Results.IResult> DeleteContact(string id)
         {
             var request = new DeleteContactRequest(Guid.Parse(id));
             await _ContactGrpcService.DeleteContactAsync(request);
-            return TypedResults.NoContent();
+            return new SuccessResult("Succesfully Deleted");
         }
     }
 }

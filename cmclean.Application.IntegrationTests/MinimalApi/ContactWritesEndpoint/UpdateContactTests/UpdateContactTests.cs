@@ -33,15 +33,15 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.
             HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/", createContactRequest);
             CreateContactResponse createContact = await response.Content.ReadFromJsonAsync<CreateContactResponse>();
             createContact.Should().BeAssignableTo<CreateContactResponse>();
-            createContact.FirstName.Should().NotBeNull();
-            createContact.LastName.Should().NotBeNull();
-            var updateContactRequest = new UpdateContactRequest(createContact.Id,contact.Salutation, contact.FirstName, contact.LastName,
+            createContact.Data.FirstName.Should().NotBeNull();
+            createContact.Data.LastName.Should().NotBeNull();
+            var updateContactRequest = new UpdateContactRequest(createContact.Data.Id,contact.Salutation, contact.FirstName, contact.LastName,
                                                               "", contact.BirthDate, contact.Email, contact.Phonenumber);
 
             var updateResponse = await client.PutAsJsonAsync("api/contacts/", updateContactRequest);
             updateResponse.IsSuccessStatusCode.Should().BeTrue();
 
-            var getResponse = await client.GetAsync("api/contacts/" + createContact.Id);
+            var getResponse = await client.GetAsync("api/contacts/" + createContact.Data.Id);
             GetContactByIdResponse getContactByIdResponse = await getResponse.Content.ReadFromJsonAsync<GetContactByIdResponse>();
             getContactByIdResponse.Should().BeAssignableTo<GetContactByIdResponse>();
             getContactByIdResponse.DisplayName.Should().Be(contact.Salutation+contact.FirstName+contact.LastName);
@@ -57,10 +57,10 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.
                                                                 contact.DisplayName, contact.BirthDate, contact.Email, contact.Phonenumber);
             HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/", createContactRequest);
             CreateContactResponse createContact = await response.Content.ReadFromJsonAsync<CreateContactResponse>();
-            createContact.Should().BeAssignableTo<CreateContactResponse>();
-            createContact.FirstName.Should().NotBeNull();
-            createContact.LastName.Should().NotBeNull();
-            var updateContactRequest = new UpdateContactRequest(createContact.Id, contact.Salutation, contact.FirstName, contact.LastName,
+            createContact.Data.Should().BeAssignableTo<CreateContactResponse>();
+            createContact.Data.FirstName.Should().NotBeNull();
+            createContact.Data.LastName.Should().NotBeNull();
+            var updateContactRequest = new UpdateContactRequest(createContact.Data.Id, contact.Salutation, contact.FirstName, contact.LastName,
                                                                 contact.DisplayName, contact.BirthDate, "", contact.Phonenumber);
 
            var updateResponse = await client.PutAsJsonAsync("api/contacts/", updateContactRequest);
@@ -78,16 +78,16 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.
 
             HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/", createContactRequest);
             CreateContactResponse createContact = await response.Content.ReadFromJsonAsync<CreateContactResponse>();
-            createContact.Should().BeAssignableTo<CreateContactResponse>();
-            createContact.FirstName.Should().NotBeNull();
-            createContact.LastName.Should().NotBeNull();
-            var updateContactRequest = new UpdateContactRequest(createContact.Id, contact.Salutation, "Alexia", contact.LastName,
+            createContact.Data.Should().BeAssignableTo<CreateContactResponse>();
+            createContact.Data.FirstName.Should().NotBeNull();
+            createContact.Data.LastName.Should().NotBeNull();
+            var updateContactRequest = new UpdateContactRequest(createContact.Data.Id, contact.Salutation, "Alexia", contact.LastName,
                                                                contact.Email, contact.BirthDate, contact.Email, contact.Phonenumber);
 
             var updateResponse = await client.PutAsJsonAsync("api/contacts/", updateContactRequest);
             updateResponse.IsSuccessStatusCode.Should().BeTrue();
 
-            response = await client.GetAsync("api/contacts/" + createContact.Id);
+            response = await client.GetAsync("api/contacts/" + createContact.Data.Id);
             GetContactByIdResponse getContactByIdResponse = await response.Content.ReadFromJsonAsync<GetContactByIdResponse>();
             getContactByIdResponse.Should().BeAssignableTo<GetContactByIdResponse>();
             getContactByIdResponse.FirstName.Should().Be("Alexia");

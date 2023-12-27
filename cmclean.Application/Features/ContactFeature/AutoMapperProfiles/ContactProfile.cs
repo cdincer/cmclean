@@ -17,7 +17,10 @@ public class ContactProfile : Profile
         CreateMap<CreateContactRequest, CreateContactCommand>().ReverseMap();
         CreateMap<UpdateContactRequest, UpdateContactCommand>().ReverseMap();
         CreateMap<DeleteContactRequest, DeleteContactCommand>().ReverseMap();
-        CreateMap<Contact, CreateContactResponse>().ReverseMap();
+        CreateMap<Contact, CreateContactResponse>()
+            .ForMember(dest => dest.Data, opt =>opt.MapFrom(src => src));
+        CreateMap<CreateContactResponse,Contact >()
+           .ForMember(dest => dest, opt => opt.MapFrom(src => src.Data));
         CreateMap<Contact, GetAllContactsResponse>().ReverseMap();
         CreateMap<Contact, GetContactByIdResponse>().ReverseMap();
         CreateMap<Contact, GetContactByFilterResponse>().ReverseMap();

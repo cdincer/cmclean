@@ -106,8 +106,8 @@ public class ContactService : ContactProtoService.ContactProtoServiceBase
             var command = new CreateContactCommand(request.Salutation, request.FirstName, request.LastName, request.DisplayName,
                                                      request.BirthDate.ToDateTime(),request.Email,request.Phonenumber);
             var result = await _mediator.Send(command);
-            var Contact = _mapper.Map<ContactProtoModel>(result);
-            return new CreateContactProtoResponse { Contact = Contact };
+            var Contact = _mapper.Map<CreateContactProtoResponse>(result);
+            return Contact;
         }
         catch (ValidationException ex)
         {

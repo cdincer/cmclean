@@ -65,7 +65,9 @@ message CreateContactProtoRequest {
 };
 
 message CreateContactProtoResponse {
-  ContactProtoModel Contact = 1;
+  ContactProtoModel Data= 1;
+  string Message = 2;
+  bool Success = 3;
 };
 
 message UpdateContactProtoRequest {
