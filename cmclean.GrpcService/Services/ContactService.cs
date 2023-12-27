@@ -104,7 +104,7 @@ public class ContactService : ContactProtoService.ContactProtoServiceBase
         try
         {
             var command = new CreateContactCommand(request.Salutation, request.FirstName, request.LastName, request.DisplayName,
-                                                     request.BirthDate.ToDateTime(),request.Email,request.Phonenumber);
+                                                     request.BirthDate.ToDateTime(), request.Email, request.Phonenumber);
             var result = await _mediator.Send(command);
             var Contact = _mapper.Map<CreateContactProtoResponse>(result);
             return Contact;
@@ -132,8 +132,8 @@ public class ContactService : ContactProtoService.ContactProtoServiceBase
     {
         try
         {
-            var command = new UpdateContactCommand(Guid.Parse(request.Id), request.Salutation, request.FirstName, 
-                                                   request.LastName, request.DisplayName ,request.BirthDate.ToDateTime(), 
+            var command = new UpdateContactCommand(Guid.Parse(request.Id), request.Salutation, request.FirstName,
+                                                   request.LastName, request.DisplayName, request.BirthDate.ToDateTime(),
                                                    request.Email, request.Phonenumber);
             await _mediator.Send(command);
             return new UpdateContactProtoResponse { Status = true };

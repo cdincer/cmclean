@@ -41,17 +41,17 @@ namespace cmclean.Infrastructure.Services.GrpcServices.ContactGrpc
             {
                 var request = _mapper.Map<CreateContactProtoRequest>(Contact);
                 var result = await _ContactProtoService.CreateContactAsync(request);
-                if(result.Success)
+                if (result.Success)
                 {
                     var addedContact = _mapper.Map<CreateContactResponse>(result);
-                    return new SuccessDataResult<CreateContactResponse>(new CreateContactResponse() { Data = addedContact.Data }, "Success"); 
+                    return new SuccessDataResult<CreateContactResponse>(addedContact, result.Message);
                 }
-            return new ErrorDataResult<CreateContactResponse>($"Create Contact attempt failed.");
+                return new ErrorDataResult<CreateContactResponse>($"Create Contact attempt failed during Infrastructure process");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                return new ErrorDataResult<CreateContactResponse>($"Couldn't add contact to database.");
+                return new ErrorDataResult<CreateContactResponse>(e.Message);
             }
         }
         public async Task<UpdateContactResponse> UpdateContactAsync(UpdateContactRequest Contact)

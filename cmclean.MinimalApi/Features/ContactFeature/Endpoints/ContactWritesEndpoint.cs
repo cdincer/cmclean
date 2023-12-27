@@ -56,14 +56,13 @@ namespace cmclean.MinimalApi.Features.ContactFeature.Endpoints
             return ContactGroup;
         }
 
-        private async Task<IDataResult<Contact>> CreateContact(CreateContactRequest Contact)
+        private async Task<IDataResult<CreateContactResponse>> CreateContact(CreateContactRequest Contact)
         {
             var addedContact = await _ContactGrpcService.CreateContactAsync(Contact);
-            if(addedContact.Success)
-            {
-                return new SuccessDataResult<Contact>(addedContact.Data.Data, addedContact.Message);
-            }
-            return new ErrorDataResult<Contact>(new Contact(),addedContact.Message);
+            if(addedContact.Success)        
+            return new SuccessDataResult<CreateContactResponse>(addedContact.Data, addedContact.Message);
+            
+            return new ErrorDataResult<CreateContactResponse>(new CreateContactResponse(),addedContact.Message);
         }
 
         private async Task<Application.Common.Results.IResult> UpdateContact(UpdateContactRequest Contact)

@@ -21,20 +21,17 @@ public class CreateContactCommandHandler : IRequestHandler<CreateContactCommand,
     public async Task<IDataResult<CreateContactResponse>> Handle(CreateContactCommand request, CancellationToken cancellationToken)
     {
         if (request == null)
-        {
-            throw new ArgumentException("Contact cannot be null");
-        }
+        throw new ArgumentException("Contact cannot be null");
+        
         var Contact = _mapper.Map<Contact>(request);
         Contact.CreateContact();
         await _ContactWriteRepository.AddAsync(Contact);
 
         if(Contact.Id.ToString() == BlankId)
-        {
-            return new ErrorDataResult<CreateContactResponse>($"Couldn't add contact to database.");
-        }
-
+        return new ErrorDataResult<CreateContactResponse>($"Unknown error");
+        
         var mappedContact = _mapper.Map<CreateContactResponse>(Contact);
-        var result = new SuccessDataResult<CreateContactResponse>(mappedContact,"Success");
+        var result = new SuccessDataResult<CreateContactResponse>(mappedContact, "Success");
         return result;
     }
 }
