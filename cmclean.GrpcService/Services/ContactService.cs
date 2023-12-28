@@ -11,6 +11,8 @@ using cmclean.Application.Features.ContactFeature.Commands.UpdateContact;
 using cmclean.Application.Features.ContactFeature.Queries.GetAllContacts;
 using cmclean.Application.Features.ContactFeature.Queries.GetContactById;
 using cmclean.Application.Features.ContactFeature.Queries.GetContactByFilter;
+using static cmclean.Application.Common.Error.Response.ValidationErrorResponse;
+using System.Text;
 
 namespace cmclean.GrpcService.Services;
 
@@ -116,7 +118,9 @@ public class ContactService : ContactProtoService.ContactProtoServiceBase
                 {"exception-type", "ValidationException"},
                 {"original-exception", JsonConvert.SerializeObject(ex)}
             };
-            throw new RpcException(new Status(StatusCode.InvalidArgument, ex.Message, ex), metadata);
+            string DetailedErrors = ValidationErrorBuilder(ex.ValidationErrorResponse.Errors);
+            
+            throw new RpcException(new Status(StatusCode.InvalidArgument, DetailedErrors.ToString(), ex), metadata);
         }
         catch (Exception ex)
         {
@@ -136,7 +140,7 @@ public class ContactService : ContactProtoService.ContactProtoServiceBase
                                                    request.LastName, request.DisplayName, request.BirthDate.ToDateTime(),
                                                    request.Email, request.Phonenumber);
             await _mediator.Send(command);
-            return new UpdateContactProtoResponse { Status = true };
+            return new UpdateContactProtoResponse { Status = true, Message = "Update succesfully completed" };
         }
         catch (NotFoundException ex)
         {
@@ -154,7 +158,9 @@ public class ContactService : ContactProtoService.ContactProtoServiceBase
                 {"exception-type", "ValidationException"},
                 {"original-exception", JsonConvert.SerializeObject(ex)}
             };
-            throw new RpcException(new Status(StatusCode.InvalidArgument, ex.Message, ex), metadata);
+            string DetailedErrors = ValidationErrorBuilder(ex.ValidationErrorResponse.Errors);
+
+            throw new RpcException(new Status(StatusCode.InvalidArgument, DetailedErrors, ex), metadata);
         }
         catch (Exception ex)
         {
@@ -194,5 +200,15 @@ public class ContactService : ContactProtoService.ContactProtoServiceBase
             };
             throw new RpcException(new Status(StatusCode.Internal, ex.Message, ex), metadata);
         }
+    }
+
+    public string ValidationErrorBuilder(List<ValidationError> validationErrors)
+    {
+        StringBuilder DetailedErrors = new();
+        foreach (ValidationError error in validationErrors)
+        {
+            DetailedErrors.AppendLine(error.ErrorMessage);
+        }
+        return DetailedErrors.ToString();
     }
 }

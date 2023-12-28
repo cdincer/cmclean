@@ -46,7 +46,7 @@ namespace cmclean.Infrastructure.Services.GrpcServices.ContactGrpc
                     var addedContact = _mapper.Map<CreateContactResponse>(result);
                     return new SuccessDataResult<CreateContactResponse>(addedContact, result.Message);
                 }
-                return new ErrorDataResult<CreateContactResponse>($"Create Contact attempt failed during Infrastructure process");
+                return new ErrorDataResult<CreateContactResponse>(result.Message);
             }
             catch (Exception e)
             {
@@ -54,12 +54,23 @@ namespace cmclean.Infrastructure.Services.GrpcServices.ContactGrpc
                 return new ErrorDataResult<CreateContactResponse>(e.Message);
             }
         }
-        public async Task<UpdateContactResponse> UpdateContactAsync(UpdateContactRequest Contact)
+        public async Task<IDataResult<UpdateContactResponse>> UpdateContactAsync(UpdateContactRequest Contact)
         {
-            var request = _mapper.Map<UpdateContactProtoRequest>(Contact);
-            var response = await _ContactProtoService.UpdateContactAsync(request);
-            var updatedContact = _mapper.Map<UpdateContactResponse>(response);
-            return updatedContact;
+            try
+            {
+                var request = _mapper.Map<UpdateContactProtoRequest>(Contact);
+                var response = await _ContactProtoService.UpdateContactAsync(request);
+                var updatedContact = _mapper.Map<UpdateContactResponse>(response);
+                if (updatedContact.Status)
+                    return new SuccessDataResult<UpdateContactResponse>(updatedContact, response.Message);
+
+                return new ErrorDataResult<UpdateContactResponse>(response.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return new ErrorDataResult<UpdateContactResponse>(e.Message);
+            }
         }
 
         public async Task<DeleteContactResponse> DeleteContactAsync(DeleteContactRequest Contact)

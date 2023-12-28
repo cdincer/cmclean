@@ -1,10 +1,12 @@
 ﻿using MediatR;
 using cmclean.Application.Common.Exceptions;
 using cmclean.Application.Interfaces.Repositories.Contacts;
+using cmclean.Application.Common.Results;
+using cmclean.Application.Features.ContactFeature.Commands.CreateContact;
 
 namespace cmclean.Application.Features.ContactFeature.Commands.UpdateContact;
 
-public class UpdateContactCommandHandler : IRequestHandler<UpdateContactCommand, UpdateContactResponse>
+public class UpdateContactCommandHandler : IRequestHandler<UpdateContactCommand, IDataResult<UpdateContactResponse>>
 {
 
     private readonly IContactWriteRepository _contactWriteRepository;
@@ -16,7 +18,7 @@ public class UpdateContactCommandHandler : IRequestHandler<UpdateContactCommand,
         _contactReadRepository = contactReadRepository;
     }
 
-    public async Task<UpdateContactResponse> Handle(UpdateContactCommand request, CancellationToken cancellationToken)
+    public async Task<IDataResult<UpdateContactResponse>> Handle(UpdateContactCommand request, CancellationToken cancellationToken)
     {
         var Contact = await _contactReadRepository.GetByIdAsync(request.Id);
         if (Contact is null)
@@ -26,10 +28,12 @@ public class UpdateContactCommandHandler : IRequestHandler<UpdateContactCommand,
                               request.DisplayName, request.BirthDate, request.Email, request.Phonenumber);
         var affected = await _contactWriteRepository.Update(Contact);
 
-        var result = new UpdateContactResponse
+        var updateContactResponse = new UpdateContactResponse
         {
             Status = affected
         };
+        var result = new SuccessDataResult<UpdateContactResponse>(updateContactResponse, "Success");
+
         return result;
     }
 }

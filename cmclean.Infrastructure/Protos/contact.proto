@@ -83,6 +83,7 @@ message UpdateContactProtoRequest {
 
 message UpdateContactProtoResponse {
   bool status = 1;
+  string Message = 2;
 };
 
 message DeleteContactProtoRequest {

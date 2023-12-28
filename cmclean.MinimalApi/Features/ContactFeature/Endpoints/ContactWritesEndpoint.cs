@@ -25,7 +25,6 @@ namespace cmclean.MinimalApi.Features.ContactFeature.Endpoints
             var ContactGroup = endpoints.MapGroup("/api/contacts").AddEndpointFilter<ApiExceptionFilter>();
 
             ContactGroup.MapPost("/", CreateContact)
-
                 .WithName("CreateContacts")
                 .WithDisplayName("Contact Writes Endpoints")
                 .WithTags("Contacts")
@@ -59,16 +58,19 @@ namespace cmclean.MinimalApi.Features.ContactFeature.Endpoints
         private async Task<IDataResult<CreateContactResponse>> CreateContact(CreateContactRequest Contact)
         {
             var addedContact = await _ContactGrpcService.CreateContactAsync(Contact);
-            if(addedContact.Success)        
-            return new SuccessDataResult<CreateContactResponse>(addedContact.Data, addedContact.Message);
-            
-            return new ErrorDataResult<CreateContactResponse>(new CreateContactResponse(),addedContact.Message);
+            if (addedContact.Success)
+                return new SuccessDataResult<CreateContactResponse>(addedContact.Data, addedContact.Message);
+
+            return new ErrorDataResult<CreateContactResponse>(new CreateContactResponse(), addedContact.Message);
         }
 
-        private async Task<Application.Common.Results.IResult> UpdateContact(UpdateContactRequest Contact)
+        private async Task<IDataResult<UpdateContactResponse>> UpdateContact(UpdateContactRequest Contact)
         {
-            await _ContactGrpcService.UpdateContactAsync(Contact);
-            return new SuccessResult("Succesfully Updated");
+            var updatedContact = await _ContactGrpcService.UpdateContactAsync(Contact);
+            if (updatedContact.Success)
+                return new SuccessDataResult<UpdateContactResponse>(updatedContact.Data, updatedContact.Message);
+
+            return new ErrorDataResult<UpdateContactResponse>(new UpdateContactResponse(), updatedContact.Message);
         }
 
         private async Task<Application.Common.Results.IResult> DeleteContact(string id)

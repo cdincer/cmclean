@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using cmclean.Application.Common.Results;
+using MediatR;
 
 namespace cmclean.Application.Features.ContactFeature.Commands.UpdateContact;
 
-public class UpdateContactCommand : IRequest<UpdateContactResponse>
+public class UpdateContactCommand : IRequest<IDataResult<UpdateContactResponse>>
 {
     public Guid Id { get; private set; }
     public string Salutation { get; private set; }
