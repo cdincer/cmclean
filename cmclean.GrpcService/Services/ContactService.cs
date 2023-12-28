@@ -180,8 +180,20 @@ public class ContactService : ContactProtoService.ContactProtoServiceBase
             await _mediator.Send(command);
             return new DeleteContactProtoResponse
             {
-                Status = true
+                Status = true,
+                Message = "Delete succesfully completed"
             };
+        }
+        catch (ValidationException ex)
+        {
+            var metadata = new Metadata
+            {
+                {"exception-type", "ValidationException"},
+                {"original-exception", JsonConvert.SerializeObject(ex)}
+            };
+            string DetailedErrors = ValidationErrorBuilder(ex.ValidationErrorResponse.Errors);
+
+            throw new RpcException(new Status(StatusCode.InvalidArgument, DetailedErrors, ex), metadata);
         }
         catch (NotFoundException ex)
         {

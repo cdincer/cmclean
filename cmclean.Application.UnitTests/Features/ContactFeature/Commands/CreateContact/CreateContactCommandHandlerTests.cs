@@ -86,8 +86,8 @@ namespace cmclean.Application.UnitTests.Features.ContactFeature.Commands.CreateC
             _createContactCommandHandler = new CreateContactCommandHandler(_contactWriteRepository.Object, _mapper);
 
             var result = await _createContactCommandHandler.Handle(command, CancellationToken.None);
-            result.Id.Should().NotBeEmpty();
-            result.Should().BeAssignableTo<CreateContactResponse>();
+            result.Data.Id.Should().NotBeEmpty();
+            result.Data.Should().BeAssignableTo<CreateContactResponse>();
         }
 
         [Fact]
@@ -116,14 +116,14 @@ namespace cmclean.Application.UnitTests.Features.ContactFeature.Commands.CreateC
 
             var result = await _createContactCommandHandler.Handle(command, CancellationToken.None);
             result.Should().NotBeNull();
-            result.Id.ToString().Should().NotBeEmpty();
-            result.Salutation.Should().NotBeEmpty();
-            result.FirstName.Should().NotBeEmpty();
-            result.LastName.Should().NotBeEmpty();
-            result.DisplayName.Should().Be(result.Salutation + result.FirstName + result.LastName);
-            result.Email.Should().NotBeEmpty();
-            result.BirthDate.Should().Be(contact.BirthDate);
-            result.Should().BeAssignableTo<CreateContactResponse>();
+            result.Data.Id.ToString().Should().NotBeEmpty();
+            result.Data.Salutation.Should().NotBeEmpty();
+            result.Data.FirstName.Should().NotBeEmpty();
+            result.Data.LastName.Should().NotBeEmpty();
+            result.Data.DisplayName.Should().Be(result.Data.Salutation + result.Data.FirstName + result.Data.LastName);
+            result.Data.Email.Should().NotBeEmpty();
+            result.Data.BirthDate.Should().Be(contact.BirthDate);
+            result.Data.Should().BeAssignableTo<CreateContactResponse>();
         }
 
         /// <summary>

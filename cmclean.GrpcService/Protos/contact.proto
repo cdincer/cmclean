@@ -91,5 +91,6 @@ message DeleteContactProtoRequest {
 
 message DeleteContactProtoResponse {
   bool status = 1;
+  string Message = 2;
 }
 

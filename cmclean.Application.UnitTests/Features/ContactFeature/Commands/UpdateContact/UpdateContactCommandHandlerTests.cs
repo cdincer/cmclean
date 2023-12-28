@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using cmclean.Application.Common.Behaviours;
 using cmclean.Application.Common.Exceptions;
+using cmclean.Application.Common.Results;
 using cmclean.Application.Features.ContactFeature.Commands.UpdateContact;
 using cmclean.Application.Interfaces.Repositories.Contacts;
 using cmclean.Domain.Model;
@@ -67,14 +68,14 @@ namespace cmclean.Application.UnitTests.Features.ContactFeature.Commands.UpdateC
 
             _updateContactCommandHandler = new UpdateContactCommandHandler(_contactWriteRepository.Object, _contactReadRepository.Object);
             
-            var validationBehaviour = new ValidationBehaviour<UpdateContactCommand, UpdateContactResponse>(new[] { _UpdateContactValidator });
-            var requestHandlerDelegate = new RequestHandlerDelegate<UpdateContactResponse>(() => _updateContactCommandHandler.Handle(command, CancellationToken.None));
-            
+            var validationBehaviour = new ValidationBehaviour<UpdateContactCommand, IDataResult<UpdateContactResponse>>(new[] { _UpdateContactValidator });
+            var requestHandlerDelegate = new RequestHandlerDelegate<IDataResult<UpdateContactResponse>>(() => _updateContactCommandHandler.Handle(command, CancellationToken.None));
+
             var result = await validationBehaviour.Handle(command, requestHandlerDelegate, CancellationToken.None);
 
             result.Should().NotBeNull();
-            result.Status.Should().BeTrue();
-            result.Should().BeAssignableTo<UpdateContactResponse>();
+            result.Success.Should().BeTrue();
+            result.Data.Should().BeAssignableTo<UpdateContactResponse>();
         }
 
 
@@ -95,11 +96,11 @@ namespace cmclean.Application.UnitTests.Features.ContactFeature.Commands.UpdateC
 
             _updateContactCommandHandler = new UpdateContactCommandHandler(_contactWriteRepository.Object, _contactReadRepository.Object);
 
-            var validationBehaviour = new ValidationBehaviour<UpdateContactCommand, UpdateContactResponse>(new[] { _UpdateContactValidator });
-            Task<UpdateContactResponse> requestHandlerDelegate() => _updateContactCommandHandler.Handle(command, CancellationToken.None);
+            var validationBehaviour = new ValidationBehaviour<UpdateContactCommand, IDataResult<UpdateContactResponse>>(new[] { _UpdateContactValidator });
+            Task<IDataResult<UpdateContactResponse>> requestHandlerDelegate() => _updateContactCommandHandler.Handle(command, CancellationToken.None);
 
             requestHandlerDelegate().Should().NotBeNull();
-            var requestHandlerDelegateResult = new RequestHandlerDelegate<UpdateContactResponse>(requestHandlerDelegate);
+            var requestHandlerDelegateResult = new RequestHandlerDelegate<IDataResult<UpdateContactResponse>>(requestHandlerDelegate);
 
             Assert.ThrowsAnyAsync<ValidationException>(() => validationBehaviour.Handle(command, requestHandlerDelegateResult, CancellationToken.None));
         }

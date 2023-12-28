@@ -1,6 +1,9 @@
-﻿using cmclean.Application.Features.ContactFeature.Commands.CreateContact;
+﻿using cmclean.Application.Common.Results;
+using cmclean.Application.Features.ContactFeature.Commands.CreateContact;
 using FluentAssertions;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.CreateContactTests
 {
@@ -25,11 +28,11 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.
                                                                 contact.DisplayName, contact.BirthDate, contact.Email, contact.Phonenumber);
 
             HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/", createContactRequest);
-            CreateContactResponse createContact = await response.Content.ReadFromJsonAsync<CreateContactResponse>();
-
-            createContact.Should().BeAssignableTo<CreateContactResponse>();
-            createContact.FirstName.Should().BeEquivalentTo("Danny");
-            createContact.LastName.Should().BeEquivalentTo("Boyle");
+            var createContact = await response.Content.ReadAsStringAsync();
+            JsonNode MainBodyDeserialized = JsonNode.Parse(createContact)!;
+            JsonNode CreateContactResponseJSONFormat = MainBodyDeserialized!["data"]!;
+            CreateContactResponseJSONFormat["firstName"].ToString().Should().BeEquivalentTo("Danny");
+            CreateContactResponseJSONFormat["lastName"].ToString().Should().BeEquivalentTo("Boyle");
         }
         [Fact]
         public async Task TestCreateContact_ValidContactWithoutDisplayName_ReturnMergedDisplayName()
@@ -41,12 +44,12 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.
                                                                 contact.DisplayName, contact.BirthDate, contact.Email, contact.Phonenumber);
 
             HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/", createContactRequest);
-            CreateContactResponse createContact = await response.Content.ReadFromJsonAsync<CreateContactResponse>();
-
-            createContact.Should().BeAssignableTo<CreateContactResponse>();
-            createContact.FirstName.Should().BeEquivalentTo("Alex");
-            createContact.LastName.Should().BeEquivalentTo("Garland");
-            createContact.DisplayName.Should().Be(contact.Salutation + contact.FirstName + contact.LastName);
+            var createContact = await response.Content.ReadAsStringAsync();
+            JsonNode MainBodyDeserialized = JsonNode.Parse(createContact)!;
+            JsonNode CreateContactResponseJSONFormat = MainBodyDeserialized!["data"]!;
+            CreateContactResponseJSONFormat["firstName"].ToString().Should().BeEquivalentTo("Alex");
+            CreateContactResponseJSONFormat["lastName"].ToString().Should().BeEquivalentTo("Garland");
+            CreateContactResponseJSONFormat["displayName"].ToString().Should().Be(contact.Salutation + contact.FirstName + contact.LastName);
         }
 
         public static TheoryData<string, string, string, string, DateTime, string, string> MissingFieldCases =

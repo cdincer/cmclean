@@ -28,7 +28,7 @@ namespace cmclean.MinimalApi.Features.ContactFeature.Endpoints
                 .WithName("CreateContacts")
                 .WithDisplayName("Contact Writes Endpoints")
                 .WithTags("Contacts")
-                .Produces<CreateContactResponse>(201)
+                .Produces<IDataResult<CreateContactResponse>>(201)
                 .Produces<ValidationErrorResponse>(StatusCodes.Status422UnprocessableEntity)
                 .Produces<ErrorResponse>(400)
                 .Produces<ErrorResponse>(500);
@@ -39,7 +39,7 @@ namespace cmclean.MinimalApi.Features.ContactFeature.Endpoints
                  .WithName("UpdateContact")
                 .WithDisplayName("Contact Writes Endpoints")
                 .WithTags("Contacts")
-                .Produces(204)
+                .Produces<IDataResult<UpdateContactResponse>>(204)
                 .Produces<ValidationErrorResponse>(StatusCodes.Status422UnprocessableEntity)
                 .Produces<ErrorResponse>(400)
                 .Produces<ErrorResponse>(500);
@@ -73,11 +73,15 @@ namespace cmclean.MinimalApi.Features.ContactFeature.Endpoints
             return new ErrorDataResult<UpdateContactResponse>(new UpdateContactResponse(), updatedContact.Message);
         }
 
-        private async Task<Application.Common.Results.IResult> DeleteContact(string id)
+        private async Task<IDataResult<DeleteContactResponse>> DeleteContact(string id)
         {
             var request = new DeleteContactRequest(Guid.Parse(id));
-            await _ContactGrpcService.DeleteContactAsync(request);
-            return new SuccessResult("Succesfully Deleted");
+            var deletedContact = await _ContactGrpcService.DeleteContactAsync(request);
+
+            if (deletedContact.Success)
+                return new SuccessDataResult<DeleteContactResponse>(deletedContact.Data,deletedContact.Message);
+
+            return new ErrorDataResult<DeleteContactResponse>(new DeleteContactResponse(), deletedContact.Message);
         }
     }
 }

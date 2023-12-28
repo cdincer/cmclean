@@ -73,12 +73,23 @@ namespace cmclean.Infrastructure.Services.GrpcServices.ContactGrpc
             }
         }
 
-        public async Task<DeleteContactResponse> DeleteContactAsync(DeleteContactRequest Contact)
+        public async Task<IDataResult<DeleteContactResponse>> DeleteContactAsync(DeleteContactRequest Contact)
         {
-            var request = _mapper.Map<DeleteContactProtoRequest>(Contact);
-            var response = await _ContactProtoService.DeleteContactAsync(request);
-            var deletedContact = _mapper.Map<DeleteContactResponse>(response);
-            return deletedContact;
+            try
+            {
+                var request = _mapper.Map<DeleteContactProtoRequest>(Contact);
+                var response = await _ContactProtoService.DeleteContactAsync(request);
+                var deletedContact = _mapper.Map<DeleteContactResponse>(response);
+                if (deletedContact.Status)
+                    return new SuccessDataResult<DeleteContactResponse>(deletedContact, response.Message);
+
+                return new ErrorDataResult<DeleteContactResponse>(response.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return new ErrorDataResult<DeleteContactResponse>(e.Message);
+            }
         }
 
         public async Task<List<GetContactByFilterResponse>> GetContactByFilterAsync(GetContactByFilterQuery GetContactByFilterQuery)

@@ -15,6 +15,6 @@ namespace cmclean.Application.Interfaces.GrpcServices.ContactGrpc
         Task<List<GetContactByFilterResponse>> GetContactByFilterAsync(GetContactByFilterQuery GetContactByFilterQuery);
         Task<IDataResult<CreateContactResponse>> CreateContactAsync(CreateContactRequest Contact);
         Task<IDataResult<UpdateContactResponse>> UpdateContactAsync(UpdateContactRequest Contact);
-        Task<DeleteContactResponse> DeleteContactAsync(DeleteContactRequest Contact);
+        Task<IDataResult<DeleteContactResponse>> DeleteContactAsync(DeleteContactRequest Contact);
     }
 }
