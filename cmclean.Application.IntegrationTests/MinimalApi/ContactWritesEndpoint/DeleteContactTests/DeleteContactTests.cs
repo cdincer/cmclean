@@ -24,23 +24,13 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.
         public async Task TestDeleteContact_DeleteExistingContact_SuccesfulResponse()
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8001/");
-            var contact = fixture._contacts[0];
-            var createContactRequest = new CreateContactRequest(contact.Salutation, contact.FirstName, contact.LastName,
-                                                                contact.DisplayName, contact.BirthDate, contact.Email, contact.Phonenumber);
+            client.BaseAddress = new Uri(ContactEndpointConstants.BaseEndpoint);
+            Guid ToDelete = await TestDeleteContact_SampleRecordInsert_Utility(0);
 
-            HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/", createContactRequest);
-            var createContact = await response.Content.ReadAsStringAsync();
-            JsonNode MainBodyDeserialized = JsonNode.Parse(createContact)!;
-            JsonNode CreateContactResponseJSONFormat = MainBodyDeserialized!["data"]!;
-            CreateContactResponseJSONFormat["firstName"].ToString().Should().NotBeNullOrEmpty();
-            CreateContactResponseJSONFormat["lastName"].ToString().Should().NotBeNullOrEmpty();
-
-            Guid ToDelete = Guid.Parse(CreateContactResponseJSONFormat["id"].ToString());
-            HttpResponseMessage deletedResponse = await client.DeleteAsync("api/contacts/"+ToDelete.ToString());
+            HttpResponseMessage deletedResponse = await client.DeleteAsync(ContactEndpointConstants.ContactEndpoint+ToDelete.ToString());
             var deleteContact = await deletedResponse.Content.ReadAsStringAsync();
             JsonNode deleteMainBodyDeserialized = JsonNode.Parse(deleteContact)!;
-            ((bool)deleteMainBodyDeserialized["success"]).Should().BeTrue();
+            ((bool)deleteMainBodyDeserialized[ContactEndpointConstants.SuccessNode]).Should().BeTrue();
         }
 
 
@@ -48,24 +38,36 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.
         public async Task TestDeleteContact_DeleteExistingContact_FailedResponse()
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8001/");
-            var contact = fixture._contacts[0];
+            client.BaseAddress = new Uri(ContactEndpointConstants.BaseEndpoint);
+            Guid ToDelete = await TestDeleteContact_SampleRecordInsert_Utility(1);
+
+            HttpResponseMessage deletedResponse = await client.DeleteAsync(ContactEndpointConstants.ContactEndpoint + ToDelete);
+            HttpResponseMessage TryExistingDeletionResponse = await client.DeleteAsync(ContactEndpointConstants.ContactEndpoint + ToDelete);
+
+            var deleteContact = await TryExistingDeletionResponse.Content.ReadAsStringAsync();
+            JsonNode deleteMainBodyDeserialized = JsonNode.Parse(deleteContact)!;
+            ((bool)deleteMainBodyDeserialized[ContactEndpointConstants.SuccessNode]).Should().BeFalse();
+
+        }
+
+        public async Task<Guid> TestDeleteContact_SampleRecordInsert_Utility(int IndexForSample)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(ContactEndpointConstants.BaseEndpoint);
+            var contact = fixture._contacts[IndexForSample];
             var createContactRequest = new CreateContactRequest(contact.Salutation, contact.FirstName, contact.LastName,
                                                                 contact.DisplayName, contact.BirthDate, contact.Email, contact.Phonenumber);
 
-            HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/", createContactRequest);
+            HttpResponseMessage response = await client.PostAsJsonAsync(ContactEndpointConstants.ContactEndpoint, createContactRequest);
             var createContact = await response.Content.ReadAsStringAsync();
             JsonNode MainBodyDeserialized = JsonNode.Parse(createContact)!;
-            JsonNode CreateContactResponseJSONFormat = MainBodyDeserialized!["data"]!;
-            CreateContactResponseJSONFormat["firstName"].ToString().Should().NotBeNullOrEmpty();
-            CreateContactResponseJSONFormat["lastName"].ToString().Should().NotBeNullOrEmpty();
-            Guid ToDelete = Guid.Parse(CreateContactResponseJSONFormat["id"].ToString());
-            HttpResponseMessage deletedResponse = await client.DeleteAsync("api/contacts/" + ToDelete);
+            JsonNode CreateContactResponseJNode = MainBodyDeserialized![ContactEndpointConstants.DataNode]!;
 
-            var deleteContact = await deletedResponse.Content.ReadAsStringAsync();
-            JsonNode deleteMainBodyDeserialized = JsonNode.Parse(deleteContact)!;
-            ((bool)deleteMainBodyDeserialized["success"]).Should().BeTrue();
+            CreateContactResponseJNode[ContactEndpointConstants.FirstNameNode].ToString().Should().Be(contact.FirstName);
+            CreateContactResponseJNode[ContactEndpointConstants.LastNameNode].ToString().Should().Be(contact.LastName);
+            Guid TobeDeletedGuid = Guid.Parse(CreateContactResponseJNode[ContactEndpointConstants.IdNode].ToString());
 
+            return TobeDeletedGuid;
         }
     }
 }

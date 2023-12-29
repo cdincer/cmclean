@@ -18,7 +18,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
         public async Task TestGetAllContacts_CheckValidity_ResultsMoreThanTwo()
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8001/");
+            client.BaseAddress = new Uri(ContactEndpointConstants.BaseEndpoint);
             HttpResponseMessage response = await client.GetAsync(
             "/api/contacts");
             List<Contact?> contactList = await response.Content.ReadFromJsonAsync<List<Contact?>>();
@@ -32,7 +32,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
         public async Task TestGetAllContacts_CheckBirthdate_AllValid()
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8001/");
+            client.BaseAddress = new Uri(ContactEndpointConstants.BaseEndpoint);
             HttpResponseMessage response = await client.GetAsync(
             "/api/contacts");
             List<Contact?> contactList = await response.Content.ReadFromJsonAsync<List<Contact?>>();

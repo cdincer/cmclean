@@ -22,34 +22,34 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.
         public async Task TestCreateContact_ValidContactWithNoMissingFields_NoException()
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8001/");
+            client.BaseAddress = new Uri(ContactEndpointConstants.BaseEndpoint);
             var contact = fixture._contacts[0];
             var createContactRequest = new CreateContactRequest(contact.Salutation, contact.FirstName, contact.LastName,
                                                                 contact.DisplayName, contact.BirthDate, contact.Email, contact.Phonenumber);
 
-            HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/", createContactRequest);
+            HttpResponseMessage response = await client.PostAsJsonAsync(ContactEndpointConstants.ContactEndpoint, createContactRequest);
             var createContact = await response.Content.ReadAsStringAsync();
             JsonNode MainBodyDeserialized = JsonNode.Parse(createContact)!;
-            JsonNode CreateContactResponseJSONFormat = MainBodyDeserialized!["data"]!;
-            CreateContactResponseJSONFormat["firstName"].ToString().Should().BeEquivalentTo("Danny");
-            CreateContactResponseJSONFormat["lastName"].ToString().Should().BeEquivalentTo("Boyle");
+            JsonNode CreateContactJNode = MainBodyDeserialized![ContactEndpointConstants.DataNode]!;
+            CreateContactJNode[ContactEndpointConstants.FirstNameNode].ToString().Should().BeEquivalentTo("Danny");
+            CreateContactJNode[ContactEndpointConstants.LastNameNode].ToString().Should().BeEquivalentTo("Boyle");
         }
         [Fact]
         public async Task TestCreateContact_ValidContactWithoutDisplayName_ReturnMergedDisplayName()
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8001/");
+            client.BaseAddress = new Uri(ContactEndpointConstants.BaseEndpoint);
             var contact = fixture._contacts[1];
             var createContactRequest = new CreateContactRequest(contact.Salutation, contact.FirstName, contact.LastName,
                                                                 contact.DisplayName, contact.BirthDate, contact.Email, contact.Phonenumber);
 
-            HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/", createContactRequest);
+            HttpResponseMessage response = await client.PostAsJsonAsync(ContactEndpointConstants.ContactEndpoint, createContactRequest);
             var createContact = await response.Content.ReadAsStringAsync();
             JsonNode MainBodyDeserialized = JsonNode.Parse(createContact)!;
-            JsonNode CreateContactResponseJSONFormat = MainBodyDeserialized!["data"]!;
-            CreateContactResponseJSONFormat["firstName"].ToString().Should().BeEquivalentTo("Alex");
-            CreateContactResponseJSONFormat["lastName"].ToString().Should().BeEquivalentTo("Garland");
-            CreateContactResponseJSONFormat["displayName"].ToString().Should().Be(contact.Salutation + contact.FirstName + contact.LastName);
+            JsonNode CreateContactJNode = MainBodyDeserialized![ContactEndpointConstants.DataNode]!;
+            CreateContactJNode[ContactEndpointConstants.FirstNameNode].ToString().Should().BeEquivalentTo("Alex");
+            CreateContactJNode[ContactEndpointConstants.LastNameNode].ToString().Should().BeEquivalentTo("Garland");
+            CreateContactJNode[ContactEndpointConstants.DisplayNameNode].ToString().Should().Be(contact.Salutation + contact.FirstName + contact.LastName);
         }
 
         public static TheoryData<string, string, string, string, DateTime, string, string> MissingFieldCases =
@@ -61,19 +61,22 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.
             { "Mr", "Test","User4", "NoEmail", new DateTime(2018, 12, 31), "", "12341234" }
         };
         [Theory, MemberData(nameof(MissingFieldCases))]
-        public async Task TestCreateContact_MissingFields_NoExceptionGracefulFailure(string Salutation, string FirstName, string LastName, string DisplayName,
+        public async Task TestCreateContact_MissingFields_ValidationErrorMessages(string Salutation, string FirstName, string LastName, string DisplayName,
                                                                 DateTime BirthDate, string Email, string Phonenumber)
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8001/");
+            client.BaseAddress = new Uri(ContactEndpointConstants.BaseEndpoint);
             var createContactRequest = new CreateContactRequest(Salutation, FirstName, LastName,
                                                                 DisplayName, BirthDate, Email, Phonenumber);
 
-            HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/", createContactRequest);
-            CreateContactResponse createContact = await response.Content.ReadFromJsonAsync<CreateContactResponse>();
-            createContact.Should().BeAssignableTo<CreateContactResponse>();
-            createContact.FirstName.Should().BeEquivalentTo(null);
-            createContact.LastName.Should().BeEquivalentTo(null);
+            HttpResponseMessage response = await client.PostAsJsonAsync(ContactEndpointConstants.ContactEndpoint, createContactRequest);
+            var createContact = await response.Content.ReadAsStringAsync();
+            JsonNode MainBodyDeserialized = JsonNode.Parse(createContact)!;
+            JsonNode SuccessJNode = MainBodyDeserialized![ContactEndpointConstants.SuccessNode]!;
+            JsonNode MessageJNode = MainBodyDeserialized![ContactEndpointConstants.MessageNode]!;
+            ((bool)SuccessJNode).Should().BeFalse();
+            MessageJNode.ToString().Should().NotBeNullOrEmpty();
+            MessageJNode.ToString().Length.Should().BeGreaterThan(7);//Detailed validation error check, succesfull responses have only "success" in them for messages.
         }
     }
 }

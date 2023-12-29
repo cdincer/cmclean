@@ -9,6 +9,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
     public class GetContactByFilterTests : IClassFixture<GetContactByFilterTestsDatabaseFixture>
     {
         GetContactByFilterTestsDatabaseFixture fixture;
+        public static string FilterEndpoint = "api/contacts/filter";
         public GetContactByFilterTests(GetContactByFilterTestsDatabaseFixture fixture)
         {
             this.fixture = fixture;
@@ -18,7 +19,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
         public async Task TestGetContactByFilter_GetOneRecordWithThatFirstName_NoValidationExcepiton()
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8001/");
+            client.BaseAddress = new Uri(ContactEndpointConstants.BaseEndpoint);
             GetContactByFilterTestQuery getContactByFilterTestQuery = new();
             getContactByFilterTestQuery.FirstName = "Evelyn";
             getContactByFilterTestQuery.LastName = "";
@@ -27,7 +28,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
             getContactByFilterTestQuery.Phonenumber = "";
             getContactByFilterTestQuery.BirthDate = DateTime.MinValue;
 
-            HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/filter", getContactByFilterTestQuery);
+            HttpResponseMessage response = await client.PostAsJsonAsync(FilterEndpoint, getContactByFilterTestQuery);
 
             List<GetContactByFilterResponse?> contactList = await response.Content.ReadFromJsonAsync<List<GetContactByFilterResponse?>>();
             contactList.Should().BeAssignableTo<List<GetContactByFilterResponse?>>();
@@ -38,7 +39,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
         public async Task TestGetContactByFilter_GetMultipleRecordWithThatFirstName_NoValidationExcepiton()
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8001/");
+            client.BaseAddress = new Uri(ContactEndpointConstants.BaseEndpoint);
             GetContactByFilterTestQuery getContactByFilterTestQuery = new();
             getContactByFilterTestQuery.FirstName = "Jon";
             getContactByFilterTestQuery.LastName = "";
@@ -47,7 +48,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
             getContactByFilterTestQuery.Phonenumber = "";
             getContactByFilterTestQuery.BirthDate = DateTime.MinValue;
 
-            HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/filter", getContactByFilterTestQuery);
+            HttpResponseMessage response = await client.PostAsJsonAsync(FilterEndpoint, getContactByFilterTestQuery);
 
             List<GetContactByFilterResponse?> contactList = await response.Content.ReadFromJsonAsync<List<GetContactByFilterResponse?>>();
             contactList.Should().BeAssignableTo<List<GetContactByFilterResponse?>>();
@@ -58,7 +59,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
         public async Task TestGetContactByFilter_GetMultipleRecordWithThatLastName_NoValidationExcepiton()
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8001/");
+            client.BaseAddress = new Uri(ContactEndpointConstants.BaseEndpoint);
             GetContactByFilterTestQuery getContactByFilterTestQuery = new();
             getContactByFilterTestQuery.FirstName = "";
             getContactByFilterTestQuery.LastName = "Hamm";
@@ -67,7 +68,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
             getContactByFilterTestQuery.Phonenumber = "";
             getContactByFilterTestQuery.BirthDate = DateTime.MinValue;
 
-            HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/filter", getContactByFilterTestQuery);
+            HttpResponseMessage response = await client.PostAsJsonAsync(FilterEndpoint, getContactByFilterTestQuery);
 
             List<GetContactByFilterResponse?> contactList = await response.Content.ReadFromJsonAsync<List<GetContactByFilterResponse?>>();
             contactList.Should().BeAssignableTo<List<GetContactByFilterResponse?>>();
@@ -80,7 +81,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
         public async Task TestGetContactByFilter_GetSingleContactWithFirstNameAndLastName_NoValidationExcepiton()
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8001/");
+            client.BaseAddress = new Uri(ContactEndpointConstants.BaseEndpoint);
             GetContactByFilterTestQuery getContactByFilterTestQuery = new();
             getContactByFilterTestQuery.FirstName = "Jon";
             getContactByFilterTestQuery.LastName = "Hamm";
@@ -89,7 +90,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
             getContactByFilterTestQuery.Phonenumber = "";
             getContactByFilterTestQuery.BirthDate = DateTime.MinValue;
 
-            HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/filter", getContactByFilterTestQuery);
+            HttpResponseMessage response = await client.PostAsJsonAsync(FilterEndpoint, getContactByFilterTestQuery);
 
             List<GetContactByFilterResponse?> contactList = await response.Content.ReadFromJsonAsync<List<GetContactByFilterResponse?>>();
             contactList.Should().BeAssignableTo<List<GetContactByFilterResponse?>>();

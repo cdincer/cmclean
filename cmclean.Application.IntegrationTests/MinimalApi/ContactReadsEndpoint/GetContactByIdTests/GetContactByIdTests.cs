@@ -20,7 +20,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
         public async Task TestGetContactById_GetSingleRecordWithId_NoValidationExcepiton()
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8001/");
+            client.BaseAddress = new Uri(ContactEndpointConstants.BaseEndpoint);
 
             HttpResponseMessage response = await client.GetAsync("api/contacts/49900c0c-8119-4fd4-98cd-f0e643231528");
             GetContactByIdResponse contactById = await response.Content.ReadFromJsonAsync<GetContactByIdResponse>();
@@ -44,15 +44,15 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
                                                                 DateTime BirthDate, string Email, string Phonenumber)
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8001/");
+            client.BaseAddress = new Uri(ContactEndpointConstants.BaseEndpoint);
             var createContactRequest = new CreateContactRequest(Salutation, FirstName, LastName,
                                                                 DisplayName, BirthDate, Email, Phonenumber);
 
-            HttpResponseMessage response = await client.PostAsJsonAsync("api/contacts/", createContactRequest);
+            HttpResponseMessage response = await client.PostAsJsonAsync(ContactEndpointConstants.ContactEndpoint, createContactRequest);
             CreateContactResponse createContact = await response.Content.ReadFromJsonAsync<CreateContactResponse>();
             createContact.Should().BeAssignableTo<CreateContactResponse>();
             
-            response = await client.GetAsync("api/contacts/"+ createContact.Id);
+            response = await client.GetAsync(ContactEndpointConstants.ContactEndpoint+ createContact.Id);
             GetContactByIdResponse getContactByIdResponse = await response.Content.ReadFromJsonAsync<GetContactByIdResponse>();
 
             int requiredYearsForCalculation = DateTime.Now.Year - BirthDate.Year;

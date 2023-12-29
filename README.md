@@ -1,44 +1,15 @@
 # cmclean
-Contact Manager made in Clean Architecture.
-Made with Visual Studio 2022.
-Use Docker-compose to start everything up through CLI
-Or you can use the debug option in Visual Studio to start it up and look through it.
-
+A sample application with all the features,you would want in a production project.
+It's made in Clean Architecture with a DDD approach.
+Use Visual Studio 2022.You don't need to anything in CLI for this one or through Desktop Docker.
+Just start debugging through docker-compose option in VS, everything will be setup.
+There is a sample DB creator script(InitializeDBExtension.cs) in MinimalApi for setting up records and tables.
+Integration testing is done through actually starting up the whole system through xunit.
+It will build every docker image in the docker-compose file you see.That's why it takes about 
+a minute to start testing.
 
 # Filter Query Testing
-  {
-    "firstName": "",
-    "lastName": "Donovan",
-    "displayName":"",
-    "birthDate": "0001-01-01T00:00:00Z",
-    "email": "",
-    "phonenumber": ""
-  }
-
- {
-    "firstName": "Kimberly",
-    "lastName": "",
-    "displayName":"",
-    "birthDate": "0001-01-01T00:00:00Z",
-    "email": "",
-    "phonenumber": ""
-  }
-
-   {
-    "firstName": "",
-    "lastName": "",
-    "displayName":"",
-    "birthDate": "0001-01-01T00:00:00Z",
-    "email": "trialrun3@email.com",
-    "phonenumber": ""
-  }
+???
 
 # Random testing scenarios
-
-//Third user set at the start up with a set guid for update/get user functions testing if you choose to do so //it's guid is :4b2056a9-7ee4-47b1-a64f-15770ceab7aa
-
-//Test Scenario for Birthday
-{ "salutation": "Mrs", "firstname": "TestFirstName1", "lastname": "TestLastName1", "email": "working@email.com", "displayname": "TestingDisplayName1", "birthdate": "1999-09-22T10:47:24.285Z", "phoneNumber": "" }
-
-//Test Scenario for DisplayName
-{ "salutation": "Mr", "firstname": "TestFirstName2", "lastname": "TestLastName2", "email": "working2@email.com", "displayname": "", "birthdate": "1998-09-12T10:47:24.285Z", "phoneNumber": "02124669900" }
+???
