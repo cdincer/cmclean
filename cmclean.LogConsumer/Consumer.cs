@@ -65,7 +65,7 @@ namespace cmclean.LogConsumer
                 channel.BasicConsume(queue: "LoggerQueue",
                                      autoAck: false,
                                      consumer: consumer);
-                Console.WriteLine(" press X for shotdown.");
+                Console.WriteLine("press X for shutdown.");
                 Console.ReadLine();
 
             }

@@ -11,7 +11,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactReadsEndpoint.G
     {
         public GetContactByFilterTestsDatabaseFixture()
         {
-            string ConnectionString = "Server=localhost;Port=5432;Database=Contactmanagerdb;User Id=admin;Password=admin1234;";
+            string ConnectionString = ContactEndpointConstants.IntegrationTestDBConnection;
             using var connection = new NpgsqlConnection
             (ConnectionString);
             connection.Open();

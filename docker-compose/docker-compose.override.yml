@@ -167,6 +167,7 @@ services:
         retries: 5
     networks:
       - cmcleanNetwork
+
   jaeger:
     container_name: jaeger
     environment:
@@ -190,6 +191,7 @@ services:
       - jaeger-data:/badger
     networks:
       - cmcleanNetwork
+ 
   zipkin-server:
     container_name: zipkin-server
     ports:

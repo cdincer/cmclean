@@ -8,6 +8,7 @@ namespace cmclean.Application.IntegrationTests.MinimalApi
 {
     public static class ContactEndpointConstants
     {
+        public const string IntegrationTestDBConnection = "Server=localhost;Port=5432;Database=Contactmanagerdb;User Id=admin;Password=admin1234;";
         public const string BaseEndpoint = "http://localhost:8001/";
         public const string ContactEndpoint = "api/contacts/";
         public const string DataNode = "data";

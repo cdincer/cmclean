@@ -58,7 +58,7 @@ namespace cmclean.MinimalApi.Extensions
                                                                 Birthdate timestamp,                                                    
                                                                 CreationTimestamp timestamp,
                                                                 LastChangeTimestamp timestamp,
-                                                                Email VARCHAR(50),
+                                                                Email VARCHAR(50) UNIQUE,
                                                                 Phonenumber VARCHAR(24),
                                                                 PRIMARY KEY (Id))";
                 command.ExecuteNonQuery();
