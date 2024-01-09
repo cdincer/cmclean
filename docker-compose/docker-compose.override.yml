@@ -46,7 +46,6 @@ services:
       - "JaegerSettings:SourceName=Api"
       - "JaegerSettings:ServiceName=cmclean.MinimalApi"
       - "ExporterSettings:UseExporter=jaeger"
-      - "Zipkin:Endpoint=http://zipkin-server:9411/api/v2/spans"
       - "ConsulConfig:Address=http://consul:8500"
       - "ConsulConfig:ServiceAddress=http://cmclean-minimal-api"
       - "ConsulConfig:ServiceName=cmcleanMinimalApi"
@@ -56,7 +55,6 @@ services:
       - cmclean-grpc-service
       - rabbitmq
       - jaeger
-      - zipkin-server
       - consul
     ports:
       - "8001:80"
@@ -83,7 +81,6 @@ services:
       - "JaegerSettings:SourceName=Grpc"
       - "JaegerSettings:ServiceName=cmclean.GrpcService"
       - "ExporterSettings:UseExporter=jaeger"
-      - "Zipkin:Endpoint=http://zipkin-server:9411/api/v2/spans"
       - "ConsulConfig:Address=http://consul:8500"
       - "ConsulConfig:ServiceAddress=http://cmclean-grpc-service"
       - "ConsulConfig:ServiceName=cmcleanGrpcService"
@@ -92,7 +89,6 @@ services:
       - cmclean-db
       - rabbitmq
       - jaeger
-      - zipkin-server
       - consul
     ports:
       - "5001:80"
@@ -192,13 +188,6 @@ services:
     networks:
       - cmcleanNetwork
  
-  zipkin-server:
-    container_name: zipkin-server
-    ports:
-      - '9411:9411'
-    networks:
-      - cmcleanNetwork
-
   consul:
     container_name: consul
     ports:

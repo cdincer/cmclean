@@ -45,9 +45,6 @@ services:
   jaeger:
     image: jaegertracing/all-in-one:latest
   
-  zipkin-server:
-    image: openzipkin/zipkin
-
   consul:
     image: hashicorp/consul
 

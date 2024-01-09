@@ -41,12 +41,6 @@ public static class ServiceCollectionExtensions
                             jaegerOptions.Endpoint = new Uri($"{jaegerSettings.Host}:{jaegerSettings.Port}");
                         });
                         break;
-                    case "zipkin":
-                        tracerProviderBuilder.AddZipkinExporter(zipkinOptions =>
-                        {
-                            zipkinOptions.Endpoint = new Uri(configuration.GetValue<string>("Zipkin:Endpoint")!);
-                        });
-                        break;
                     default:
                         tracerProviderBuilder.AddConsoleExporter();
                         break;
