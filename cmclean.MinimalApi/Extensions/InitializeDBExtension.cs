@@ -1,9 +1,12 @@
-﻿using Npgsql;
+﻿using Microsoft.Extensions.Configuration.UserSecrets;
+using Npgsql;
+using Serilog;
 
 namespace cmclean.MinimalApi.Extensions
 {
     public static class InitializeDBExtension
     {
+        private static readonly Serilog.ILogger _log = Log.ForContext(typeof(InitializeDBExtension));
         public static async Task<IServiceCollection> SetupTableAndSampleRecords(this IServiceCollection services, string ConnectionString)
         {
 
@@ -14,7 +17,7 @@ namespace cmclean.MinimalApi.Extensions
             Just for full effect and clarity, I would never include or suggest doing something like this in a real life project,something that would be released to dev,uat,prod,
             even for hobby projects. This file and its execution is strictly for understanding, training/experimenting with this project.
             */
-
+            _log.Information("Trying to start database initialization");
             try
             {
                 var connectionEstablised = false;
@@ -34,10 +37,11 @@ namespace cmclean.MinimalApi.Extensions
                     {
                         // If opening the npgSQL connection fails, SQL Server is not ready yet
                         await Task.Delay(500);
+                        _log.Information("Failed at "+ start.ToString());
                     }
                 }
 
-
+                _log.Information("Trying to start a connection");
                 using var connection = new NpgsqlConnection
                 (ConnectionString);
                 connection.Open();
@@ -47,6 +51,7 @@ namespace cmclean.MinimalApi.Extensions
                     Connection = connection
                 };
                 #region Table Creation
+                _log.Information("Trying to create a table");
                 command.CommandText = @"DROP TABLE IF EXISTS ""Contacts"" ";
                 command.ExecuteNonQuery();
 
@@ -62,7 +67,7 @@ namespace cmclean.MinimalApi.Extensions
                                                                 Phonenumber VARCHAR(24),
                                                                 PRIMARY KEY (Id))";
                 command.ExecuteNonQuery();
-                Console.WriteLine("Table creation is succesful");
+                _log.Information("Table creation is succesful");
                 #endregion
 
                 #region Sample Records For Testing
@@ -74,7 +79,7 @@ namespace cmclean.MinimalApi.Extensions
                 + $"VALUES ('{TrialGuid}','Mr', 'Jeffrey' , 'Donovan' ,'','1968-05-11T19:10:25',"
                 + $"'{DateTime.Now}','{DateTime.Now}','trialrun1@email.com','02123445566')";
                 command.ExecuteNonQuery();
-                Console.WriteLine("First test user created");
+                _log.Information("First test user created");
 
                 TrialGuid = Guid.NewGuid();
                 command.CommandText =
@@ -84,7 +89,7 @@ namespace cmclean.MinimalApi.Extensions
                 + $"VALUES ('{TrialGuid}','Mr', 'Bruce' , 'Campbell' ,'','1958-06-22T19:10:25',"
                 + $"'{DateTime.Now}', '{DateTime.Now}','trialrun2@email.com','02123558899')";
                 command.ExecuteNonQuery();
-                Console.WriteLine("Second test user created");
+                _log.Information("Second test user created");
 
                 command.CommandText =
                @"INSERT INTO ""Contacts"""
@@ -93,7 +98,7 @@ namespace cmclean.MinimalApi.Extensions
                + $"VALUES ('4b2056a9-7ee4-47b1-a64f-15770ceab7aa','Ms', 'Kimberly' , 'Director' ,'KimDirector','1974-11-13T19:10:25',"
                + $"'{DateTime.Now}', '{DateTime.Now}','trialrun3@email.com','02124669900')";
                 command.ExecuteNonQuery();
-                Console.WriteLine("Third test user created stricly for update user scenario");
+                _log.Information("Third test user created stricly for update user scenario");
 
                 command.CommandText =
                  @"INSERT INTO ""Contacts"""
@@ -102,7 +107,7 @@ namespace cmclean.MinimalApi.Extensions
                  + $"VALUES ('104142c0-7248-48aa-b230-5798810adf58','Ms', 'Evelyn' , 'Hampshire' ,'EveH','{DateTime.Now.AddDays(12)}',"
                  + $"'{DateTime.Now}', '{DateTime.Now}','trialrun4@email.com','02124669901')";
                 command.ExecuteNonQuery();
-                Console.WriteLine("Fourth test user created to see for Birthday under the check range scenario");
+                _log.Information("Fourth test user created to see for Birthday under the check range scenario");
 
                 command.CommandText =
                 @"INSERT INTO ""Contacts"""
@@ -111,14 +116,14 @@ namespace cmclean.MinimalApi.Extensions
                 + $"VALUES ('15423c8b-6f3d-4848-868a-ff10e2835e60','Mr', 'Matthew' , 'Lillard' ,'MShagl','{DateTime.Now.AddDays(15)}',"
                 + $"'{DateTime.Now}', '{DateTime.Now}','trialrun5@email.com','02124669902')";
                 command.ExecuteNonQuery();
-                Console.WriteLine("Fifth test user created to see for Birthday over the check range scenario");
+                _log.Information("Fifth test user created to see for Birthday over the check range scenario");
 
                 #endregion
 
             }
             catch (NpgsqlException ex)
             {
-                Console.WriteLine("Database connection or table creation failed" + ex.Message);
+                _log.Information("NpgsqlException caught " + ex.Message);
             }
 
             return services;

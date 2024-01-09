@@ -122,8 +122,7 @@ spec:
   selector:
     app: cmclean-minimal-api
   ports:
-    - protocol: TCP
-      port: 8005
+    - port: 8005
       targetPort: 80
       nodePort: 31000
-  type: NodePort
+  type: LoadBalancer

@@ -5,4 +5,4 @@ metadata:
   labels:
     app: cmclean
 data:
-  db-connection-string: Server=011fa100pg.postgres.database.azure.com;Database=contactmanager;Port=5432;User Id=myadmin;Password=Badminpassword123!;
+  db-connection-string: Server=pgsql-service;Database=contactmanager;Port=5432;User Id=myadmin;Password=Badminpassword123!;

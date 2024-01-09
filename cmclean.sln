@@ -100,7 +100,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "elk", "elk", "{30D69019-626
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "consul", "consul", "{34C1E431-DAD0-46E9-91DB-85D2D99C2DBB}"
 	ProjectSection(SolutionItems) = preProject
-		consul-deployment.yaml = consul-deployment.yaml
+		kubernetes\consul\consul-deployment.yaml = kubernetes\consul\consul-deployment.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{8103D98C-F2D3-4803-996D-572B9BD17E36}"

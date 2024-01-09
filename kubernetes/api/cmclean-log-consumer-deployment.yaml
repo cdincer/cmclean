@@ -82,4 +82,4 @@ spec:
       port: 8001
       targetPort: 80
       nodePort: 31002
-  type: NodePort
+  type: LoadBalancer
