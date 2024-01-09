@@ -97,8 +97,6 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.
             CreateContactJNode[ContactEndpointConstants.LastNameNode].ToString().Should().BeEquivalentTo("Harris");
             CreateContactJNode[ContactEndpointConstants.DisplayNameNode].ToString().Should().Be("SelenaK");
 
-            if (OrgCreateContact != null)
-            {
             HttpResponseMessage dresponse = await client.PostAsJsonAsync(ContactEndpointConstants.ContactEndpoint, createContactRequest);
             var duplicateContact = await dresponse.Content.ReadAsStringAsync();
             JsonNode DupReqDeserialized = JsonNode.Parse(duplicateContact)!;
@@ -107,8 +105,6 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.
             ((bool)SuccessJNode).Should().BeFalse();
             MessageJNode.ToString().Should().NotBeNullOrEmpty();
             MessageJNode.ToString().Length.Should().BeGreaterThan(7);
-            }
-     
         }
 
         [Fact]
@@ -130,17 +126,15 @@ namespace cmclean.Application.IntegrationTests.MinimalApi.ContactWritesEndpoint.
 
             CreateContactRequest DifferentContactSameEmailRequest = new CreateContactRequest("Te", "stFirst", "Name",
                                                                contact.DisplayName, contact.BirthDate, contact.Email, contact.Phonenumber);
-            if(UniqueContactResponse != null)
-            {
-                HttpResponseMessage dcseResponse = await client.PostAsJsonAsync(ContactEndpointConstants.ContactEndpoint, DifferentContactSameEmailRequest);
-                var dcseContact = await dcseResponse.Content.ReadAsStringAsync();
-                JsonNode DupDeserialized = JsonNode.Parse(dcseContact)!;
-                JsonNode SuccessJNode = DupDeserialized![ContactEndpointConstants.SuccessNode]!;
-                JsonNode MessageJNode = DupDeserialized![ContactEndpointConstants.MessageNode]!;
-                ((bool)SuccessJNode).Should().BeFalse();
-                MessageJNode.ToString().Should().NotBeNullOrEmpty();
-                MessageJNode.ToString().Length.Should().BeGreaterThan(7);
-            }        
+
+            HttpResponseMessage dcseResponse = await client.PostAsJsonAsync(ContactEndpointConstants.ContactEndpoint, DifferentContactSameEmailRequest);
+            var dcseContact = await dcseResponse.Content.ReadAsStringAsync();
+            JsonNode DupDeserialized = JsonNode.Parse(dcseContact)!;
+            JsonNode SuccessJNode = DupDeserialized![ContactEndpointConstants.SuccessNode]!;
+            JsonNode MessageJNode = DupDeserialized![ContactEndpointConstants.MessageNode]!;
+            ((bool)SuccessJNode).Should().BeFalse();
+            MessageJNode.ToString().Should().NotBeNullOrEmpty();
+            MessageJNode.ToString().Length.Should().BeGreaterThan(7);
         }
     }
 }
