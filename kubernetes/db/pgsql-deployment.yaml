@@ -19,7 +19,7 @@ spec:
         - name: pgsql
           image: 011fa100registry.azurecr.io/postgres
           ports:
-            - containerPort: 1433
+            - containerPort: 5432
           env:
             - name: POSTGRES_USER
               value: admin
@@ -27,13 +27,13 @@ spec:
               value: admin1234
             - name: POSTGRES_DB
               value: Contactmanagerdb
-          volumeMounts:
-            - name: pgsql-persistent-storage
-              mountPath: /var/opt/pgsql
-      volumes:
-        - name: pgsql-persistent-storage
-          persistentVolumeClaim:
-            claimName: pgsql-pv-claim
+      #     volumeMounts:
+      #       - name: pgsql-persistent-storage
+      #         mountPath: /var/opt/pgsql
+      # volumes:
+      #   - name: pgsql-persistent-storage
+      #     persistentVolumeClaim:
+      #       claimName: pgsql-pv-claim
       imagePullSecrets:
         - name: mydockersecret
 ---

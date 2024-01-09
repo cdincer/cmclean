@@ -79,7 +79,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "kubernetes", "kubernetes", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jaeger", "jaeger", "{E2A5ADA0-D311-4896-A5C4-C78357A23017}"
 	ProjectSection(SolutionItems) = preProject
-		jaeger-deployment.yaml = jaeger-deployment.yaml
+		kubernetes\jaeger\jaeger-deployment.yaml = kubernetes\jaeger\jaeger-deployment.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "db", "db", "{0BE3E9F5-3674-4031-95E2-99049336E0A7}"
@@ -89,7 +89,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "db", "db", "{0BE3E9F5-3674-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "rabbitmq", "rabbitmq", "{88F654F0-A40E-4B2B-8EF4-11C3F2C6B9BF}"
 	ProjectSection(SolutionItems) = preProject
-		rabbitmq.yaml = rabbitmq.yaml
+		kubernetes\rabbitmq\rabbitmq.yaml = kubernetes\rabbitmq\rabbitmq.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "elk", "elk", "{30D69019-6266-41B5-BC4D-1A887F888F8D}"
@@ -105,11 +105,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "consul", "consul", "{34C1E4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{8103D98C-F2D3-4803-996D-572B9BD17E36}"
 	ProjectSection(SolutionItems) = preProject
-		cmclean-configmap.yaml = cmclean-configmap.yaml
-		cmclean-deployment.yaml = cmclean-deployment.yaml
-		cmclean-grpc-deployment.yaml = cmclean-grpc-deployment.yaml
-		cmclean-log-consumer-deployment.yaml = cmclean-log-consumer-deployment.yaml
-		db-connection-config-map.yaml = db-connection-config-map.yaml
+		kubernetes\api\cmclean-configmap.yaml = kubernetes\api\cmclean-configmap.yaml
+		kubernetes\api\cmclean-deployment.yaml = kubernetes\api\cmclean-deployment.yaml
+		kubernetes\api\cmclean-grpc-deployment.yaml = kubernetes\api\cmclean-grpc-deployment.yaml
+		kubernetes\api\cmclean-log-consumer-deployment.yaml = kubernetes\api\cmclean-log-consumer-deployment.yaml
+		kubernetes\api\db-connection-config-map.yaml = kubernetes\api\db-connection-config-map.yaml
 	EndProjectSection
 EndProject
 Global
