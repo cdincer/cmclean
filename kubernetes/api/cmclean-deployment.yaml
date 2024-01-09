@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: cmclean-minimal-api
-          image: 011fa100registry.azurecr.io/cmclean-minimal-api
+          image: 6c93f274registry.azurecr.io/cmclean-minimal-api
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
@@ -123,7 +123,7 @@ spec:
     app: cmclean-minimal-api
   ports:
     - protocol: TCP
-      port: 8001
+      port: 8005
       targetPort: 80
       nodePort: 31000
   type: NodePort

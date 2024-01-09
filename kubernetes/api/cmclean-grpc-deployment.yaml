@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: cmclean-grpc-service
-          image: 011fa100registry.azurecr.io/cmclean-grpc-service
+          image: 6c93f274registry.azurecr.io/cmclean-grpc-service
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
