@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cmclean-configmap
+data:
+  cmclean_grpc_url: ""
+  cmclean_grpc_consul_name: "cmcleanGrpcService"
+  rabbitmq_config_vhostname: "/"
+  rabbitmq_config_hostname: "rabbitmq-service"
+  rabbitmq_config_username: "rabbitmq"
+  rabbitmq_config_password: "rabbitmq"
+  rabbitmq_config_exchange: "LoggerQueue"
+  rabbitmq_config_exchange_type: "fanout"
+  rabbitmq_config_port: "5672"
+  jaeger_host: "http://jaeger-all-in-one-service"
+  jaeger_port: "4317"
+  consul_address: "http://consul-service:8500"

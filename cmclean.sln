@@ -65,7 +65,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FDF43785
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{EB90559C-FC39-4E87-A465-091B93215CD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cmclean.Application.UnitTests", "cmclean.Application.UnitTests\cmclean.Application.UnitTests.csproj", "{EBF2C942-903A-420E-9126-719A7B07E7C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cmclean.Application.UnitTests", "cmclean.Application.UnitTests\cmclean.Application.UnitTests.csproj", "{EBF2C942-903A-420E-9126-719A7B07E7C6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{D0252018-78F9-4C67-A500-0800D9231746}"
 EndProject
@@ -73,7 +73,44 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "Integra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{6F428B64-1229-4D74-A797-4A0AB1A5C80A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cmclean.Application.IntegrationTests", "cmclean.Application.IntegrationTests\cmclean.Application.IntegrationTests.csproj", "{390B0499-15C9-4887-A0FE-EC7E759EB384}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cmclean.Application.IntegrationTests", "cmclean.Application.IntegrationTests\cmclean.Application.IntegrationTests.csproj", "{390B0499-15C9-4887-A0FE-EC7E759EB384}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "kubernetes", "kubernetes", "{C236F55A-7F41-458E-9935-57F50125836D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jaeger", "jaeger", "{E2A5ADA0-D311-4896-A5C4-C78357A23017}"
+	ProjectSection(SolutionItems) = preProject
+		jaeger-deployment.yaml = jaeger-deployment.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "db", "db", "{0BE3E9F5-3674-4031-95E2-99049336E0A7}"
+	ProjectSection(SolutionItems) = preProject
+		kubernetes\db\pgsql-deployment.yaml = kubernetes\db\pgsql-deployment.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "rabbitmq", "rabbitmq", "{88F654F0-A40E-4B2B-8EF4-11C3F2C6B9BF}"
+	ProjectSection(SolutionItems) = preProject
+		rabbitmq.yaml = rabbitmq.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "elk", "elk", "{30D69019-6266-41B5-BC4D-1A887F888F8D}"
+	ProjectSection(SolutionItems) = preProject
+		kubernetes\elk\elasticsearch-deployment.yaml = kubernetes\elk\elasticsearch-deployment.yaml
+		kubernetes\elk\kibana-deployment.yaml = kubernetes\elk\kibana-deployment.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "consul", "consul", "{34C1E431-DAD0-46E9-91DB-85D2D99C2DBB}"
+	ProjectSection(SolutionItems) = preProject
+		consul-deployment.yaml = consul-deployment.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{8103D98C-F2D3-4803-996D-572B9BD17E36}"
+	ProjectSection(SolutionItems) = preProject
+		cmclean-configmap.yaml = cmclean-configmap.yaml
+		cmclean-deployment.yaml = cmclean-deployment.yaml
+		cmclean-grpc-deployment.yaml = cmclean-grpc-deployment.yaml
+		cmclean-log-consumer-deployment.yaml = cmclean-log-consumer-deployment.yaml
+		db-connection-config-map.yaml = db-connection-config-map.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -160,6 +197,13 @@ Global
 		{0C1FB5E5-B9C2-47C8-A9D2-D202B6300AE0} = {FDF43785-EACB-4221-8F4D-FFED07E4445E}
 		{6F428B64-1229-4D74-A797-4A0AB1A5C80A} = {0C1FB5E5-B9C2-47C8-A9D2-D202B6300AE0}
 		{390B0499-15C9-4887-A0FE-EC7E759EB384} = {6F428B64-1229-4D74-A797-4A0AB1A5C80A}
+		{C236F55A-7F41-458E-9935-57F50125836D} = {9328C3A1-1090-4E14-94D9-7C859430745A}
+		{E2A5ADA0-D311-4896-A5C4-C78357A23017} = {C236F55A-7F41-458E-9935-57F50125836D}
+		{0BE3E9F5-3674-4031-95E2-99049336E0A7} = {C236F55A-7F41-458E-9935-57F50125836D}
+		{88F654F0-A40E-4B2B-8EF4-11C3F2C6B9BF} = {C236F55A-7F41-458E-9935-57F50125836D}
+		{30D69019-6266-41B5-BC4D-1A887F888F8D} = {C236F55A-7F41-458E-9935-57F50125836D}
+		{34C1E431-DAD0-46E9-91DB-85D2D99C2DBB} = {C236F55A-7F41-458E-9935-57F50125836D}
+		{8103D98C-F2D3-4803-996D-572B9BD17E36} = {C236F55A-7F41-458E-9935-57F50125836D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBE1C714-F789-46DB-A728-A8041C9FBABD}

@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cmclean-log-consumer-deployment
+  labels:
+    app: cmclean-log-consumer
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cmclean-log-consumer
+  template:
+    metadata:
+      labels:
+        app: cmclean-log-consumer
+    spec:
+      containers:
+        - name: thoughtful-minimal-log-consume
+          image: 011fa100registry.azurecr.io/cmclean-log-consumer
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          env:
+            - name: ElasticSearchConfig__ConnectionString
+              value: http://elasticsearch-service:9200
+            - name: ElasticSearchConfig__PingTimeMilliSeconds
+              value: "10000"
+            - name: RabbitMqConfig__VHostname
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: rabbitmq_config_vhostname
+            - name: RabbitMqConfig__Hostname
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: rabbitmq_config_hostname
+            - name: RabbitMqConfig__Username
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: rabbitmq_config_username
+            - name: RabbitMqConfig__Password
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: rabbitmq_config_password
+            - name: RabbitMqConfig__Port
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: rabbitmq_config_port
+            - name: RabbitMqConfig__Exchange
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: rabbitmq_config_exchange
+            - name: RabbitMqConfig__ExchangeType
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: rabbitmq_config_exchange_type
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+      imagePullSecrets:
+        - name: mydockersecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cmclean-log-consumer-service
+spec:
+  selector:
+    app: cmclean-log-consumer
+  ports:
+    - protocol: TCP
+      port: 8001
+      targetPort: 80
+      nodePort: 31002
+  type: NodePort

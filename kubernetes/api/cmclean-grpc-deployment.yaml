@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cmclean-grpc-deployment
+  labels:
+    app: cmclean-grpc
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cmclean-grpc
+  template:
+    metadata:
+      labels:
+        app: cmclean-grpc
+    spec:
+      containers:
+        - name: cmclean-grpc-service
+          image: 011fa100registry.azurecr.io/cmclean-grpc-service
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          env:
+            - name: ConnectionStrings__Default
+              valueFrom:
+                configMapKeyRef:
+                  name: pgsql-connection-configmap
+                  key: db-connection-string
+            - name: RabbitMqConfig__VHostname
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: rabbitmq_config_vhostname
+            - name: RabbitMqConfig__Hostname
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: rabbitmq_config_hostname
+            - name: RabbitMqConfig__Username
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: rabbitmq_config_username
+            - name: RabbitMqConfig__Password
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: rabbitmq_config_password
+            - name: RabbitMqConfig__Port
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: rabbitmq_config_port
+            - name: RabbitMqConfig__Exchange
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: rabbitmq_config_exchange
+            - name: RabbitMqConfig__ExchangeType
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: rabbitmq_config_exchange_type
+            - name: AppSettings__ApplicationName
+              value: cmclean.GrpcService
+            - name: AppSettings__Instance
+              value: "2"
+            - name: JaegerSettings__Host
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: jaeger_host
+            - name: JaegerSettings__Port
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: jaeger_port
+            - name: JaegerSettings__SourceName
+              value: "Grpc"
+            - name: JaegerSettings__ServiceName
+              value: "cmclean.GrpcService"
+            - name: ExporterSettings__UseExporter
+              value: "Jaeger"
+            - name: Zipkin__Endpoint
+              value: "http://zipkin-server-service:9411/api/v2/spans"
+            - name: ConsulConfig__Address
+              valueFrom:
+                configMapKeyRef:
+                  name: cmclean-configmap
+                  key: consul_address
+            - name: ConsulConfig__ServiceAddress
+              value: "http://cmclean-grpc-service:8002"
+            - name: ConsulConfig__ServiceName
+              value: "cmcleanGrpcService"
+            - name: ConsulConfig__ServiceId
+              value: "cmcleanGrpcService"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+      imagePullSecrets:
+        - name: mydockersecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cmclean-grpc-service
+spec:
+  selector:
+    app: cmclean-grpc
+  ports:
+    - protocol: TCP
+      port: 8002
+      targetPort: 80
+      nodePort: 31001
+  type: NodePort
