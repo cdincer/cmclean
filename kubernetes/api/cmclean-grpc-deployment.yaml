@@ -24,7 +24,7 @@ spec:
             - name: ConnectionStrings__Default
               valueFrom:
                 configMapKeyRef:
-                  name: pgsql-connection-configmap
+                  name: db-connection-config-map
                   key: db-connection-string
             - name: RabbitMqConfig__VHostname
               valueFrom:

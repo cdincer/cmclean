@@ -18,6 +18,8 @@ namespace cmclean.MinimalApi.Extensions
             even for hobby projects. This file and its execution is strictly for understanding, training/experimenting with this project.
             */
             _log.Information("Trying to start database initialization");
+            _log.Information("Connection String is " + ConnectionString);
+
             try
             {
                 var connectionEstablised = false;
