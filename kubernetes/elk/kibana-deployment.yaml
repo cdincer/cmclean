@@ -59,4 +59,4 @@ spec:
       port: 5601
       targetPort: 5601
       nodePort: 32003
-  type: NodePort
+  type: LoadBalancer

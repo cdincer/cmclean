@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: thoughtful-minimal-log-consume
-          image: 6c93f274registry.azurecr.io/cmclean-log-consumer
+          image: db389ca3registry.azurecr.io/cmclean-log-consumer
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
@@ -82,4 +82,4 @@ spec:
       port: 8001
       targetPort: 80
       nodePort: 31002
-  type: LoadBalancer
+  type: NodePort
