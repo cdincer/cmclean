@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: cmclean-minimal-api
-          image: db389ca3registry.azurecr.io/cmclean-minimal-api
+          image: 27b9efbbregistry.azurecr.io/cmclean-minimal-api
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -104,6 +104,10 @@ spec:
               value: "cmcleanMinimalApi"
             - name: ConsulConfig__ServiceId
               value: "cmcleanMinimalApi"
+          volumeMounts:
+            - name: appsettings-volume
+              mountPath: /app/appsettings.json
+              subPath: appsettings.json
           resources:
             requests:
               memory: "64Mi"
@@ -111,6 +115,10 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "500m"
+      volumes:
+        - name: appsettings-volume
+          configMap:
+             name: cmclean-configmap
       imagePullSecrets:
         - name: mydockersecret
 ---

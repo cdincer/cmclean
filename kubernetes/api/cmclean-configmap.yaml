@@ -15,3 +15,52 @@ data:
   jaeger_host: "http://jaeger-all-in-one-service"
   jaeger_port: "4317"
   consul_address: "http://consul-service:8500"
+  appsettings.json: |-
+    {
+      "Logging": {
+        "LogLevel": {
+          "Default": "Trace",
+          "Microsoft": "Trace",
+          "Microsoft.Hosting.Lifetime": "Trace",
+          "Grpc": "Trace"
+        }
+      },
+      "ConnectionStrings": {
+        "Default1": "Server=pgsql-service;Database=Contactmanagerdb;Port=5432;User Id=admin;Password=admin1234;",
+        "Default": "Server=pgsql-service;Database=Contactmanagerdb;Port=5432;User Id=admin;Password=admin1234;"
+      },
+      "AppSettings": {
+        "ApplicationName": "cmclean.MinimalApi",
+        "Instance": "1"
+      },
+      "GrpcSettings": {
+        "ContactGrpcServiceUrl": "",
+        "ContactGrpcServiceConsulName": "cmcleanGrpcService"
+      },
+      "ExporterSettings": {
+        "UseExporter": "jaeger",
+        "UseExporterJaeger": "jaeger"
+      },
+      "JaegerSettings": {
+        "Host": "http://jaeger",
+        "Port": "4317",
+        "SourceName": "Api",
+        "ServiceName": "cmclean.MinimalApi"
+      },
+      "RabbitMqConfig": {
+        "VHostname": "/",
+        "Hostname": "rabbitmq",
+        "Username": "rabbitmq",
+        "Password": "rabbitmq",
+        "Exchange": "LoggerQueue",
+        "ExchangeType": "fanout",
+        "Port": 5672
+      },
+      "ConsulConfig": {
+        "Address": "http://consul:8500/",
+        "ServiceAddress": "http://cmclean-minimal-api:5000",
+        "ServiceName": "cmcleanMinimalApi",
+        "ServiceId": "cmcleanMinimalApi"
+      },
+      "AllowedHosts": "*"
+    }
