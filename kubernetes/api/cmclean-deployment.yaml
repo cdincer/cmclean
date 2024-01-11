@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: cmclean-minimal-api
-          image: 27b9efbbregistry.azurecr.io/cmclean-minimal-api
+          image: 4b8700daregistry.azurecr.io/cmclean-minimal-api
           imagePullPolicy: Always
           ports:
             - containerPort: 80
