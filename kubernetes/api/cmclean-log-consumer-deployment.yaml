@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: thoughtful-minimal-log-consume
-          image: 4b8700daregistry.azurecr.io/cmclean-log-consumer
+          image: 3456c3b2registry.azurecr.io/cmclean-log-consumer
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80

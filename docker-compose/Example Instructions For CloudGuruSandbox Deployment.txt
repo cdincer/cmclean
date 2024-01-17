@@ -7,31 +7,31 @@ admin login: myadmin
 Badminpassword123!
 
 Examples of names used for creating ACR,AKS
-$appname="1-4b8700da-playground-sandbox"    registry name:4b8700daregistry
-											kub name:4b8700dacluster
+$appname="1-3456c3b2-playground-sandbox"    registry name:3456c3b2registry
+											kub name:3456c3b2cluster
 
 **Commands for creating ACR, AKS, Secret Key Vault(Vault isn't used in current example,left in for just incase for future deployments)
-az acr create --name 4b8700daregistry --resource-group $appname --sku Basic
-az aks create -n 4b8700dacluster -g $appname --node-vm-size Standard_B2s --node-count 3  --generate-ssh-keys --network-plugin azure
-az keyvault create -n 4b8700dakeyvault -g $appname
-az aks get-credentials --name 4b8700dacluster --resource-group 1-4b8700da-playground-sandbox
+az acr create --name 3456c3b2registry --resource-group $appname --sku Basic
+az aks create -n 3456c3b2cluster -g $appname --node-vm-size Standard_B2ms --node-count 3  --generate-ssh-keys --network-plugin azure
+az keyvault create -n 3456c3b2keyvault -g $appname
+az aks get-credentials --name 3456c3b2cluster --resource-group 1-3456c3b2-playground-sandbox
 
 **Example postgres database creation command not working currently. It doesn't allow database trigger creation.
-az postgres flexible-server create --name 4b8700dapg --resource-group $appname --location eastus --admin-user myadmin --admin-password Badminpassword123! --sku-name Standard_B1ms --tier Burstable
+az postgres flexible-server create --name 3456c3b2pg --resource-group $appname --location eastus --admin-user myadmin --admin-password Badminpassword123! --sku-name Standard_B1ms --tier Burstable
 **Use below command if you have azure cli add-on for connection to db's or create a contactmanager db through the UI.
-az postgres flexible-server connect --admin-user myadmin --name 4b8700dapg --admin-password Badminpassword123!
+az postgres flexible-server connect --admin-user myadmin --name 3456c3b2pg --admin-password Badminpassword123!
 
 **Database Connection String Example for a Postgres DB, switch your connection strings to these.
-Server=4b8700dapg.postgres.database.azure.com;Database=contactmanager;Port=5432;User Id=myadmin;Password=Badminpassword123!;
+Server=3456c3b2pg.postgres.database.azure.com;Database=contactmanager;Port=5432;User Id=myadmin;Password=Badminpassword123!;
 
 **Logging into our ACR to push our docker image from our local computer.
 **Before doing this turn on admin connection to ACR through UI. Enable admin account and copy paste their details to docker secret for pulling image.
-az acr login --name 4b8700daregistry
-docker tag cmcleanapi 4b8700daregistry.azurecr.io/cmcleanapi:latest
-docker push 4b8700daregistry.azurecr.io/cmcleanapi:latest
+az acr login --name 3456c3b2registry
+docker tag cmcleanapi 3456c3b2registry.azurecr.io/cmcleanapi:latest
+docker push 3456c3b2registry.azurecr.io/cmcleanapi:latest
 
 **Creating a kubernetes secret so our images can be pulled from registry when we can't attach a ACR to our AKS. Active the admin user in ACR to get these credentials through UI.
-kubectl create secret docker-registry mydockersecret --docker-server=4b8700daregistry.azurecr.io --docker-username=4b8700daregistry --docker-password=59FZHpRrKwOmJ5XtO8uxk1KWsFo5TDBCmgR3dEWKVT+ACRCA4QeU --docker-email=4b8700da@test.com
+kubectl create secret docker-registry mydockersecret --docker-server=3456c3b2registry.azurecr.io --docker-username=3456c3b2registry --docker-password=w17SjUS7t5+jOa/r7BzNiSTHju8y16Zn50xFDx2Vcx+ACRBt63ZN --docker-email=3456c3b2@test.com
 **Our kubernetes yml file with cluster definition and load balancer adding script so It can be accessed from outside.
 kubectl create -f azure-deploy.yml
 **If you want to make changes to your deployment
@@ -54,7 +54,7 @@ spec:
     spec:
       containers:
       - name: cmcleanapi
-        image: 4b8700daregistry.azurecr.io/cmcleanapi:102
+        image: 3456c3b2registry.azurecr.io/cmcleanapi:102
         resources:
           limits:
             memory: "256Mi"
